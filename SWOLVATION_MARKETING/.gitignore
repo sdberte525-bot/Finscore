@@ -1,0 +1,9 @@
+# Media lives in Higgsfield / the launch-pack zip; keep it out of the website repo.
+*.mp4
+*.mov
+*.wav
+*.zip
+*.png
+*.jpg
+*.jpeg
+*.webp
