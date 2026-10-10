@@ -92,7 +92,7 @@ export function AboutView() {
             <h2 className="display text-[2.75rem] md:text-[4rem]">The clothing</h2>
             <div className="mt-8 max-w-[50ch] space-y-5 text-lg leading-relaxed text-charcoal">
               <p>
-                Our designs take their cues from vintage training gear: oversized cuts, faded black, distressed cream prints. A small
+                Our designs take their cues from vintage training gear: boxy tees, faded black, distressed cream prints. A small
                 logo sits on the front. The back carries the message: gothic crosses and artwork built around a verse.
               </p>
               <p>

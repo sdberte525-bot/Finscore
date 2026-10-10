@@ -14,6 +14,7 @@ export function FilmButton({ className = "", label = "Watch the film" }: { class
     if (!open) return;
     setWide(window.matchMedia("(min-width: 768px) and (min-aspect-ratio: 1/1)").matches);
     dialog.current?.showModal();
+    dialog.current?.querySelector<HTMLElement>("[data-autofocus]")?.focus();
     lockScroll(true);
     return () => lockScroll(false);
   }, [open]);
@@ -51,7 +52,7 @@ export function FilmButton({ className = "", label = "Watch the film" }: { class
             <button
               type="button"
               onClick={() => dialog.current?.close()}
-              autoFocus
+              data-autofocus
               className="absolute -top-12 right-0 min-h-11 px-2 text-[0.9375rem] text-bone underline underline-offset-4"
             >
               Close

@@ -17,6 +17,8 @@ npm run typecheck
 
 Copy `.env.example` to `.env.local` (or set the same variables in Netlify) to connect payments, the contact form and the newsletter.
 
+**Going live:** follow [`SHOPIFY_SETUP.md`](SHOPIFY_SETUP.md). It covers the email list on Netlify Forms, the Shopify store, tokens, pre-launch mode and drop day.
+
 ## Pages
 
 | Route | What it is |
@@ -37,7 +39,7 @@ Nothing on the site guesses at business details. Anything not yet decided shows 
 
 - **`src/data/business.ts`**: customer email, registered business name and address, jurisdiction, social accounts (none are shown until added), shipping regions, times and rates, return window, condition, exchanges and refunds.
 - **`src/data/products.ts`**: prices (placeholders), inventory per size (placeholders; `null` stops tracking), and `material`, `fit` and `care` for each piece (currently `null`, so the product page says details are coming).
-- **`src/data/sizeGuide.ts`**: measured size charts per category.
+- **`src/data/sizeGuide.ts`**: approximate size charts and the fit finder's rules. Replace them with measured samples and set `approximate: false`.
 - **`src/data/campaign.ts`**: campaign photography. Set `hero` and the hero becomes a full-bleed photo. The editorial and About slots show real product close-ups until photos are added. The file includes the art direction for the shoot.
 - **`/privacy` and `/terms`** are marked as drafts. They describe what the site actually does, but have them reviewed before launch.
 
@@ -50,6 +52,17 @@ Nothing on the site guesses at business details. Anything not yet decided shows 
 - With neither, the checkout page says payments aren't connected and no order can be placed.
 
 Prices and stock are always re-checked on the server at checkout; the browser bag (saved on the shopper's device) is never trusted for prices.
+
+## Campaign media
+
+Every campaign video and photo the site uses is listed in `src/data/media.ts`. They're hosted on Higgsfield's CDN: web-optimized loops of about 1 to 2.5 MB, posters, and the launch film. Your two flat lays are in `public/images/campaign/`. To move a file, upload it elsewhere (for example Shopify > Content > Files) and replace its URL in `media.ts`. Remote image hosts are allowed in `next.config.ts`.
+
+## Store status and email list
+
+- **Before launch** (no checkout connected, or `STORE_MODE=prelaunch`): products show "Coming soon", and the buy box becomes a "Notify me" sign-up tagged with the product and size. The announcement bar says "Get first access".
+- **After launch:** add to cart, quick add, and an announcement bar pointing to the drop.
+- **Sign-ups** go to the first configured destination: Shopify customers (Admin token), then Klaviyo, then a webhook, then Netlify Forms (no setup beyond enabling form detection). See `src/lib/newsletter.ts`.
+- A first-access popup appears once per visitor after 15 seconds or half a page of scrolling. It stays away for 14 days after a dismissal, and forever after a sign-up.
 
 ## Images
 

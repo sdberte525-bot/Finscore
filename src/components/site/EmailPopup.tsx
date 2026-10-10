@@ -52,7 +52,11 @@ export function EmailPopup() {
   useEffect(() => {
     if (!open) return;
     const d = dialog.current;
-    if (d && !d.open) d.showModal();
+    if (d && !d.open) {
+      d.showModal();
+      // Start on the dismiss button so phones don't open the keyboard uninvited.
+      d.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+    }
     lockScroll(true);
     return () => lockScroll(false);
   }, [open]);
@@ -92,7 +96,7 @@ export function EmailPopup() {
           <div className="mt-7">
             <NewsletterForm source="popup" cta="Get access" done="You’re on the list." onDone={() => setJoined(true)} />
           </div>
-          <button type="button" onClick={dismiss} className="link-underline mt-2 self-start py-2 text-sm text-stone" autoFocus>
+          <button type="button" onClick={dismiss} className="link-underline mt-2 self-start py-2 text-sm text-stone" data-autofocus>
             {joined ? "Close" : "No thanks"}
           </button>
         </div>

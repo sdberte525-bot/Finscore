@@ -134,7 +134,7 @@ function Slide({ image, priority, active, onOpen }: { image: ProductImage; prior
   if (image.video) {
     return (
       <button type="button" tabIndex={-1} onClick={onOpen} aria-label={`Enlarge: ${image.alt}`} className="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-charcoal">
-        <LoopVideo src={image.video} poster={image.src} alt={image.alt} sizes="(min-width: 1024px) 52vw, 100vw" priority={priority} playing={active} className="absolute inset-0" />
+        <LoopVideo src={image.video} poster={image.src} alt={image.alt} sizes="(min-width: 1024px) 52vw, 100vw" priority={priority} playing={active} className="h-full w-full" />
       </button>
     );
   }

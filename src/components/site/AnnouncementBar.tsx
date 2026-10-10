@@ -8,7 +8,9 @@ export function AnnouncementBar({ open }: { open: boolean }) {
         href={open ? "/new-drop" : "/#first-access"}
         className="gutter flex min-h-9 items-center justify-center gap-3 py-2 text-center text-[0.75rem] font-medium uppercase tracking-[0.16em] hover:text-plaster"
       >
-        <span>{open ? "The first drop is live" : "The first drop is coming"}</span>
+        <span>
+          {open ? "The first drop is live" : <>The first drop<span className="hidden sm:inline"> is coming</span></>}
+        </span>
         <span aria-hidden="true" className="text-stone">/</span>
         <span className="underline decoration-bone/40 underline-offset-4">{open ? "Shop now" : "Get first access"}</span>
       </Link>

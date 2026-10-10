@@ -25,8 +25,8 @@ export function OurStory({ campaignImage, image }: { campaignImage: CampaignImag
               Swolvation brings together two things: the discipline of training and the faith that gives it meaning. The gym is where you learn to keep going when it gets hard. That lesson doesn&rsquo;t stay in the gym.
             </p>
             <p>
-              Our clothing carries that idea. Old-school training culture, gothic artwork and scripture, on oversized pieces made to be worn
-              through every kind of day.
+              Our clothing carries that idea. Old-school training culture, gothic artwork and scripture, on pieces made to be worn through every
+              kind of day.
             </p>
           </div>
           <Link href="/about" className="button button-solid mt-10">

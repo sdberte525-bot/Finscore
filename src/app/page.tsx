@@ -48,7 +48,7 @@ export default async function HomePage() {
       <OurStory campaignImage={campaign.story} image={pick(products, "Back", "through-christ")} />
       <FirstAccess storeOpen={storeOpen} />
       <Follow />
-      <ClosingStatement />
+      <ClosingStatement storeOpen={storeOpen} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );
