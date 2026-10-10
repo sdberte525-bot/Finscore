@@ -1,34 +1,33 @@
+import { BrandIntro } from "@/components/home/BrandIntro";
+import { ClosingCta } from "@/components/home/ClosingCta";
 import { Collection } from "@/components/home/Collection";
-import { Community } from "@/components/home/Community";
+import { Editorial } from "@/components/home/Editorial";
 import { Hero } from "@/components/home/Hero";
-import { Plates } from "@/components/home/Plates";
-import { Story } from "@/components/home/Story";
-import { collaborations, posts } from "@/data/community";
-import { plates } from "@/data/gallery";
-import { site } from "@/data/site";
-import { getProducts } from "@/lib/commerce/catalog";
+import { PhotoHero } from "@/components/home/PhotoHero";
+import { business } from "@/data/business";
+import { campaign, heroPrints } from "@/data/campaign";
+import { getCatalog } from "@/lib/commerce";
 
-export default function HomePage() {
-  const products = getProducts();
-  const prints = products.map(({ slug, name, inkMap, scripture }) => ({ slug, name, inkMap, scripture }));
+export default async function HomePage() {
+  const products = await getCatalog();
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: site.name,
-    url: site.url,
-    slogan: site.tagline,
-    email: site.email.general,
-    sameAs: site.social.map((s) => s.href),
+    name: business.name,
+    url: business.url,
+    slogan: business.tagline,
+    ...(business.email ? { email: business.email } : {}),
+    ...(business.social.length ? { sameAs: business.social.map((s) => s.href) } : {}),
   };
 
   return (
     <>
-      <Hero prints={prints} />
+      {campaign.hero ? <PhotoHero image={campaign.hero} /> : <Hero prints={heroPrints} />}
       <Collection products={products} />
-      <Story />
-      <Plates plates={plates} />
-      <Community posts={posts} collaborations={collaborations} />
+      <Editorial />
+      <BrandIntro />
+      <ClosingCta product={products.find((p) => p.colors.some((c) => c.name === "Bone")) ?? products[0]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );

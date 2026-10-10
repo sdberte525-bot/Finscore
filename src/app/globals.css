@@ -10,8 +10,7 @@
   --color-oxblood: #6b2620;
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-black: var(--font-fraktur), "Old English Text MT", serif;
-  --font-mark: var(--font-cinzel), "Trajan Pro", serif;
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Garamond, "Times New Roman", serif;
 
   /* Type scale, roughly a perfect fourth from a 16px base. */
   --text-xs: 0.75rem;
@@ -89,17 +88,36 @@
 
 @layer components {
   .wordmark {
-    font-family: var(--font-mark);
-    font-weight: 500;
-    letter-spacing: 0.28em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
   }
 
-  .fraktur {
-    font-family: var(--font-black);
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 0.95;
+  /* Display serif for headings and brand statements. Large sizes only. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+    font-feature-settings: "kern", "liga", "lnum";
+  }
+
+  .display-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* Small labels: sentence case, slightly tracked, never all caps. */
+  .label {
+    font-size: var(--text-sm);
+    color: var(--color-ash);
+    letter-spacing: 0.01em;
+  }
+
+  .prose-body p + p {
+    margin-top: 1.1em;
   }
 
   .button {

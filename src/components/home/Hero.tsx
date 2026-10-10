@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import type { Product } from "@/lib/commerce/types";
+import type { heroPrints } from "@/data/campaign";
+import { business } from "@/data/business";
 import { gsap, prefersReducedMotion, registerGsap, ScrollTrigger } from "@/lib/motion";
 
 const LETTERS = "SWOLVATION".split("");
 const HOLD = 6.5;
 
-export function Hero({ prints }: { prints: Pick<Product, "slug" | "name" | "inkMap" | "scripture">[] }) {
+export function Hero({ prints }: { prints: typeof heroPrints }) {
   const section = useRef<HTMLElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const slot = useRef<HTMLDivElement>(null);
@@ -45,7 +46,7 @@ export function Hero({ prints }: { prints: Pick<Product, "slug" | "name" | "inkM
         stage = new InkStage({
           canvas: canvas.current,
           slot: slot.current,
-          maps: prints.map((p) => p.inkMap),
+          maps: prints.map((p) => p.ink),
           paper: "#1a1917",
           ink: "#e6dfd1",
         });
@@ -173,12 +174,12 @@ export function Hero({ prints }: { prints: Pick<Product, "slug" | "name" | "inkM
       <div
         ref={slot}
         role="img"
-        aria-label={`Back print from the ${current.name}: ${current.scripture.text} ${current.scripture.reference}`}
+        aria-label={current.alt}
         className="absolute left-1/2 top-[13%] h-[50%] w-[82vw] -translate-x-1/2 md:top-[11%] md:h-[56%] md:w-[44vw]"
       >
         {/* Static print, shown before WebGL boots and when motion is reduced. */}
         <img
-          src={prints[0].inkMap.replace(".png", "-dark.jpg")}
+          src={prints[0].ink.replace(".png", "-dark.jpg")}
           alt=""
           className={`h-full w-full object-contain transition-opacity duration-700 ${live ? "opacity-0" : "opacity-100"}`}
           fetchPriority="high"
@@ -195,17 +196,20 @@ export function Hero({ prints }: { prints: Pick<Product, "slug" | "name" | "inkM
         </h1>
 
         <div className="mt-6 grid gap-5 md:mt-8 md:grid-cols-3 md:items-end">
-          <p data-fade className="text-lg md:text-xl">
-            Old iron. Older faith.
+          <p data-fade className="max-w-[24ch] text-lg md:text-xl">
+            {business.tagline}
           </p>
           <p data-fade className="hidden text-sm text-stone md:block md:text-center" aria-live="polite">
             <Link href={`/shop/${current.slug}`} className="link-underline">
-              {current.scripture.reference}, on the {current.name}
+              {current.label}, on the {current.name}
             </Link>
           </p>
-          <div data-fade className="md:text-right">
-            <Link href="/#collection" className="button button-light">
+          <div data-fade className="flex flex-wrap items-center gap-x-7 gap-y-4 md:justify-end">
+            <Link href="/shop" className="button button-light">
               Shop the collection
+            </Link>
+            <Link href="/about" className="link-underline py-2 text-[0.9375rem]">
+              Our story
             </Link>
           </div>
         </div>

@@ -10,7 +10,7 @@ export function BagView() {
 
   return (
     <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-32 pt-32 md:pt-44">
-      <h1 className="fraktur text-[3.5rem] md:text-[6rem]">Bag</h1>
+      <h1 className="display text-[3.5rem] md:text-[6rem]">Bag</h1>
 
       {lines.length === 0 ? (
         <div className="mt-10 max-w-md">

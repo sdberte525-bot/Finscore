@@ -1,70 +1,28 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ProductCard } from "@/components/product/ProductCard";
-import { getProducts } from "@/lib/commerce/catalog";
+import { Suspense } from "react";
+import { getCatalog } from "@/lib/commerce";
+import { ShopBrowser } from "./ShopBrowser";
 
 export const metadata: Metadata = {
   title: "Shop",
-  description: "Drop 01, the Scripture Series: heavyweight long sleeves and tees with distressed scripture prints.",
+  description: "Shop Swolvation long sleeves and oversized tees: vintage-inspired gym clothing made for everyday wear.",
   alternates: { canonical: "/shop" },
 };
 
-const filters = [
-  { label: "All", value: undefined },
-  { label: "Long sleeves", value: "long-sleeve" },
-  { label: "Tees", value: "tee" },
-] as const;
-
-export default async function ShopPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
-  const { category } = await searchParams;
-  const all = getProducts();
-  const products = category ? all.filter((p) => p.category === category) : all;
+export default async function ShopPage() {
+  const products = await getCatalog();
 
   return (
-    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-32 pt-32 md:pb-44 md:pt-44">
-      <div className="flex flex-wrap items-end justify-between gap-8 border-b border-ink/15 pb-8">
-        <div>
-          <h1 className="fraktur text-[3.5rem] md:text-[6rem]">Shop</h1>
-          <p className="mt-4 max-w-[44ch] text-ash md:text-lg">Drop 01, the Scripture Series. Three pieces, three verses.</p>
-        </div>
-        <nav aria-label="Filter by category">
-          <ul className="flex gap-6 text-sm">
-            {filters.map((f) => {
-              const active = f.value === category || (!f.value && !category);
-              return (
-                <li key={f.label}>
-                  <Link
-                    href={f.value ? `/shop?category=${f.value}` : "/shop"}
-                    aria-current={active ? "page" : undefined}
-                    className={`link-underline py-1 ${active ? "" : "text-ash"}`}
-                    scroll={false}
-                  >
-                    {f.label}
-                    <span className="ml-1.5 tabular-nums text-ash">
-                      {f.value ? all.filter((p) => p.category === f.value).length : all.length}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-28 pt-32 md:pb-40 md:pt-40">
+      <div className="grid gap-6 md:grid-cols-12 md:items-end">
+        <h1 className="display text-[3.25rem] md:col-span-6 md:text-[5rem]">Shop</h1>
+        <p className="max-w-[44ch] text-charcoal md:col-span-5 md:col-start-8 md:justify-self-end md:text-right">
+          Vintage-inspired long sleeves and tees, made to be worn in the gym and everywhere else.
+        </p>
       </div>
-
-      {products.length === 0 ? (
-        <div className="py-24">
-          <p className="text-lg">Nothing in this category yet.</p>
-          <Link href="/shop" className="button button-solid mt-6">
-            See all pieces
-          </Link>
-        </div>
-      ) : (
-        <div className="mt-14 grid gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
-          {products.map((product, i) => (
-            <ProductCard key={product.slug} product={product} priority={i < 3} sizes="(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 92vw" />
-          ))}
-        </div>
-      )}
+      <Suspense fallback={<div className="mt-12 h-96" aria-hidden="true" />}>
+        <ShopBrowser products={products} />
+      </Suspense>
     </div>
   );
 }

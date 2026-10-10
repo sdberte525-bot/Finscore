@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as { lines?: CartLine[] };
     lines = Array.isArray(body.lines) ? body.lines.slice(0, 50) : [];
   } catch {
-    return NextResponse.json({ error: "The request couldn't be read." }, { status: 400 });
+    return NextResponse.json({ error: "The request couldn’t be read." }, { status: 400 });
   }
 
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;

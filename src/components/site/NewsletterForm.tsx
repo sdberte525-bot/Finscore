@@ -18,17 +18,17 @@ export function NewsletterForm() {
         body: JSON.stringify({ email }),
       });
       const data = (await res.json()) as { error?: string };
-      if (!res.ok) throw new Error(data.error ?? "That didn't go through. Try again in a moment.");
+      if (!res.ok) throw new Error(data.error ?? "That didn’t go through. Try again in a moment.");
       setState({ kind: "done" });
     } catch (err) {
-      setState({ kind: "error", message: err instanceof Error ? err.message : "That didn't go through." });
+      setState({ kind: "error", message: err instanceof Error ? err.message : "That didn’t go through." });
     }
   }
 
   if (state.kind === "done") {
     return (
       <p role="status" className="text-lg">
-        You&rsquo;re on the list. One email per drop, nothing else.
+        You&rsquo;re on the list. We&rsquo;ll only write when there&rsquo;s something new.
       </p>
     );
   }
@@ -54,7 +54,7 @@ export function NewsletterForm() {
         </button>
       </div>
       <p id="newsletter-status" role="status" className={`mt-3 min-h-5 text-xs ${state.kind === "error" ? "text-bone" : "text-stone"}`}>
-        {state.kind === "error" ? state.message : "One email per drop. Unsubscribe anytime."}
+        {state.kind === "error" ? state.message : "Unsubscribe anytime."}
       </p>
     </form>
   );

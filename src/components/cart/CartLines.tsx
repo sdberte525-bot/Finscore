@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { maxQuantity } from "@/lib/commerce/types";
 import { formatPrice } from "@/lib/format";
 import { useCart } from "./CartProvider";
 
@@ -27,7 +28,7 @@ export function CartLines({ compact = false, readOnly = false }: { compact?: boo
                     {line.product.name}
                   </Link>
                   <p className="mt-1 text-xs text-ash">
-                    {line.product.colorway}, size {line.size}
+                    {line.color}, size {line.size}
                   </p>
                   {line.variantId === lastAdded && compact ? (
                     <p className="mt-1 text-xs text-oxblood" role="status">
@@ -57,7 +58,7 @@ export function CartLines({ compact = false, readOnly = false }: { compact?: boo
                       type="button"
                       className="grid h-9 w-9 place-items-center disabled:opacity-30"
                       onClick={() => setQuantity(line.variantId, line.quantity + 1)}
-                      disabled={line.quantity >= line.variant.inventory}
+                      disabled={line.quantity >= maxQuantity(line.variant)}
                       aria-label="Increase quantity"
                     >
                       +

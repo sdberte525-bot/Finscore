@@ -6,7 +6,8 @@ import { CartLines } from "@/components/cart/CartLines";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice } from "@/lib/format";
 
-export function CheckoutView({ enabled }: { enabled: boolean }) {
+export function CheckoutView({ method }: { method: "shopify" | "stripe" | null }) {
+  const enabled = method !== null;
   const { lines, rawLines, subtotal } = useCart();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,17 +22,17 @@ export function CheckoutView({ enabled }: { enabled: boolean }) {
         body: JSON.stringify({ lines: rawLines }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
-      if (!res.ok || !data.url) throw new Error(data.error ?? "Checkout couldn't start. Try again in a moment.");
+      if (!res.ok || !data.url) throw new Error(data.error ?? "Checkout couldn’t start. Try again in a moment.");
       window.location.assign(data.url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Checkout couldn't start.");
+      setError(err instanceof Error ? err.message : "Checkout couldn’t start.");
       setPending(false);
     }
   }
 
   return (
     <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-32 pt-32 md:pt-44">
-      <h1 className="fraktur text-[3.5rem] md:text-[6rem]">Checkout</h1>
+      <h1 className="display text-[3.5rem] md:text-[6rem]">Checkout</h1>
 
       {lines.length === 0 ? (
         <div className="mt-10 max-w-md">
@@ -76,7 +77,7 @@ export function CheckoutView({ enabled }: { enabled: boolean }) {
                     {pending ? "Opening secure payment" : "Continue to payment"}
                   </button>
                   <p className="mt-4 text-xs text-ash">
-                    You&rsquo;ll enter shipping and card details on Stripe&rsquo;s secure payment page.
+                    You&rsquo;ll enter shipping and payment details on {method === "shopify" ? "Shopify" : "Stripe"}&rsquo;s hosted checkout page.
                   </p>
                 </>
               ) : (

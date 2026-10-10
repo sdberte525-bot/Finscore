@@ -1,8 +1,8 @@
 # Swolvation
 
-Storefront for Swolvation, heavyweight gym clothing with scripture prints. Old iron. Older faith.
+Website and storefront for Swolvation, vintage-inspired gym and lifestyle clothing. Born in the weight room. Worn everywhere.
 
-Built with Next.js (App Router), React, TypeScript and Tailwind CSS. Motion uses GSAP with ScrollTrigger and Lenis for momentum scrolling. Three.js runs two small WebGL effects: the hero "screen print" and the hover distortion on product tiles.
+Built with Next.js (App Router), React, TypeScript and Tailwind CSS. Motion uses GSAP with ScrollTrigger and Lenis for smooth scrolling. Three.js powers one effect: the homepage hero "prints" the garment artwork onto the page until campaign photography replaces it.
 
 ## Run it
 
@@ -13,44 +13,52 @@ npm run build && npm start
 npm run typecheck
 ```
 
-Copy `.env.example` to `.env.local` to configure payments, the newsletter and the public URL.
-
-## Deploy
-
-The site deploys to Netlify from GitHub (`netlify.toml` pins the build). Set the same variables from `.env.example` under Site configuration → Environment variables, and every push to the deployed branch redeploys.
+Copy `.env.example` to `.env.local` (or set the same variables in Netlify) to connect payments, the contact form and the newsletter.
 
 ## Pages
 
 | Route | What it is |
 | --- | --- |
-| `/` | Hero, featured collection, story, Plates gallery, community, footer |
-| `/shop` | All products, filterable by category |
-| `/shop/[slug]` | Product page: gallery, size selection, size guide, details, related pieces |
-| `/bag` | Full bag view (a drawer also opens from every page) |
-| `/checkout` | Order summary and hand-off to payment |
-| `/checkout/success` | Confirmation after Stripe redirects back |
-| `/info/[topic]` | Shipping and returns, size guide, contact |
+| `/` | Hero, featured collection, editorial spread, brand introduction, closing call to action |
+| `/shop` | Catalog with category, color, availability filters and sorting (kept in the URL) |
+| `/shop/[slug]` | Product page: gallery with zoom viewer, color and size selection, size guide, details |
+| `/about` | Brand story |
+| `/contact` | Contact form with topics |
+| `/faq`, `/shipping`, `/returns`, `/size-guide` | Customer information |
+| `/privacy`, `/terms` | Draft policies |
+| `/bag`, `/checkout`, `/checkout/success` | Bag, hand-off to hosted checkout, confirmation |
 
-## Adding real products and photography
+## Before launch: what to fill in
 
-Everything a shopper sees comes from a few data files:
+Nothing on the site guesses at business details. Anything not yet decided shows as "to be confirmed" or stays hidden. Fill these in and the site updates itself:
 
-- **Products**: `src/data/products.ts`. Names, prices (in cents), verses, descriptions, fit, care, images and per-size inventory. A size with `inventory: 0` shows as sold out. Prices, inventory, fabric details and measurements are placeholders until production specs are final.
-- **Images**: put photography in `public/images/products/<slug>/` and point the product's `images` (and `hoverImage`) at it with the real pixel sizes. The first image is the grid and social-share image.
-- **Hero prints**: each product's `inkMap` is a grayscale PNG of its back print (white = ink). They're generated from the renders in `assets/source/` by `npm run images` (`scripts/prepare-images.py`, needs Python with Pillow). Add a new source render plus an entry in that script to put a new design in the hero rotation.
-- **Plates gallery**: `src/data/gallery.ts`. Append lifestyle or gym photography as `image` entries.
-- **Community wall**: `src/data/community.ts`. Add customer photos (with permission) to `posts` and announced partners to `collaborations`. While either list is empty, the section shows an invitation instead.
-- **Brand details**: `src/data/site.ts` (social links, emails, tagline) and `src/data/info.ts` (policies and size chart). The social handles, email addresses, policy terms and size chart are placeholders to confirm before launch.
+- **`src/data/business.ts`**: customer email, registered business name and address, jurisdiction, social accounts (none are shown until added), shipping regions, times and rates, return window, condition, exchanges and refunds.
+- **`src/data/products.ts`**: prices (placeholders), inventory per size (placeholders; `null` stops tracking), and `material`, `fit` and `care` for each piece (currently `null`, so the product page says details are coming).
+- **`src/data/sizeGuide.ts`**: measured size charts per category.
+- **`src/data/campaign.ts`**: campaign photography. Set `hero` and the hero becomes a full-bleed photo. The editorial and About slots show real product close-ups until photos are added. The file includes the art direction for the shoot.
+- **`/privacy` and `/terms`** are marked as drafts. They describe what the site actually does, but have them reviewed before launch.
 
-## Commerce architecture
+## Commerce
 
-- `src/lib/commerce/types.ts` defines the storefront's types. `catalog.ts` is the only place that reads product data. To move to Shopify, Medusa or another backend, re-implement those functions against its API and the UI won't need to change.
-- The bag lives in React context (`src/components/cart/CartProvider.tsx`) and is saved to `localStorage` on the shopper's device. Line prices are always re-derived from the catalog.
-- `POST /api/checkout` re-prices the bag on the server, checks inventory, and creates a hosted **Stripe Checkout** session when `STRIPE_SECRET_KEY` is set. Without a key, the checkout page says payments aren't connected and no order can be placed. Inventory isn't decremented after payment; add a Stripe webhook (`checkout.session.completed`) to do that once a real inventory source exists.
-- `POST /api/subscribe` forwards newsletter signups as JSON to `NEWSLETTER_WEBHOOK_URL`. Without it, the form tells visitors signups aren't open yet.
+**Recommendation: Shopify for launch.** It gives you a product and inventory admin, orders, shipping labels, taxes and a trusted hosted checkout without editing code. The site uses Shopify only as a back end (its Storefront API), so the design stays exactly as it is.
 
-## Design notes
+- Set `COMMERCE_PROVIDER=shopify` plus the Shopify variables. Products, prices, colors, sizes and stock then come from Shopify, and checkout opens Shopify's hosted checkout. Give each product `Size` and `Color` options. The adapter (`src/lib/commerce/shopify.ts`) hasn't been tested against a live store yet, so try it with a development store first.
+- Without Shopify, products come from `src/data/products.ts` and `STRIPE_SECRET_KEY` enables Stripe Checkout. This route has no monthly fee, but products and stock are edited in code and stock isn't decremented after a sale.
+- With neither, the checkout page says payments aren't connected and no order can be placed.
 
-- Palette: bone `#ECE6DA`, plaster `#D8D0C2`, ash `#6F695F`, charcoal `#34312D`, washed black `#1A1917`, with oxblood `#6B2620` as the only accent. Tokens live in `src/app/globals.css`.
-- Type: UnifrakturMaguntia (blackletter, taken from the garments' scripture lettering) for display, Archivo for everything else, and Cinzel only for the wordmark, matching the chest print.
-- Motion respects `prefers-reduced-motion`: Lenis, scroll scrubs and WebGL are skipped, the hero shows a static print, and the Plates gallery becomes a normal scrollable row.
+Prices and stock are always re-checked on the server at checkout; the browser bag (saved on the shopper's device) is never trusted for prices.
+
+## Images
+
+- Product images in `public/images/products/<slug>/` are generated from the design renders in `assets/source/` by `npm run images` (Python with Pillow). Replace them with product photography by updating paths and pixel sizes in `src/data/products.ts`.
+- The renders are low resolution, so large crops look soft. Real photography (at least 2400px on the long edge for full-width slots) will fix that.
+
+## Design
+
+- Palette: bone `#ECE6DA`, plaster `#D8D0C2`, ash `#6F695F`, charcoal `#34312D`, washed black `#1A1917`, oxblood `#6B2620` as the only accent. Tokens are in `src/app/globals.css`.
+- Type: Cormorant Garamond for the wordmark and headings, Archivo for everything people need to read (navigation, prices, sizes, descriptions, forms).
+- Motion respects `prefers-reduced-motion`: smooth scrolling, reveals and WebGL are skipped and the hero shows a still image.
+
+## Deploy
+
+`netlify.toml` configures Netlify. Connect the GitHub repo, set the environment variables above, and every push redeploys.

@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
-import { priceLines, type PricedLine } from "@/lib/commerce/catalog";
-import type { CartLine, Product, ProductVariant } from "@/lib/commerce/types";
+import { priceLines, type PricedLine } from "@/lib/commerce/pricing";
+import { maxQuantity, type CartLine, type Product, type ProductVariant } from "@/lib/commerce/types";
 
-const STORAGE_KEY = "swolvation.bag.v1";
+const STORAGE_KEY = "swolvation.bag.v2";
 
 type Action =
   | { type: "hydrate"; lines: CartLine[] }
@@ -57,7 +57,7 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({ children, products }: { children: React.ReactNode; products: Product[] }) {
   const [rawLines, dispatch] = useReducer(reducer, []);
   const [hydrated, setHydrated] = useState(false);
   const [isOpen, setOpen] = useState(false);
@@ -83,18 +83,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [rawLines, hydrated]);
 
   const add = useCallback((product: Product, variant: ProductVariant, quantity = 1) => {
-    if (variant.inventory <= 0) return;
+    const max = maxQuantity(variant);
+    if (max <= 0) return;
     dispatch({
       type: "add",
-      line: { variantId: variant.id, slug: product.slug, size: variant.size, quantity },
-      max: variant.inventory,
+      line: { variantId: variant.id, slug: product.slug, size: variant.size, color: variant.color, quantity },
+      max,
     });
     setLastAdded(variant.id);
     setOpen(true);
   }, []);
 
   const value = useMemo<CartContextValue>(() => {
-    const { lines, subtotal } = priceLines(rawLines);
+    const { lines, subtotal } = priceLines(rawLines, products);
     return {
       lines,
       rawLines,
@@ -109,7 +110,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       remove: (variantId) => dispatch({ type: "remove", variantId }),
       clear: () => dispatch({ type: "clear" }),
     };
-  }, [rawLines, isOpen, lastAdded, add]);
+  }, [rawLines, products, isOpen, lastAdded, add]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

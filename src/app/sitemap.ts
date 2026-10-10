@@ -1,14 +1,16 @@
 import type { MetadataRoute } from "next";
-import { infoPages } from "@/data/info";
-import { site } from "@/data/site";
-import { getProducts } from "@/lib/commerce/catalog";
+import { business } from "@/data/business";
+import { getCatalog } from "@/lib/commerce";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const url = (path: string) => new URL(path, site.url).toString();
+const pages = ["/about", "/contact", "/faq", "/shipping", "/returns", "/size-guide", "/privacy", "/terms"];
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const url = (path: string) => new URL(path, business.url).toString();
+  const products = await getCatalog();
   return [
     { url: url("/"), changeFrequency: "weekly", priority: 1 },
     { url: url("/shop"), changeFrequency: "weekly", priority: 0.9 },
-    ...getProducts().map((p) => ({ url: url(`/shop/${p.slug}`), changeFrequency: "weekly" as const, priority: 0.8 })),
-    ...Object.keys(infoPages).map((t) => ({ url: url(`/info/${t}`), changeFrequency: "yearly" as const, priority: 0.3 })),
+    ...products.map((p) => ({ url: url(`/shop/${p.slug}`), changeFrequency: "weekly" as const, priority: 0.8 })),
+    ...pages.map((p) => ({ url: url(p), changeFrequency: "monthly" as const, priority: 0.4 })),
   ];
 }

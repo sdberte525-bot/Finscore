@@ -1,28 +1,34 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Cinzel, UnifrakturMaguntia } from "next/font/google";
+import { Archivo, Cormorant_Garamond } from "next/font/google";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { site } from "@/data/site";
+import { business } from "@/data/business";
+import { getCatalog } from "@/lib/commerce";
 import "./globals.css";
 
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", display: "swap" });
-const cinzel = Cinzel({ subsets: ["latin"], weight: ["500"], variable: "--font-cinzel", display: "swap" });
-const fraktur = UnifrakturMaguntia({ subsets: ["latin"], weight: "400", variable: "--font-fraktur", display: "swap" });
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: { default: `${site.name}: heavyweight gym clothing with scripture prints`, template: `%s | ${site.name}` },
-  description: site.description,
-  applicationName: site.name,
+  metadataBase: new URL(business.url),
+  title: { default: `${business.name}: vintage-inspired gym and lifestyle clothing`, template: `%s | ${business.name}` },
+  description: business.description,
+  applicationName: business.name,
   openGraph: {
     type: "website",
-    siteName: site.name,
-    title: site.name,
-    description: site.description,
-    images: [{ url: "/images/products/strengthened-long-sleeve/composite.jpg", width: 1470, height: 1838, alt: "Strengthened Long Sleeve" }],
+    siteName: business.name,
+    title: business.name,
+    description: business.description,
+    images: [{ url: "/images/products/strengthened-long-sleeve/composite.jpg", width: 1470, height: 1838, alt: "Swolvation Strengthened Long Sleeve" }],
   },
   twitter: { card: "summary_large_image" },
   icons: { icon: "/icon.svg" },
@@ -34,15 +40,16 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const products = await getCatalog();
   return (
-    <html lang="en" className={`${archivo.variable} ${cinzel.variable} ${fraktur.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${archivo.variable} ${cormorant.variable}`} suppressHydrationWarning>
       <head>
         {/* Lets CSS hide intro-animated elements before first paint, only when JS will animate them. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js=''" }} />
       </head>
       <body>
-        <CartProvider>
+        <CartProvider products={products}>
           <SmoothScroll />
           <Header />
           <main id="main">{children}</main>

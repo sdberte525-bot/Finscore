@@ -74,8 +74,8 @@ export function CartDrawer() {
 
         {lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-start justify-center gap-6 px-6 md:px-8">
-            <p className="fraktur text-4xl">Nothing yet.</p>
-            <p className="max-w-[28ch] text-ash">Your bag is empty. Drop 01 is three pieces, each printed with a verse.</p>
+            <p className="display text-[2.75rem]">Your bag is empty.</p>
+            <p className="max-w-[30ch] text-ash">Pieces you add will stay here on this device until you check out.</p>
             <Link href="/shop" onClick={close} className="button button-solid">
               Shop the collection
             </Link>

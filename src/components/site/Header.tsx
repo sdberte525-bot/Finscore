@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
-import { nav } from "@/data/site";
+import { business, nav } from "@/data/business";
 import { lockScroll } from "@/lib/motion";
 
 /**
@@ -125,14 +125,19 @@ export function Header() {
           <ul className="space-y-2">
             {nav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} onClick={() => setMenuOpen(false)} className="fraktur block py-1 text-[3.25rem]">
+                <Link href={item.href} onClick={() => setMenuOpen(false)} className="display block py-1 text-[3.25rem]">
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <p className="text-sm text-stone">Old iron. Older faith.</p>
+        <div className="space-y-3 text-sm text-stone">
+          <Link href="/faq" onClick={() => setMenuOpen(false)} className="block">
+            FAQ
+          </Link>
+          <p>{business.tagline}</p>
+        </div>
       </div>
     </>
   );

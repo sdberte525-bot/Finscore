@@ -36,7 +36,7 @@ PRODUCTS = {
             "sleeve": (890, 380, 980, 940),
         },
     },
-    "courageous-heavyweight-tee": {
+    "courageous-oversized-tee": {
         "ink": "light",
         "print": (546, 326, 900, 904),
         "crops": {

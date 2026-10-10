@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as { email?: unknown };
     email = typeof body.email === "string" ? body.email.trim() : "";
   } catch {
-    return NextResponse.json({ error: "The request couldn't be read." }, { status: 400 });
+    return NextResponse.json({ error: "The request couldn’t be read." }, { status: 400 });
   }
   if (!EMAIL.test(email) || email.length > 254) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
   const webhook = process.env.NEWSLETTER_WEBHOOK_URL;
   if (!webhook) {
-    return NextResponse.json({ error: "Signups aren't open yet. Follow @swolvation for the next drop." }, { status: 503 });
+    return NextResponse.json({ error: "Email signups aren’t open yet. Check back soon." }, { status: 503 });
   }
 
   const res = await fetch(webhook, {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     body: JSON.stringify({ email, source: "swolvation.com" }),
   });
   if (!res.ok) {
-    return NextResponse.json({ error: "That didn't go through. Try again in a moment." }, { status: 502 });
+    return NextResponse.json({ error: "That didn’t go through. Try again in a moment." }, { status: 502 });
   }
   return NextResponse.json({ ok: true });
 }
