@@ -54,8 +54,8 @@ export function EmailPopup() {
     const d = dialog.current;
     if (d && !d.open) {
       d.showModal();
-      // Start on the dismiss button so phones don't open the keyboard uninvited.
-      d.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+      // Focus the dialog itself so phones don't open the keyboard uninvited.
+      d.focus();
     }
     lockScroll(true);
     return () => lockScroll(false);
@@ -76,8 +76,9 @@ export function EmailPopup() {
       onClose={dismiss}
       onClick={(e) => e.target === dialog.current && dismiss()}
       aria-labelledby="popup-title"
+      tabIndex={-1}
       data-lenis-prevent
-      className="m-auto w-[min(56rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-auto bg-ink p-0 text-bone backdrop:bg-ink/70 backdrop:backdrop-blur-sm"
+      className="m-auto w-[min(56rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-auto bg-ink p-0 text-bone backdrop:bg-ink/70 backdrop:backdrop-blur-sm focus:outline-none"
     >
       <div className="grid md:grid-cols-2">
         <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[32rem]">
@@ -96,7 +97,7 @@ export function EmailPopup() {
           <div className="mt-7">
             <NewsletterForm source="popup" cta="Get access" done="You’re on the list." onDone={() => setJoined(true)} />
           </div>
-          <button type="button" onClick={dismiss} className="link-underline mt-2 self-start py-2 text-sm text-stone" data-autofocus>
+          <button type="button" onClick={dismiss} className="link-underline mt-2 self-start py-2 text-sm text-stone">
             {joined ? "Close" : "No thanks"}
           </button>
         </div>
