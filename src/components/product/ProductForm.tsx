@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
-import { isVariantAvailable, type Product, type Size } from "@/lib/commerce/types";
+import { isVariantAvailable, maxQuantity, type Product, type Size } from "@/lib/commerce/types";
 import { formatPrice } from "@/lib/format";
 import { lockScroll, scroller } from "@/lib/motion";
 import { SizeChart } from "./SizeChart";
@@ -11,6 +11,7 @@ export function ProductForm({ product }: { product: Product }) {
   const { add } = useCart();
   const [color, setColor] = useState(product.colors[0]?.name ?? "");
   const [size, setSize] = useState<Size | null>(null);
+  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
   const [showBar, setShowBar] = useState(false);
@@ -48,7 +49,8 @@ export function ProductForm({ product }: { product: Product }) {
       }
       return;
     }
-    add(product, variant);
+    add(product, variant, quantity);
+    setQuantity(1);
   }
 
   return (
@@ -112,6 +114,7 @@ export function ProductForm({ product }: { product: Product }) {
                   disabled={out}
                   onChange={() => {
                     setSize(v.size);
+                    setQuantity((q) => Math.min(q, maxQuantity(v)));
                     setError(false);
                   }}
                   className="peer sr-only"
@@ -135,9 +138,34 @@ export function ProductForm({ product }: { product: Product }) {
         )}
       </fieldset>
 
-      <button ref={button} type="button" onClick={onAdd} disabled={soldOut} className="button button-solid mt-6 w-full text-[0.9375rem]">
-        {soldOut ? "Sold out" : `Add to bag, ${formatPrice(product.price)}`}
-      </button>
+      <div className="mt-6 flex gap-3">
+        <div className="flex shrink-0 items-center rounded-full border border-ink/25" role="group" aria-label="Quantity">
+          <button
+            type="button"
+            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            disabled={quantity <= 1}
+            className="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30"
+            aria-label="Decrease quantity"
+          >
+            &minus;
+          </button>
+          <span className="w-6 text-center tabular-nums" aria-live="polite" aria-label={`Quantity ${quantity}`}>
+            {quantity}
+          </span>
+          <button
+            type="button"
+            onClick={() => setQuantity((q) => Math.min(variant ? maxQuantity(variant) : 10, q + 1))}
+            disabled={variant ? quantity >= maxQuantity(variant) : quantity >= 10}
+            className="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30"
+            aria-label="Increase quantity"
+          >
+            +
+          </button>
+        </div>
+        <button ref={button} type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-w-0 flex-1 text-[0.9375rem]">
+          {soldOut ? "Sold out" : `Add to bag, ${formatPrice(product.price * quantity)}`}
+        </button>
+      </div>
 
       <div
         className={`fixed inset-x-0 bottom-0 z-30 border-t border-ink/10 bg-bone/95 px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md transition-transform duration-500 ease-[var(--ease-out-quint)] lg:hidden ${

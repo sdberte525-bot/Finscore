@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: business.name,
     title: business.name,
     description: business.description,
-    images: [{ url: "/images/products/strengthened-long-sleeve/composite.jpg", width: 1470, height: 1838, alt: "Swolvation Strengthened Long Sleeve" }],
+    images: [{ url: "/images/products/strong-courageous/back.webp", width: 1220, height: 1331, alt: "Swolvation Be Strong & Courageous tee, back" }],
   },
   twitter: { card: "summary_large_image" },
   icons: { icon: "/icon.svg" },

@@ -97,7 +97,15 @@ function option(v: { selectedOptions: { name: string; value: string }[] }, name:
 }
 
 function toProduct(p: ShopifyProduct, rank: number): Product {
-  const images = p.images.nodes.map((i) => ({ src: i.url, alt: i.altText ?? p.title, width: i.width, height: i.height }));
+  // Shopify image alt text doubles as the gallery label when it starts with "Back", "Front" etc.
+  const images = p.images.nodes.map((i, n) => ({
+    src: i.url,
+    alt: i.altText ?? p.title,
+    width: i.width,
+    height: i.height,
+    label: n === 0 ? "Front" : /^back/i.test(i.altText ?? "") ? "Back" : undefined,
+    fit: "contain" as const,
+  }));
   const variants: ProductVariant[] = p.variants.nodes
     .map((v) => ({
       id: v.id,
@@ -122,7 +130,6 @@ function toProduct(p: ShopifyProduct, rank: number): Product {
     fit: null,
     care: null,
     images,
-    hoverImage: images[1],
     variants,
     featuredRank: rank,
   };

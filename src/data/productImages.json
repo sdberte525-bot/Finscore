@@ -1,0 +1,52 @@
+{
+  "through-christ": {
+    "front-back": [
+      1587,
+      1125
+    ],
+    "back": [
+      1184,
+      1413
+    ],
+    "back-detail": [
+      530,
+      662
+    ],
+    "sleeve-detail": [
+      218,
+      990
+    ]
+  },
+  "strong-courageous": {
+    "front-back": [
+      1587,
+      1142
+    ],
+    "back": [
+      1220,
+      1331
+    ],
+    "front-detail": [
+      1228,
+      1425
+    ],
+    "back-detail": [
+      680,
+      580
+    ]
+  },
+  "though-i-fall": {
+    "front-back": [
+      1587,
+      1152
+    ],
+    "front-detail": [
+      1230,
+      1462
+    ],
+    "back-print": [
+      598,
+      912
+    ]
+  }
+}

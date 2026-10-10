@@ -10,6 +10,10 @@ export type ProductImage = {
   alt: string;
   width: number;
   height: number;
+  /** Short name for gallery thumbnails, e.g. "Front and back", "Back", "Chest". */
+  label?: string;
+  /** "contain" for cut-out garments on the studio backdrop, "cover" for close-up crops. */
+  fit?: "contain" | "cover";
 };
 
 export type ColorOption = {
@@ -43,9 +47,8 @@ export type Product = {
   material: string | null;
   fit: string | null;
   care: string[] | null;
+  /** Gallery order; the first image is used in grids and share previews. */
   images: ProductImage[];
-  /** Shown on hover in product grids. */
-  hoverImage?: ProductImage;
   variants: ProductVariant[];
   /** Lower numbers sort first under "Featured". */
   featuredRank: number;
@@ -69,4 +72,9 @@ export function isProductAvailable(p: Product): boolean {
 
 export function maxQuantity(v: ProductVariant): number {
   return v.inventory === null ? 10 : v.inventory;
+}
+
+/** Product cards show the first image, then the full back on hover (or the back print when there's no full back). */
+export function cardHoverImage(product: Product): ProductImage | undefined {
+  return product.images.find((i) => i.label === "Back") ?? product.images.find((i) => i.label === "Back print");
 }

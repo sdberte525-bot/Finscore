@@ -4,37 +4,66 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
-import { isProductAvailable, isVariantAvailable, type Product } from "@/lib/commerce/types";
+import { cardHoverImage, isProductAvailable, isVariantAvailable, type Product, type ProductImage } from "@/lib/commerce/types";
 import { formatPrice } from "@/lib/format";
+
+function CardImage({ image, sizes, priority, className = "" }: { image: ProductImage; sizes: string; priority?: boolean; className?: string }) {
+  const contain = image.fit !== "cover";
+  return (
+    <Image
+      src={image.src}
+      alt={image.alt}
+      fill
+      sizes={sizes}
+      priority={priority}
+      className={`${contain ? "object-contain p-[7%]" : "object-cover"} ${className}`}
+    />
+  );
+}
 
 export function ProductCard({ product, priority = false, sizes }: { product: Product; priority?: boolean; sizes: string }) {
   const { add } = useCart();
   const [quickOpen, setQuickOpen] = useState(false);
-  const image = product.images[0];
+  // Touch screens can't hover, so they get an explicit front/back toggle instead.
+  const [showBack, setShowBack] = useState(false);
+  const front = product.images[0];
+  const back = cardHoverImage(product);
   const available = isProductAvailable(product);
-  // Quick add only makes sense when there's no colour to choose.
   const quickAdd = available && product.colors.length === 1;
 
   return (
     <article className="group">
-      <div data-reveal-tile className="relative aspect-[4/5] overflow-hidden bg-plaster">
+      <div data-reveal-tile className="relative aspect-[4/5] overflow-hidden bg-studio">
         <Link href={`/shop/${product.slug}`} className="absolute inset-0 block" aria-label={product.name} tabIndex={-1}>
-          <div data-reveal-image className="absolute inset-0 transition-transform duration-[1.2s] ease-[var(--ease-out-quint)] pointer-fine:group-hover:scale-[1.03]">
-            <Image src={image.src} alt={image.alt} fill sizes={sizes} priority={priority} className="object-cover" />
-            {product.hoverImage ? (
-              <Image
-                src={product.hoverImage.src}
-                alt=""
-                fill
-                sizes={sizes}
-                className="object-cover opacity-0 transition-opacity duration-700 ease-[var(--ease-out-quint)] pointer-fine:group-hover:opacity-100"
-              />
+          <div data-reveal-image className="absolute inset-0">
+            <CardImage
+              image={front}
+              sizes={sizes}
+              priority={priority}
+              className={`transition-opacity duration-300 ease-out ${back ? (showBack ? "opacity-0" : "pointer-fine:group-hover:opacity-0") : ""}`}
+            />
+            {back ? (
+              <div
+                aria-hidden={!showBack}
+                className={`absolute inset-0 transition-opacity duration-300 ease-out ${showBack ? "opacity-100" : "opacity-0 pointer-fine:group-hover:opacity-100"}`}
+              >
+                <CardImage image={back} sizes={sizes} />
+              </div>
             ) : null}
           </div>
         </Link>
 
-        {!available && (
-          <span className="absolute left-3 top-3 rounded-full bg-bone/90 px-3 py-1 text-xs text-charcoal">Sold out</span>
+        {!available && <span className="absolute left-3 top-3 rounded-full bg-bone/90 px-3 py-1 text-xs text-charcoal">Sold out</span>}
+
+        {back && (
+          <button
+            type="button"
+            onClick={() => setShowBack((v) => !v)}
+            aria-pressed={showBack}
+            className="absolute right-3 top-3 z-10 min-h-11 rounded-full bg-bone/90 px-4 text-sm text-charcoal backdrop-blur-md pointer-fine:hidden"
+          >
+            {showBack ? "Front" : "Back"}
+          </button>
         )}
 
         {quickAdd && (
@@ -81,17 +110,15 @@ export function ProductCard({ product, priority = false, sizes }: { product: Pro
             <ul className="flex gap-1.5" aria-label="Colors">
               {product.colors.map((c) => (
                 <li key={c.name}>
-                  <span
-                    className="block h-3.5 w-3.5 rounded-full ring-1 ring-ink/25 ring-offset-1 ring-offset-bone"
-                    style={{ background: c.swatch }}
-                    title={c.name}
-                  />
+                  <span className="block h-3.5 w-3.5 rounded-full ring-1 ring-ink/25 ring-offset-1 ring-offset-bone" style={{ background: c.swatch }} title={c.name} />
                   <span className="sr-only">{c.name}</span>
                 </li>
               ))}
             </ul>
             <span className="text-sm text-ash">
               {product.colors.length === 1 ? product.colors[0].name : `${product.colors.length} colors`}
+              {", "}
+              {product.category === "tee" ? "oversized tee" : "long sleeve"}
             </span>
           </div>
         </div>

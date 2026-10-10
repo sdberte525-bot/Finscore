@@ -30,10 +30,8 @@ export function ClosingCta({ product }: { product?: Product }) {
         </div>
         {image && product ? (
           <Link href={`/shop/${product.slug}`} className="group block md:col-span-5 md:col-start-8">
-            <div data-reveal className="relative aspect-[4/5] overflow-hidden bg-bone">
-              <div data-parallax className="absolute -inset-y-[5%] inset-x-0">
-                <Image src={image.src} alt={image.alt} fill sizes="(min-width: 768px) 40vw, 92vw" className="object-cover" />
-              </div>
+            <div data-reveal className="relative aspect-[4/5] overflow-hidden bg-studio">
+              <Image src={image.src} alt={image.alt} fill sizes="(min-width: 768px) 40vw, 92vw" className="object-contain p-[7%]" />
             </div>
             <p className="mt-3 flex justify-between text-sm text-ash">
               <span className="link-underline">{product.name}</span>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { EditorialImage } from "@/components/ui/EditorialImage";
 import { campaign } from "@/data/campaign";
+import { productImage } from "@/data/products";
 import { useReveal } from "@/lib/useReveal";
 
 const principles = [
@@ -51,14 +52,9 @@ export function AboutView() {
       <section data-tone="light" className="gutter bg-bone pb-24 md:pb-36">
         <EditorialImage
           image={campaign.aboutOpening}
-          fallback={{
-            src: "/images/products/courageous-oversized-tee/scripture.jpg",
-            alt: "Arched lettering across the back of a washed-black Swolvation tee",
-            width: 768,
-            height: 280,
-          }}
-          aspect={campaign.aboutOpening ? "aspect-[16/9]" : "aspect-[11/4] md:mx-auto md:max-w-[768px]"}
-          sizes={campaign.aboutOpening ? "100vw" : "768px"}
+          fallback={productImage("strong-courageous", "Back print")}
+          aspect={campaign.aboutOpening ? "aspect-[16/9]" : "aspect-[680/580] md:mx-auto md:max-w-[680px]"}
+          sizes={campaign.aboutOpening ? "100vw" : "(min-width: 768px) 680px, 92vw"}
           priority
         />
       </section>
@@ -82,12 +78,7 @@ export function AboutView() {
           <figure className="md:col-span-5 md:col-start-8">
             <EditorialImage
               image={campaign.aboutInspiration}
-              fallback={{
-                src: "/images/products/rise-again-long-sleeve/back-print.jpg",
-                alt: "Back print of the Rise Again Long Sleeve: a knight kneeling beneath a thorned cross",
-                width: 598,
-                height: 912,
-              }}
+              fallback={productImage("though-i-fall", "Back print")}
               aspect="aspect-[4/5]"
               sizes="(min-width: 768px) 40vw, 92vw"
             />

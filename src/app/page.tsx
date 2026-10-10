@@ -27,7 +27,7 @@ export default async function HomePage() {
       <Collection products={products} />
       <Editorial />
       <BrandIntro />
-      <ClosingCta product={products.find((p) => p.colors.some((c) => c.name === "Bone")) ?? products[0]} />
+      <ClosingCta product={products.find((p) => p.colors.some((c) => c.name === "White")) ?? products[0]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );

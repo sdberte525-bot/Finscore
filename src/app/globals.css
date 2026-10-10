@@ -3,6 +3,8 @@
 @theme {
   --color-bone: #ece6da;
   --color-plaster: #d8d0c2;
+  /* Backdrop for cut-out product photos: light enough for black, dark enough for white garments. */
+  --color-studio: #e4dfd6;
   --color-stone: #b4ac9f;
   --color-ash: #6f695f;
   --color-charcoal: #34312d;

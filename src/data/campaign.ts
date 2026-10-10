@@ -36,24 +36,24 @@ export const campaign = {
 /** Back prints the artwork hero cycles through (white-on-black ink maps from `npm run images`). */
 export const heroPrints = [
   {
-    slug: "strengthened-long-sleeve",
-    name: "Strengthened Long Sleeve",
+    slug: "through-christ",
+    name: "Through Christ Who Strengthens Me",
     label: "Philippians 4:13",
-    alt: "Back print of the Strengthened Long Sleeve: a thorned cross and skull inside an arch of lettering",
-    ink: "/images/ink/strengthened-long-sleeve.png",
+    alt: "Back print of the Through Christ Who Strengthens Me long sleeve: a thorned cross and skull inside an arch of lettering",
+    ink: "/images/ink/through-christ.png",
   },
   {
-    slug: "courageous-oversized-tee",
-    name: "Courageous Oversized Tee",
+    slug: "strong-courageous",
+    name: "Be Strong & Courageous",
     label: "Joshua 1:9",
-    alt: "Back print of the Courageous Oversized Tee: a gothic cross bound between two skulls",
-    ink: "/images/ink/courageous-oversized-tee.png",
+    alt: "Back print of the Be Strong & Courageous tee: a gothic cross between two skulls",
+    ink: "/images/ink/strong-courageous.png",
   },
   {
-    slug: "rise-again-long-sleeve",
-    name: "Rise Again Long Sleeve",
+    slug: "though-i-fall",
+    name: "Though I Fall, I Will Rise",
     label: "Micah 7:8",
-    alt: "Back print of the Rise Again Long Sleeve: a knight kneeling beneath a thorned cross",
-    ink: "/images/ink/rise-again-long-sleeve.png",
+    alt: "Back print of the Though I Fall, I Will Rise long sleeve: a knight kneeling beneath a thorned cross",
+    ink: "/images/ink/though-i-fall.png",
   },
 ];

@@ -50,8 +50,19 @@ Prices and stock are always re-checked on the server at checkout; the browser ba
 
 ## Images
 
-- Product images in `public/images/products/<slug>/` are generated from the design renders in `assets/source/` by `npm run images` (Python with Pillow). Replace them with product photography by updating paths and pixel sizes in `src/data/products.ts`.
-- The renders are low resolution, so large crops look soft. Real photography (at least 2400px on the long edge for full-width slots) will fix that.
+Run `npm run images` (Python 3 with Pillow and numpy) after changing anything in `assets/source/`. It writes web images to `public/images/products/<slug>/`, hero ink maps to `public/images/ink/`, and real pixel sizes to `src/data/productImages.json`. Source files are never modified.
+
+| Source | Used for |
+| --- | --- |
+| `assets/source/photos/` | High-res product photos (transparent): full backs and close-ups |
+| `assets/source/renders/` | Studio renders of each shirt's front and back, cut out as the "Front and back" view |
+| `assets/source/reference/multi-angle-sheet.webp` | Not used on the site (see below) |
+
+Each product's gallery views are listed in `src/data/products.ts`, with a label ("Front and back", "Back", "Chest", "Back print", "Sleeve") and whether the image is a cut-out (`contain`) or a close-up crop (`cover`). Shop cards show the first view and switch to the "Back" view on hover (a Back/Front button on touch screens).
+
+**The multi-angle sheet isn't used** because its artwork differs from the high-res photos: different cross, skull and sleeve designs, and garbled lettering in the Philippians 4:13 arch. If the sheet shows the real production artwork, the photos need replacing instead. Side and angled views can be added to the gallery once matching photos exist; a 360° viewer would need a consistent sequence of rotation frames.
+
+**Still needed from the photo shoot:** a full front view of each shirt on its own, a full back of Though I Fall, I Will Rise, and side views. The current "Front and back" images come from the lower-resolution renders.
 
 ## Design
 

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { CampaignImage } from "@/data/campaign";
+import type { ProductImage } from "@/lib/commerce/types";
 
 /**
  * A photograph in an editorial frame. Without a campaign photo it shows the
@@ -18,7 +19,8 @@ export function EditorialImage({
   className = "",
 }: {
   image: CampaignImage | null;
-  fallback?: CampaignImage;
+  /** A product image to show until campaign photography exists. */
+  fallback?: ProductImage;
   /** object-position for the fallback crop, e.g. "50% 30%". */
   position?: string;
   /** Tailwind aspect class, e.g. "aspect-[4/5]". */
@@ -29,9 +31,13 @@ export function EditorialImage({
   className?: string;
 }) {
   const image = campaignImage ?? fallback ?? null;
+  // Cut-out garments are shown whole on the studio backdrop; photos and close-ups fill the frame.
+  const contain = !campaignImage && fallback?.fit !== "cover";
   return (
-    <div data-reveal className={`relative overflow-hidden ${aspect} ${tone === "dark" ? "bg-charcoal" : "bg-plaster"} ${className}`}>
-      {image ? (
+    <div data-reveal className={`relative overflow-hidden ${aspect} ${contain ? "bg-studio" : tone === "dark" ? "bg-charcoal" : "bg-plaster"} ${className}`}>
+      {image && contain ? (
+        <Image src={image.src} alt={image.alt} fill sizes={sizes} priority={priority} className="object-contain p-[6%]" />
+      ) : image ? (
         <div data-parallax className="absolute -inset-y-[6%] inset-x-0">
           <Image src={image.src} alt={image.alt} fill sizes={sizes} priority={priority} className="object-cover" style={{ objectPosition: campaignImage ? undefined : position }} />
         </div>

@@ -18,8 +18,8 @@ export function CartLines({ compact = false, readOnly = false }: { compact?: boo
             key={line.variantId}
             className={`grid gap-5 py-6 ${compact ? "grid-cols-[5.5rem_1fr]" : "grid-cols-[6.5rem_1fr] md:grid-cols-[8rem_1fr]"}`}
           >
-            <Link href={`/shop/${line.slug}`} className="block aspect-[4/5] overflow-hidden bg-plaster">
-              <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="128px" className="h-full w-full object-cover" />
+            <Link href={`/shop/${line.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-studio">
+              <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="128px" className="h-full w-full object-contain p-1.5" />
             </Link>
             <div className="flex min-w-0 flex-col">
               <div className="flex items-start justify-between gap-4">
