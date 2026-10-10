@@ -1,18 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bone: #ece6da;
-  --color-plaster: #d8d0c2;
-  /* Backdrop for cut-out product photos: light enough for black, dark enough for white garments. */
-  --color-studio: #e4dfd6;
-  --color-stone: #b4ac9f;
-  --color-ash: #6f695f;
-  --color-charcoal: #34312d;
-  --color-ink: #1a1917;
-  --color-oxblood: #6b2620;
+  /* SWOLVATION palette: deep black and charcoal, warm off-white and vintage cream. */
+  --color-bone: #f5f3ef;
+  --color-plaster: #e8e0d1;
+  /* Backdrop for cut-out product photos. */
+  --color-studio: #ece8e1;
+  --color-stone: #b9b2a6;
+  /* Muted grey for borders and icons; ash is the readable text grey (4.9:1 on bone). */
+  --color-muted: #888888;
+  --color-ash: #6a6762;
+  --color-charcoal: #222222;
+  --color-ink: #111111;
+  --color-oxblood: #7a2a22;
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-cormorant), "Cormorant Garamond", Garamond, "Times New Roman", serif;
+  --font-display: var(--font-shoulders), "Arial Narrow", Impact, sans-serif;
 
   /* Type scale, roughly a perfect fourth from a 16px base. */
   --text-xs: 0.75rem;
@@ -91,31 +94,32 @@
 @layer components {
   .wordmark {
     font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Display face for headings and brand statements: bold, condensed, uppercase. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    line-height: 0.94;
+  }
+
+  /* Small uppercase labels for navigation, eyebrows and buttons. */
+  .caps {
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
-  /* Display serif for headings and brand statements. Large sizes only. */
-  .display {
-    font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.02;
-    font-feature-settings: "kern", "liga", "lnum";
-  }
-
-  .display-italic {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 500;
-  }
-
-  /* Small labels: sentence case, slightly tracked, never all caps. */
   .label {
     font-size: var(--text-sm);
     color: var(--color-ash);
-    letter-spacing: 0.01em;
   }
 
   .prose-body p + p {
@@ -128,16 +132,17 @@
     justify-content: center;
     gap: 0.75rem;
     min-height: 3.25rem;
-    padding: 0 1.75rem;
-    font-size: var(--text-sm);
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    padding: 0 2rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     border: 1px solid currentColor;
-    border-radius: 999px;
+    border-radius: 2px;
     transition:
-      background-color 250ms var(--ease-out-quint),
-      color 250ms var(--ease-out-quint),
-      border-color 250ms var(--ease-out-quint);
+      background-color 200ms ease-out,
+      color 200ms ease-out,
+      border-color 200ms ease-out;
     cursor: pointer;
   }
 
@@ -163,8 +168,8 @@
     color: var(--color-ink);
   }
   .button-light:hover {
-    background: transparent;
-    color: var(--color-bone);
+    background: var(--color-plaster);
+    border-color: var(--color-plaster);
   }
 
   .link-underline {
@@ -185,8 +190,8 @@
     padding: 0 1.25rem;
     background: transparent;
     border: 1px solid currentColor;
-    border-radius: 999px;
-    font-size: var(--text-sm);
+    border-radius: 2px;
+    font-size: var(--text-base);
   }
   .field::placeholder {
     color: inherit;
@@ -200,25 +205,9 @@
   position: fixed;
   inset: 0;
   z-index: 60;
-  opacity: 0.07;
+  opacity: 0.045;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-/* Hero intro: hidden before first paint, revealed by GSAP. */
-[data-js] [data-letter] {
-  transform: translateY(110%);
-}
-[data-js] [data-fade] {
-  opacity: 0;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-js] [data-letter] {
-    transform: none;
-  }
-  [data-js] [data-fade] {
-    opacity: 1;
-  }
 }
 
 /* Lenis */

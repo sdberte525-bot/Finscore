@@ -2,52 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { business, nav } from "@/data/business";
 import { lockScroll } from "@/lib/motion";
+import { CartIcon, CloseIcon, MenuIcon, SearchIcon } from "./Icons";
+import { useSearch } from "./Search";
 
-/**
- * Fixed header that takes the tone of whatever section sits under it:
- * sections mark themselves with data-tone="dark" or "light".
- */
+/** Sticky store header: wordmark, primary navigation, search and cart. */
 export function Header() {
   const pathname = usePathname();
-  const { count, open } = useCart();
-  const [tone, setTone] = useState<"dark" | "light">("light");
-  const [hidden, setHidden] = useState(false);
+  const { count, open: openCart } = useCart();
+  const { open: openSearch } = useSearch();
   const [menuOpen, setMenuOpen] = useState(false);
-  const lastY = useRef(0);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const probe = 32;
-      const sections = document.querySelectorAll<HTMLElement>("[data-tone]");
-      let next: "dark" | "light" = "light";
-      for (const el of sections) {
-        const r = el.getBoundingClientRect();
-        if (r.top <= probe && r.bottom > probe) next = el.dataset.tone === "dark" ? "dark" : "light";
-      }
-      setTone(next);
-      const y = window.scrollY;
-      setHidden(y > 240 && y > lastY.current + 4);
-      if (y < lastY.current - 4 || y < 240) setHidden(false);
-      lastY.current = y;
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, [pathname]);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
@@ -59,54 +34,66 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
-  const dark = tone === "dark" || menuOpen;
+  const isActive = (href: string) => (href === "/shop" ? pathname === "/shop" || pathname.startsWith("/shop/") : pathname === href);
 
   return (
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:text-bone"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:text-bone"
       >
         Skip to content
       </a>
       <header
-        className={`gutter fixed inset-x-0 top-0 z-50 transition-[transform,color] duration-500 ease-[var(--ease-out-quint)] ${
-          hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"
-        } ${dark ? "text-bone" : "text-ink"}`}
+        className={`sticky top-0 z-50 border-b bg-bone/95 backdrop-blur-md transition-colors duration-200 ${
+          scrolled || menuOpen ? "border-ink/10" : "border-transparent"
+        }`}
       >
-        <div className="flex h-16 items-center justify-between gap-6 md:h-20">
-          <Link href="/" className="wordmark text-[0.8125rem] md:text-sm" aria-label="Swolvation, home">
+        <div className="gutter grid h-16 grid-cols-[1fr_auto_1fr] items-center md:h-[4.5rem]">
+          <div className="flex items-center">
+            <button
+              type="button"
+              className="-ml-2.5 grid h-11 w-11 place-items-center lg:hidden"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <CloseIcon /> : <MenuIcon />}
+            </button>
+            <nav aria-label="Main" className="hidden lg:block">
+              <ul className="flex items-center gap-8">
+                {nav.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} className="caps link-underline py-1" aria-current={isActive(item.href) ? "page" : undefined}>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          <Link href="/" className="wordmark text-[1.375rem] md:text-[1.625rem]" aria-label="Swolvation, home">
             Swolvation
           </Link>
 
-          <nav aria-label="Main" className="hidden md:block">
-            <ul className="flex items-center gap-9 text-sm">
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="link-underline py-1"
-                    aria-current={pathname === item.href ? "page" : undefined}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="flex items-center gap-6 text-sm">
-            <button type="button" onClick={open} className="link-underline py-1" aria-label={`Bag, ${count} ${count === 1 ? "item" : "items"}`}>
-              Bag <span className="tabular-nums">({count})</span>
+          <div className="-mr-2.5 flex items-center justify-end gap-1">
+            <button type="button" onClick={openSearch} className="grid h-11 w-11 place-items-center" aria-label="Search">
+              <SearchIcon />
             </button>
             <button
               type="button"
-              className="py-1 md:hidden"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={openCart}
+              className="relative grid h-11 w-11 place-items-center"
+              aria-label={`Cart, ${count} ${count === 1 ? "item" : "items"}`}
             >
-              {menuOpen ? "Close" : "Menu"}
+              <CartIcon />
+              {count > 0 && (
+                <span className="absolute right-1 top-1 grid h-[1.125rem] min-w-[1.125rem] place-items-center rounded-full bg-ink px-1 text-[0.6875rem] font-semibold tabular-nums text-bone">
+                  {count}
+                </span>
+              )}
             </button>
           </div>
         </div>
@@ -115,27 +102,38 @@ export function Header() {
       <div
         id="mobile-menu"
         data-lenis-prevent
-        className={`gutter fixed inset-0 z-40 flex flex-col justify-between bg-ink pb-10 pt-28 text-bone transition-[clip-path] duration-700 ease-[var(--ease-in-out-quart)] md:hidden ${
-          menuOpen ? "[clip-path:inset(0_0_0_0)]" : "pointer-events-none [clip-path:inset(0_0_100%_0)]"
+        className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col justify-between bg-bone px-5 pb-10 pt-6 transition-[opacity,transform] duration-300 ease-out lg:hidden ${
+          menuOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
         }`}
         aria-hidden={!menuOpen}
         inert={!menuOpen}
       >
         <nav aria-label="Mobile">
-          <ul className="space-y-2">
+          <ul className="divide-y divide-ink/10 border-y border-ink/10">
             {nav.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} onClick={() => setMenuOpen(false)} className="display block py-1 text-[3.25rem]">
+                <Link
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className="display flex min-h-16 items-center justify-between text-[2rem]"
+                >
                   {item.label}
+                  <span aria-hidden="true" className="text-xl text-muted">
+                    &#8594;
+                  </span>
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <div className="space-y-3 text-sm text-stone">
-          <Link href="/faq" onClick={() => setMenuOpen(false)} className="block">
-            FAQ
-          </Link>
+        <div className="space-y-4 text-[0.9375rem] text-ash">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <Link href="/faq">FAQ</Link>
+            <Link href="/shipping">Shipping</Link>
+            <Link href="/returns">Returns</Link>
+            <Link href="/size-guide">Size guide</Link>
+          </div>
           <p>{business.tagline}</p>
         </div>
       </div>

@@ -30,7 +30,7 @@ export function ProductForm({ product }: { product: Product }) {
     lockScroll(guideOpen);
   }, [guideOpen]);
 
-  // Mobile: keep add-to-bag reachable once the main button scrolls away.
+  // Mobile: keep add-to-cart reachable once the main button scrolls away.
   useEffect(() => {
     const el = button.current;
     if (!el) return;
@@ -77,7 +77,7 @@ export function ProductForm({ product }: { product: Product }) {
                     className="peer sr-only"
                   />
                   <span
-                    className={`grid h-11 w-11 place-items-center rounded-full border transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-oxblood ${
+                    className={`grid h-11 w-11 place-items-center rounded-[2px] border transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-oxblood ${
                       selected ? "border-ink" : "border-ink/15 hover:border-ink/40"
                     }`}
                   >
@@ -120,7 +120,7 @@ export function ProductForm({ product }: { product: Product }) {
                   className="peer sr-only"
                 />
                 <span
-                  className={`grid h-12 cursor-pointer place-items-center rounded-full border text-[0.9375rem] transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-oxblood peer-disabled:cursor-not-allowed peer-disabled:text-stone peer-disabled:line-through ${
+                  className={`grid h-12 cursor-pointer place-items-center rounded-[2px] border text-[0.9375rem] transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-oxblood peer-disabled:cursor-not-allowed peer-disabled:text-stone peer-disabled:line-through ${
                     selected ? "border-ink bg-ink text-bone" : "border-ink/20 hover:border-ink"
                   }`}
                 >
@@ -133,13 +133,13 @@ export function ProductForm({ product }: { product: Product }) {
         </div>
         {error && (
           <p id="size-error" role="alert" className="mt-3 text-[0.9375rem] text-oxblood">
-            Choose a size to add this to your bag.
+            Choose a size to add this to your cart.
           </p>
         )}
       </fieldset>
 
       <div className="mt-6 flex gap-3">
-        <div className="flex shrink-0 items-center rounded-full border border-ink/25" role="group" aria-label="Quantity">
+        <div className="flex shrink-0 items-center rounded-[2px] border border-ink/25" role="group" aria-label="Quantity">
           <button
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -163,7 +163,7 @@ export function ProductForm({ product }: { product: Product }) {
           </button>
         </div>
         <button ref={button} type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-w-0 flex-1 text-[0.9375rem]">
-          {soldOut ? "Sold out" : `Add to bag, ${formatPrice(product.price * quantity)}`}
+          {soldOut ? "Sold out" : `Add to cart, ${formatPrice(product.price * quantity)}`}
         </button>
       </div>
 
@@ -180,7 +180,7 @@ export function ProductForm({ product }: { product: Product }) {
             <p className="text-sm text-ash">{size ? `${color}, size ${size}` : "No size selected"}</p>
           </div>
           <button type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-h-12 px-6">
-            Add to bag
+            Add to cart
           </button>
         </div>
       </div>

@@ -91,7 +91,7 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
               type="button"
               onClick={() => go(index - 1)}
               aria-label="Previous image"
-              className="absolute left-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-bone/85 text-lg backdrop-blur-md transition-colors hover:bg-bone md:grid"
+              className="absolute left-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-[2px] bg-bone/85 text-lg backdrop-blur-md transition-colors hover:bg-bone md:grid"
             >
               <span aria-hidden="true">&#8592;</span>
             </button>
@@ -99,7 +99,7 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
               type="button"
               onClick={() => go(index + 1)}
               aria-label="Next image"
-              className="absolute right-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-bone/85 text-lg backdrop-blur-md transition-colors hover:bg-bone md:grid"
+              className="absolute right-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-[2px] bg-bone/85 text-lg backdrop-blur-md transition-colors hover:bg-bone md:grid"
             >
               <span aria-hidden="true">&#8594;</span>
             </button>
@@ -107,11 +107,11 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
         )}
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-4 text-sm text-charcoal">
-          <span className="rounded-full bg-bone/85 px-3 py-1 tabular-nums backdrop-blur-md" aria-hidden="true">
+          <span className="rounded-[2px] bg-bone/85 px-3 py-1 tabular-nums backdrop-blur-md" aria-hidden="true">
             {images[index]?.label ?? `${index + 1} / ${images.length}`}
           </span>
-          <span className="hidden rounded-full bg-bone/85 px-3 py-1 backdrop-blur-md pointer-fine:inline">Hover to zoom, click to enlarge</span>
-          <span className="rounded-full bg-bone/85 px-3 py-1 backdrop-blur-md pointer-fine:hidden">Tap to enlarge</span>
+          <span className="hidden rounded-[2px] bg-bone/85 px-3 py-1 backdrop-blur-md pointer-fine:inline">Hover to zoom, click to enlarge</span>
+          <span className="rounded-[2px] bg-bone/85 px-3 py-1 backdrop-blur-md pointer-fine:hidden">Tap to enlarge</span>
         </div>
       </div>
 

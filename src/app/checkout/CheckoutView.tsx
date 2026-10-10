@@ -31,7 +31,7 @@ export function CheckoutView({ method }: { method: "shopify" | "stripe" | null }
   }
 
   return (
-    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-32 pt-32 md:pt-44">
+    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pt-16">
       <h1 className="display text-[3.5rem] md:text-[6rem]">Checkout</h1>
 
       {lines.length === 0 ? (
@@ -48,8 +48,8 @@ export function CheckoutView({ method }: { method: "shopify" | "stripe" | null }
               <h2 id="order-title" className="text-sm text-ash">
                 Your order
               </h2>
-              <Link href="/bag" className="link-underline text-sm">
-                Edit bag
+              <Link href="/cart" className="link-underline text-sm">
+                Edit cart
               </Link>
             </div>
             <CartLines readOnly />
@@ -83,7 +83,7 @@ export function CheckoutView({ method }: { method: "shopify" | "stripe" | null }
               ) : (
                 <div className="mt-8 border border-ink/20 p-5 text-sm">
                   <p>Payments aren&rsquo;t connected yet, so orders can&rsquo;t be placed on this site today.</p>
-                  <p className="mt-2 text-ash">Your bag is saved on this device. Sign up below to hear the moment checkout opens.</p>
+                  <p className="mt-2 text-ash">Your cart is saved on this device. Sign up below to hear the moment checkout opens.</p>
                 </div>
               )}
 

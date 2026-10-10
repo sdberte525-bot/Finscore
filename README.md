@@ -1,8 +1,10 @@
 # Swolvation
 
-Website and storefront for Swolvation, vintage-inspired gym and lifestyle clothing. Born in the weight room. Worn everywhere.
+Website and storefront for Swolvation, vintage-inspired training apparel rooted in strength, discipline, and purpose. Built through adversity.
 
-Built with Next.js (App Router), React, TypeScript and Tailwind CSS. Motion uses GSAP with ScrollTrigger and Lenis for smooth scrolling. Three.js powers one effect: the homepage hero "prints" the garment artwork onto the page until campaign photography replaces it.
+Built with Next.js (App Router), React, TypeScript and Tailwind CSS. Motion uses GSAP with ScrollTrigger and Lenis for smooth scrolling.
+
+**Launch lineup:** Be Strong & Courageous (vintage black oversized tee) and Through Christ Who Strengthens Me (black long sleeve). The white Though I Fall, I Will Rise long sleeve is off the site for now; its source files stay in `assets/source/` and `/shop/though-i-fall` redirects to the shop.
 
 ## Run it
 
@@ -19,14 +21,15 @@ Copy `.env.example` to `.env.local` (or set the same variables in Netlify) to co
 
 | Route | What it is |
 | --- | --- |
-| `/` | Hero, featured collection, editorial spread, brand introduction, closing call to action |
-| `/shop` | Catalog with category, color, availability filters and sorting (kept in the URL) |
+| `/` | Hero, The First Drop, collection feature, Our Story, closing statement |
+| `/shop` | Catalog with All products, Short sleeves and Long sleeves filters (only categories that exist are offered) |
+| `/new-drop` | The first drop |
 | `/shop/[slug]` | Product page: gallery with zoom viewer, color and size selection, size guide, details |
-| `/about` | Brand story |
+| `/about` | Our story |
 | `/contact` | Contact form with topics |
 | `/faq`, `/shipping`, `/returns`, `/size-guide` | Customer information |
 | `/privacy`, `/terms` | Draft policies |
-| `/bag`, `/checkout`, `/checkout/success` | Bag, hand-off to hosted checkout, confirmation |
+| `/cart`, `/checkout`, `/checkout/success` | Cart, hand-off to hosted checkout, confirmation (`/bag` redirects to `/cart`) |
 
 ## Before launch: what to fill in
 
@@ -66,9 +69,10 @@ Each product's gallery views are listed in `src/data/products.ts`, with a label 
 
 ## Design
 
-- Palette: bone `#ECE6DA`, plaster `#D8D0C2`, ash `#6F695F`, charcoal `#34312D`, washed black `#1A1917`, oxblood `#6B2620` as the only accent. Tokens are in `src/app/globals.css`.
-- Type: Cormorant Garamond for the wordmark and headings, Archivo for everything people need to read (navigation, prices, sizes, descriptions, forms).
-- Motion respects `prefers-reduced-motion`: smooth scrolling, reveals and WebGL are skipped and the hero shows a still image.
+- Palette: deep black `#111111`, charcoal `#222222`, warm off-white `#F5F3EF`, vintage cream `#E8E0D1`, muted grey `#888888` for borders and icons, with `#6A6762` as the readable text grey. Tokens are in `src/app/globals.css`.
+- Type: Big Shoulders (bold, condensed, uppercase) for the wordmark and headings; Archivo for navigation, prices, sizes, descriptions and forms.
+- Header search runs in the browser over the catalog. There's no customer account area yet.
+- Motion is limited to short entrance and reveal animations, and respects `prefers-reduced-motion`.
 
 ## Deploy
 

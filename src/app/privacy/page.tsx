@@ -50,7 +50,7 @@ export default function PrivacyPage() {
           to send you news about releases and restocks. Every email includes a way to unsubscribe.
         </p>
         <p>
-          <strong className="font-medium text-ink">Your bag.</strong> The items in your bag are saved in your own browser so
+          <strong className="font-medium text-ink">Your cart.</strong> The items in your cart are saved in your own browser so
           they&rsquo;re still there when you come back. This stays on your device; it isn&rsquo;t sent to us until you check out.
         </p>
         <p>

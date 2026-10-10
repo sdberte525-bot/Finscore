@@ -1,4 +1,4 @@
-"""Builds the web images for the product pages and the homepage hero.
+"""Builds the web images for the product pages.
 
 Run with `npm run images` (needs Python 3 with Pillow and numpy) after adding
 or replacing a source file. Source files are never modified.
@@ -11,9 +11,6 @@ Sources
 
 Outputs
   public/images/products/<slug>/<view>.webp   web images, transparent background
-  public/images/ink/<slug>.png                grayscale ink map of the back print
-                                              (white = ink) for the hero shader
-  public/images/ink/<slug>-dark.jpg           the print in cream on washed black
   src/data/productImages.json                 pixel sizes of every web image
 
 Garment colours and artwork are never altered: images are only cut out,
@@ -24,15 +21,13 @@ import json
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageOps
+from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "assets" / "source"
 OUT = ROOT / "public" / "images"
 MANIFEST = ROOT / "src" / "data" / "productImages.json"
 
-WASHED_BLACK = (26, 25, 23)
-HERO_INK = (230, 223, 209)
 MAX_EDGE = 1800
 
 # For each product:
@@ -41,7 +36,6 @@ MAX_EDGE = 1800
 #   photos       high-res photo views copied through as-is (trimmed)
 #   crops        detail crops cut from a photo, boxes are left/top/right/bottom
 #   render_crops detail crops cut from the render, when no photo exists
-#   ink          where the back print lives, for the hero ink map
 PRODUCTS = {
     "through-christ": {
         "render": "through-christ.webp",
@@ -52,7 +46,6 @@ PRODUCTS = {
             "sleeve-detail": ("through-christ-back.webp", (20, 300, 240, 1290)),
         },
         "render_crops": {},
-        "ink": ("photo", "through-christ-back.webp", (225, 80, 905, 1270), "light"),
     },
     "strong-courageous": {
         "render": "strong-courageous.webp",
@@ -62,15 +55,6 @@ PRODUCTS = {
             "back-detail": ("strong-courageous-back.webp", (225, 280, 905, 860)),
         },
         "render_crops": {},
-        "ink": ("photo", "strong-courageous-back.webp", (210, 215, 915, 1310), "light"),
-    },
-    "though-i-fall": {
-        "render": "though-i-fall.webp",
-        "tolerance": 8,
-        "photos": {"front-detail": "though-i-fall-front-detail.webp"},
-        "crops": {},
-        "render_crops": {"back-print": (548, 320, 922, 890)},
-        "ink": ("render", "though-i-fall.webp", (560, 322, 906, 884), "dark"),
     },
 }
 
@@ -178,41 +162,6 @@ def save(im: Image.Image, slug: str, view: str) -> None:
     print("wrote", path.relative_to(ROOT), im.size)
 
 
-def ink_map(im: Image.Image, box, kind: str) -> Image.Image:
-    """Isolates the back print as white ink on black."""
-    crop = im.crop(box)
-    if crop.mode == "RGBA":
-        base = Image.new("RGBA", crop.size, (12, 12, 12, 255) if kind == "light" else (248, 248, 248, 255))
-        base.alpha_composite(crop)
-        crop = base
-    crop = crop.convert("RGB")
-    if kind == "dark":
-        crop = crop.copy()
-        fabric = (248, 248, 248)
-        for corner in [(0, 0), (crop.width - 1, 0), (0, crop.height - 1), (crop.width - 1, crop.height - 1)]:
-            if 170 < sum(crop.getpixel(corner)) / 3 < 225:
-                ImageDraw.floodfill(crop, corner, fabric, thresh=26)
-    gray = ImageOps.grayscale(crop)
-    if kind == "dark":
-        gray = ImageOps.invert(gray)
-    gray = ImageOps.autocontrast(gray, cutoff=(2, 0.5))
-    floor, gain = (62, 1.4) if kind == "light" else (70, 1.12)
-    gray = gray.point(lambda v: 0 if v < floor else min(255, int((v - floor) * gain)))
-    if max(gray.size) < 900:
-        gray = upscale(gray, 2.0)
-    return feather(fit(gray, 1200))
-
-
-def feather(gray: Image.Image, edge: float = 0.06) -> Image.Image:
-    """Fades the outer edge to black so a crop never shows a hard border."""
-    w, h = gray.size
-    pad = round(min(w, h) * edge)
-    mask = Image.new("L", (w, h), 0)
-    ImageDraw.Draw(mask).rectangle([pad, pad, w - pad, h - pad], fill=255)
-    mask = mask.filter(ImageFilter.GaussianBlur(pad * 0.6))
-    return Image.composite(gray, Image.new("L", (w, h), 0), mask)
-
-
 def main() -> None:
     for slug, spec in PRODUCTS.items():
         old = OUT / "products" / slug
@@ -234,16 +183,6 @@ def main() -> None:
         for view, box in spec["render_crops"].items():
             save(upscale(render.crop(box), 1.6).convert("RGBA"), slug, view)
 
-        source, file, box, kind = spec["ink"]
-        src = Image.open(SRC / ("photos" if source == "photo" else "renders") / file)
-        src = src.convert("RGBA") if src.mode == "RGBA" else src.convert("RGB")
-        ink = ink_map(src, box, kind)
-        (OUT / "ink").mkdir(parents=True, exist_ok=True)
-        ink.save(OUT / "ink" / f"{slug}.png", "PNG", optimize=True)
-        ImageOps.colorize(ink, black=WASHED_BLACK, white=HERO_INK).save(
-            OUT / "ink" / f"{slug}-dark.jpg", "JPEG", quality=88, optimize=True, progressive=True
-        )
-        print("wrote ink map for", slug, ink.size)
 
     MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
     print("wrote", MANIFEST.relative_to(ROOT))

@@ -8,10 +8,11 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Shop",
     links: [
-      { label: "All pieces", href: "/shop" },
+      { label: "Shop all", href: "/shop" },
+      { label: "New drop", href: "/new-drop" },
+      { label: "Short sleeves", href: "/shop?category=tee" },
       { label: "Long sleeves", href: "/shop?category=long-sleeve" },
-      { label: "Tees", href: "/shop?category=tee" },
-      { label: "Your bag", href: "/bag" },
+      { label: "Cart", href: "/cart" },
     ],
   },
   {
@@ -27,7 +28,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Company",
     links: [
-      { label: "About", href: "/about" },
+      { label: "Our story", href: "/about" },
       { label: "Privacy policy", href: "/privacy" },
       { label: "Terms and conditions", href: "/terms" },
     ],

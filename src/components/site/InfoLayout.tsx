@@ -26,10 +26,10 @@ export function InfoLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-28 pt-32 md:pb-36 md:pt-40">
+    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pb-32 md:pt-16">
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
         <aside className="order-last lg:order-first lg:col-span-3">
-          <nav aria-label="Customer information" className="lg:sticky lg:top-32">
+          <nav aria-label="Customer information" className="lg:sticky lg:top-28">
             <h2 className="label">Help</h2>
             <ul className="mt-4 space-y-1 text-[0.9375rem]">
               {helpLinks.map((l) => (

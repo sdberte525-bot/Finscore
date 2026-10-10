@@ -1,21 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Cormorant_Garamond } from "next/font/google";
+import { Archivo, Big_Shoulders } from "next/font/google";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { SearchProvider } from "@/components/site/Search";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { business } from "@/data/business";
 import { getCatalog } from "@/lib/commerce";
 import "./globals.css";
 
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", display: "swap" });
-const cormorant = Cormorant_Garamond({
+const shoulders = Big_Shoulders({
   subsets: ["latin"],
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  weight: ["700", "800"],
+  variable: "--font-shoulders",
   display: "swap",
+  fallback: ["Arial Narrow", "Impact", "sans-serif"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -35,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1a1917",
+  themeColor: "#111111",
   width: "device-width",
   initialScale: 1,
 };
@@ -43,18 +45,20 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const products = await getCatalog();
   return (
-    <html lang="en" className={`${archivo.variable} ${cormorant.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${archivo.variable} ${shoulders.variable}`} suppressHydrationWarning>
       <head>
         {/* Lets CSS hide intro-animated elements before first paint, only when JS will animate them. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js=''" }} />
       </head>
       <body>
         <CartProvider products={products}>
+          <SearchProvider products={products}>
           <SmoothScroll />
           <Header />
           <main id="main">{children}</main>
           <Footer />
           <CartDrawer />
+          </SearchProvider>
         </CartProvider>
         <div className="grain" aria-hidden="true" />
       </body>

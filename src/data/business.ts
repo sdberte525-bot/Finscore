@@ -8,9 +8,8 @@ export type SocialLink = { label: string; href: string };
 
 export const business = {
   name: "Swolvation",
-  tagline: "Born in the weight room. Worn everywhere.",
-  description:
-    "Vintage-inspired gym and lifestyle clothing shaped by old-school bodybuilding and classic American athleticwear.",
+  tagline: "Built through adversity.",
+  description: "Vintage-inspired training apparel rooted in strength, discipline, and purpose.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
 
   /** Public customer-service address, e.g. "hello@swolvation.com". Hidden while null. */
@@ -52,6 +51,7 @@ export const business = {
 
 export const nav = [
   { label: "Shop", href: "/shop" },
-  { label: "About", href: "/about" },
+  { label: "New drop", href: "/new-drop" },
+  { label: "Our story", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;

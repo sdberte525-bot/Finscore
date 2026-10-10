@@ -41,6 +41,8 @@ export type Product = {
   currency: "USD";
   colors: ColorOption[];
   description: string;
+  /** Design details customers can see in the photos, shown under Details. */
+  features?: string[];
   /** Verse printed on the garment, when it carries one. */
   scripture?: { text: string; reference: string };
   /** Leave null until confirmed with production; the product page says details are coming. */

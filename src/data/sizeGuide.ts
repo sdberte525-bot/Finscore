@@ -23,4 +23,4 @@ export const sizeGuide = {
   },
 };
 
-export const categoryLabel = { "long-sleeve": "Long sleeves", tee: "Tees" } as const;
+export const categoryLabel = { "long-sleeve": "Long sleeves", tee: "Short sleeves" } as const;

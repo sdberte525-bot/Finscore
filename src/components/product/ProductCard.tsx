@@ -16,7 +16,7 @@ function CardImage({ image, sizes, priority, className = "" }: { image: ProductI
       fill
       sizes={sizes}
       priority={priority}
-      className={`${contain ? "object-contain p-[7%]" : "object-cover"} ${className}`}
+      className={`${contain ? "object-contain p-[6%]" : "object-cover"} ${className}`}
     />
   );
 }
@@ -33,7 +33,7 @@ export function ProductCard({ product, priority = false, sizes }: { product: Pro
 
   return (
     <article className="group">
-      <div data-reveal-tile className="relative aspect-[4/5] overflow-hidden bg-studio">
+      <div data-reveal-tile className="relative aspect-square overflow-hidden bg-studio">
         <Link href={`/shop/${product.slug}`} className="absolute inset-0 block" aria-label={product.name} tabIndex={-1}>
           <div data-reveal-image className="absolute inset-0">
             <CardImage
@@ -53,14 +53,14 @@ export function ProductCard({ product, priority = false, sizes }: { product: Pro
           </div>
         </Link>
 
-        {!available && <span className="absolute left-3 top-3 rounded-full bg-bone/90 px-3 py-1 text-xs text-charcoal">Sold out</span>}
+        {!available && <span className="absolute left-3 top-3 rounded-[2px] bg-bone/90 px-3 py-1 text-xs text-charcoal">Sold out</span>}
 
         {back && (
           <button
             type="button"
             onClick={() => setShowBack((v) => !v)}
             aria-pressed={showBack}
-            className="absolute right-3 top-3 z-10 min-h-11 rounded-full bg-bone/90 px-4 text-sm text-charcoal backdrop-blur-md pointer-fine:hidden"
+            className="absolute right-3 top-3 z-10 min-h-11 rounded-[2px] bg-bone/90 px-4 text-sm text-charcoal backdrop-blur-md pointer-fine:hidden"
           >
             {showBack ? "Front" : "Back"}
           </button>
@@ -74,9 +74,9 @@ export function ProductCard({ product, priority = false, sizes }: { product: Pro
                 : "pointer-events-none translate-y-3 opacity-0 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100 pointer-fine:group-hover:pointer-events-auto pointer-fine:group-hover:translate-y-0 pointer-fine:group-hover:opacity-100"
             }`}
           >
-            <div className="flex items-center justify-between gap-3 rounded-full bg-bone/95 py-1.5 pl-5 pr-1.5 backdrop-blur-md">
+            <div className="flex items-center justify-between gap-3 rounded-[2px] bg-bone/95 py-1.5 pl-5 pr-1.5 backdrop-blur-md">
               <span className="text-sm text-charcoal">Add</span>
-              <ul className="flex gap-0.5" aria-label={`Add ${product.name} to bag, choose a size`}>
+              <ul className="flex gap-0.5" aria-label={`Add ${product.name} to cart, choose a size`}>
                 {product.variants.map((v) => (
                   <li key={v.id}>
                     <button
@@ -86,7 +86,7 @@ export function ProductCard({ product, priority = false, sizes }: { product: Pro
                         add(product, v);
                         setQuickOpen(false);
                       }}
-                      className="grid h-10 min-w-10 place-items-center rounded-full px-1.5 text-sm transition-colors hover:bg-ink hover:text-bone disabled:text-stone disabled:line-through disabled:hover:bg-transparent"
+                      className="grid h-10 min-w-10 place-items-center rounded-[2px] px-1.5 text-sm transition-colors hover:bg-ink hover:text-bone disabled:text-stone disabled:line-through disabled:hover:bg-transparent"
                       aria-label={`Size ${v.size}${isVariantAvailable(v) ? "" : ", sold out"}`}
                     >
                       {v.size}

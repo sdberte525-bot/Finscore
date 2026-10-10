@@ -56,7 +56,7 @@ export function CartDrawer() {
         ref={panel}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="bag-title"
+        aria-labelledby="cart-title"
         tabIndex={-1}
         data-lenis-prevent
         className={`absolute inset-y-0 right-0 flex w-full max-w-[28rem] flex-col bg-bone outline-none transition-transform duration-700 ease-[var(--ease-out-quint)] ${
@@ -64,8 +64,8 @@ export function CartDrawer() {
         }`}
       >
         <div className="flex h-16 items-center justify-between px-6 md:h-20 md:px-8">
-          <h2 id="bag-title" className="text-sm">
-            Bag <span className="tabular-nums text-ash">({count})</span>
+          <h2 id="cart-title" className="text-sm">
+            Cart <span className="tabular-nums text-ash">({count})</span>
           </h2>
           <button type="button" onClick={close} className="link-underline py-1 text-sm">
             Close
@@ -74,7 +74,7 @@ export function CartDrawer() {
 
         {lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-start justify-center gap-6 px-6 md:px-8">
-            <p className="display text-[2.75rem]">Your bag is empty.</p>
+            <p className="display text-[2.75rem]">Your cart is empty.</p>
             <p className="max-w-[30ch] text-ash">Pieces you add will stay here on this device until you check out.</p>
             <Link href="/shop" onClick={close} className="button button-solid">
               Shop the collection
@@ -95,8 +95,8 @@ export function CartDrawer() {
                 <Link href="/checkout" onClick={close} className="button button-solid w-full">
                   Checkout
                 </Link>
-                <Link href="/bag" onClick={close} className="button w-full">
-                  View bag
+                <Link href="/cart" onClick={close} className="button w-full">
+                  View cart
                 </Link>
               </div>
             </div>

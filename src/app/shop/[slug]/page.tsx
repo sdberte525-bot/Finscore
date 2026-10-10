@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ProductCard } from "@/components/product/ProductCard";
+import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProductForm } from "@/components/product/ProductForm";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { Pending } from "@/components/ui/Pending";
@@ -53,6 +53,20 @@ export default async function ProductPage({ params }: Props) {
 
   const { shipping, returns } = business;
   const sections = [
+    ...(product.features?.length
+      ? [
+          {
+            title: "Details",
+            body: (
+              <ul className="list-disc space-y-1 pl-5 marker:text-muted">
+                {product.features.map((f) => (
+                  <li key={f}>{f}</li>
+                ))}
+              </ul>
+            ),
+          },
+        ]
+      : []),
     {
       title: "Material",
       body: product.material ? <p>{product.material}</p> : <Pending>Fabric details will be listed here before launch.</Pending>,
@@ -108,16 +122,22 @@ export default async function ProductPage({ params }: Props) {
   ];
 
   return (
-    <div data-tone="light" className="bg-bone pt-16 md:pt-20">
-      <div className="lg:gutter lg:grid lg:grid-cols-12 lg:gap-8 lg:pt-8">
+    <div className="bg-bone pb-4 lg:pt-8">
+      <div className="lg:gutter lg:grid lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-7">
           <ProductGallery images={product.images} name={product.name} />
         </div>
 
         <div className="gutter pt-8 lg:col-span-4 lg:col-start-9 lg:px-0 lg:pt-0">
-          <div className="lg:sticky lg:top-28">
+          <div className="lg:sticky lg:top-24">
             <nav aria-label="Breadcrumb" className="text-sm text-ash">
               <ol className="flex flex-wrap gap-2">
+                <li>
+                  <Link href="/" className="link-underline">
+                    Home
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
                 <li>
                   <Link href="/shop" className="link-underline">
                     Shop
@@ -132,32 +152,30 @@ export default async function ProductPage({ params }: Props) {
               </ol>
             </nav>
 
-            <h1 className="display mt-5 text-[2.5rem] leading-[1.05] md:text-[3rem]">{product.name}</h1>
-            <div className="mt-3 flex items-baseline justify-between gap-4 text-lg">
-              <p className="text-ash">{product.collection}</p>
-              <p className="tabular-nums">{formatPrice(product.price)}</p>
-            </div>
+            <p className="caps mt-6 text-ash">Swolvation</p>
+            <h1 className="display mt-2 text-[2.75rem] md:text-[3.5rem]">{product.name}</h1>
+            <p className="mt-3 text-xl tabular-nums">{formatPrice(product.price)}</p>
             {!isProductAvailable(product) && <p className="mt-2 text-[0.9375rem] text-oxblood">Sold out</p>}
 
-            <p className="mt-8 leading-relaxed text-charcoal">{product.description}</p>
+            <p className="mt-6 leading-relaxed text-charcoal">{product.description}</p>
 
             {product.scripture ? (
-              <figure className="mt-8 border-l border-ink/20 pl-5">
-                <blockquote className="display-italic text-[1.5rem] leading-snug">
+              <figure className="mt-6 border-l-2 border-ink pl-4">
+                <blockquote className="text-lg italic leading-snug">
                   <p>&ldquo;{product.scripture.text}&rdquo;</p>
                 </blockquote>
                 <figcaption className="mt-2 text-sm text-ash">{product.scripture.reference}, printed on the back</figcaption>
               </figure>
             ) : null}
 
-            <div className="mt-10">
+            <div className="mt-8">
               <ProductForm product={product} />
             </div>
 
             <div className="mt-10 divide-y divide-ink/15 border-y border-ink/15">
               {sections.map((s, i) => (
                 <details key={s.title} className="group" open={i === 0}>
-                  <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between text-[0.9375rem] [&::-webkit-details-marker]:hidden">
+                  <summary className="caps flex min-h-14 cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden">
                     {s.title}
                     <span aria-hidden="true" className="text-xl leading-none transition-transform duration-300 group-open:rotate-45">
                       +
@@ -172,14 +190,12 @@ export default async function ProductPage({ params }: Props) {
       </div>
 
       {others.length > 0 && (
-        <section className="gutter pb-28 pt-24 md:pb-36 md:pt-36" aria-labelledby="related-title">
+        <section className="gutter mt-20 border-t border-ink/10 pb-24 pt-16 md:mt-28 md:pb-32 md:pt-20" aria-labelledby="related-title">
           <h2 id="related-title" className="display text-[2.5rem] md:text-[3.5rem]">
-            You may also like
+            Complete the drop
           </h2>
-          <div className="mt-10 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
-            {others.map((p) => (
-              <ProductCard key={p.slug} product={p} sizes="(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 92vw" />
-            ))}
+          <div className="mt-10">
+            <ProductGrid products={others} priorityCount={0} />
           </div>
         </section>
       )}

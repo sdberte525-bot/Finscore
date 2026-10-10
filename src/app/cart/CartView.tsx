@@ -5,16 +5,16 @@ import { CartLines } from "@/components/cart/CartLines";
 import { useCart } from "@/components/cart/CartProvider";
 import { formatPrice } from "@/lib/format";
 
-export function BagView() {
+export function CartView() {
   const { lines, subtotal, count } = useCart();
 
   return (
-    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-32 pt-32 md:pt-44">
-      <h1 className="display text-[3.5rem] md:text-[6rem]">Bag</h1>
+    <div data-tone="light" className="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pt-16">
+      <h1 className="display text-[3.5rem] md:text-[6rem]">Cart</h1>
 
       {lines.length === 0 ? (
         <div className="mt-10 max-w-md">
-          <p className="text-lg">Your bag is empty.</p>
+          <p className="text-lg">Your cart is empty.</p>
           <p className="mt-2 text-ash">Pieces you add stay here on this device until you check out.</p>
           <Link href="/shop" className="button button-solid mt-8">
             Shop the collection

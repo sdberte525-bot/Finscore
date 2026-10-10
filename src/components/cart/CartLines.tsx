@@ -32,7 +32,7 @@ export function CartLines({ compact = false, readOnly = false }: { compact?: boo
                   </p>
                   {line.variantId === lastAdded && compact ? (
                     <p className="mt-1 text-xs text-oxblood" role="status">
-                      Added to bag
+                      Added to cart
                     </p>
                   ) : null}
                 </div>
@@ -42,7 +42,7 @@ export function CartLines({ compact = false, readOnly = false }: { compact?: boo
                 <p className="mt-auto pt-4 text-xs text-ash">Quantity {line.quantity}</p>
               ) : (
                 <div className="mt-auto flex items-center justify-between pt-4">
-                  <div className="flex items-center rounded-full border border-ink/25 text-sm" role="group" aria-label={`Quantity for ${line.product.name}`}>
+                  <div className="flex items-center rounded-[2px] border border-ink/25 text-sm" role="group" aria-label={`Quantity for ${line.product.name}`}>
                     <button
                       type="button"
                       className="grid h-9 w-9 place-items-center"

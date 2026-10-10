@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Order placed", robots: { index: fals
 
 export default function SuccessPage() {
   return (
-    <div data-tone="light" className="gutter flex min-h-[80vh] flex-col justify-center bg-bone pb-32 pt-32">
+    <div data-tone="light" className="gutter flex min-h-[80vh] flex-col justify-center bg-bone pb-24 pt-14">
       <ClearBag />
       <h1 className="display text-[3.5rem] md:text-[6rem]">Thank you.</h1>
       <p className="mt-6 max-w-[44ch] text-lg">
