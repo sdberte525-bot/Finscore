@@ -1,0 +1,1 @@
+Reference copies of the product photos flattened onto a light grey backdrop, for AI image and video tools (Higgsfield). The transparent originals read as black-on-black in those tools. Not used by the site.
