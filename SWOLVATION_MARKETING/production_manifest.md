@@ -8,12 +8,16 @@ This cloud workspace's network policy blocks downloads from Higgsfield's CDN, so
 
 - **Everything in one download:** `SWOLVATION_launch_pack.zip`
   https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/4e969d99-3c16-42d6-ad7d-b49d020056d2.zip
-  It contains `videos/`, `photos/`, `covers/` and `thumbnails/`, plus a README.
+  It contains `videos/`, `photos/`, `covers/` and `thumbnails/`, plus a README (342 MB).
+- **Photos, covers and thumbnails only** (25 MB): `SWOLVATION_photos.zip`
+  https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/c46937ff-973d-43cf-93ff-ace9890803a5.zip
 - **Each video separately** (links in the table below, and in your Higgsfield media library).
 
 To keep copies in this repo, allow `d8j0ntlcm91z4.cloudfront.net`, `d2ol7oe51mr4n9.cloudfront.net` and `upload.higgsfield.ai` in the cloud environment's network settings. The empty folders (`final_ads/`, `instagram/`, `tiktok/`, `youtube/`, `product_photography/`, `thumbnails/`, `generated_footage/`, `approved_footage/`) are where they'd go. Keep large media out of git (see `.gitignore`).
 
 ## Videos (all 1080p, 30 fps, H.264 High, AAC 320k, ≤20 Mbps, faststart)
+
+Loudness is −14 LUFS integrated with a −1.5 dBTP ceiling. The exception is 5:02 AM at −15 LUFS: its quiet room-tone mix reaches the peak limit first. The zip's README says the turn loops are −16; they were delivered at −14.
 
 | File | Type | Ratio | Length | Campaign | Platforms | Link | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
