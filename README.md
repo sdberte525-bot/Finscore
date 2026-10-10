@@ -15,6 +15,10 @@ npm run typecheck
 
 Copy `.env.example` to `.env.local` to configure payments, the newsletter and the public URL.
 
+## Deploy
+
+The site deploys to Netlify from GitHub (`netlify.toml` pins the build). Set the same variables from `.env.example` under Site configuration → Environment variables, and every push to the deployed branch redeploys.
+
 ## Pages
 
 | Route | What it is |
