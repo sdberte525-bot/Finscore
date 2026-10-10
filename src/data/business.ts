@@ -4,7 +4,7 @@
  * Fill these in as they're established; no code changes are needed.
  */
 
-export type SocialLink = { label: string; href: string };
+export type SocialLink = { label: string; href: string; handle: string; icon: "instagram" | "tiktok" };
 
 export const business = {
   name: "Swolvation",
@@ -12,19 +12,19 @@ export const business = {
   description: "Vintage-inspired training apparel rooted in strength, discipline, and purpose.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
 
-  /** Public customer-service address, e.g. "hello@swolvation.com". Hidden while null. */
-  email: null as string | null,
+  /** Public customer-service address. Hidden while null. */
+  email: "swolvation@gmail.com" as string | null,
   /** Registered business name and address, used in the privacy policy and terms. */
   legalName: null as string | null,
   address: null as string | null,
   /** Governing law for the terms, e.g. "the State of Texas". */
   jurisdiction: null as string | null,
 
-  /**
-   * Official social accounts. Empty means no social links appear anywhere.
-   * Add entries like { label: "Instagram", href: "https://instagram.com/..." }.
-   */
-  social: [] as SocialLink[],
+  /** Official social accounts, shown in the header menu, footer, homepage and contact page. */
+  social: [
+    { label: "Instagram", handle: "@swolvation", href: "https://www.instagram.com/swolvation", icon: "instagram" },
+    { label: "TikTok", handle: "@swolvation", href: "https://www.tiktok.com/@swolvation", icon: "tiktok" },
+  ] as SocialLink[],
 
   shipping: {
     /** e.g. "the United States and Canada" */

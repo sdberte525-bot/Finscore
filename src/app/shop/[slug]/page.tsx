@@ -8,6 +8,7 @@ import { Pending } from "@/components/ui/Pending";
 import { business } from "@/data/business";
 import { categoryLabel } from "@/data/sizeGuide";
 import { getCatalog, getProduct } from "@/lib/commerce";
+import { isStoreOpen } from "@/lib/commerce/status";
 import { isProductAvailable } from "@/lib/commerce/types";
 import { formatPrice } from "@/lib/format";
 
@@ -33,6 +34,7 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct((await params).slug);
   if (!product) notFound();
   const others = (await getCatalog()).filter((p) => p.slug !== product.slug).slice(0, 3);
+  const storeOpen = isStoreOpen();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -47,7 +49,7 @@ export default async function ProductPage({ params }: Props) {
       url: new URL(`/shop/${product.slug}`, business.url).toString(),
       priceCurrency: product.currency,
       price: (product.price / 100).toFixed(2),
-      availability: isProductAvailable(product) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      availability: storeOpen && isProductAvailable(product) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
     },
   };
 
@@ -154,7 +156,10 @@ export default async function ProductPage({ params }: Props) {
 
             <p className="caps mt-6 text-ash">Swolvation</p>
             <h1 className="display mt-2 text-[2.75rem] md:text-[3.5rem]">{product.name}</h1>
-            <p className="mt-3 text-xl tabular-nums">{formatPrice(product.price)}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <p className="text-xl tabular-nums">{formatPrice(product.price)}</p>
+              {!storeOpen && <span className="rounded-[2px] bg-ink px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-bone">Coming soon</span>}
+            </div>
             {!isProductAvailable(product) && <p className="mt-2 text-[0.9375rem] text-oxblood">Sold out</p>}
 
             <p className="mt-6 leading-relaxed text-charcoal">{product.description}</p>
@@ -171,6 +176,35 @@ export default async function ProductPage({ params }: Props) {
             <div className="mt-8">
               <ProductForm product={product} />
             </div>
+
+            <ul className="mt-6 space-y-2 text-sm text-ash">
+              <li>
+                Questions about fit or sizing?{" "}
+                {business.email ? (
+                  <a href={`mailto:${business.email}`} className="underline underline-offset-4 hover:text-ink">
+                    {business.email}
+                  </a>
+                ) : (
+                  <Link href="/contact" className="underline underline-offset-4 hover:text-ink">
+                    Ask us
+                  </Link>
+                )}
+              </li>
+              {business.social.length > 0 && (
+                <li>
+                  Follow the drop on{" "}
+                  {business.social.map((s, i) => (
+                    <span key={s.href}>
+                      {i > 0 ? " and " : ""}
+                      <a href={s.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-ink">
+                        {s.label}
+                      </a>
+                    </span>
+                  ))}
+                  .
+                </li>
+              )}
+            </ul>
 
             <div className="mt-10 divide-y divide-ink/15 border-y border-ink/15">
               {sections.map((s, i) => (

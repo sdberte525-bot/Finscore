@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { EditorialImage } from "@/components/ui/EditorialImage";
+import { LoopVideo } from "@/components/ui/LoopVideo";
+import { loops } from "@/data/media";
 import type { CampaignImage } from "@/data/campaign";
 import type { ProductImage } from "@/lib/commerce/types";
 import { useReveal } from "@/lib/useReveal";
 
 /** Campaign-style feature: one oversized photograph, one detail, minimal copy. */
-export function CollectionFeature({ campaignImage, lead, detail }: { campaignImage: CampaignImage | null; lead: ProductImage; detail: ProductImage }) {
+export function CollectionFeature({ campaignImage, lead }: { campaignImage: CampaignImage | null; lead: ProductImage }) {
   const root = useRef<HTMLElement>(null);
   useReveal(root);
 
@@ -30,9 +32,15 @@ export function CollectionFeature({ campaignImage, lead, detail }: { campaignIma
               </Link>
             </div>
           </div>
-          <figure data-rise className="max-w-sm">
-            <EditorialImage image={null} fallback={detail} aspect="aspect-square" sizes="(min-width: 768px) 384px, 92vw" />
-            <figcaption className="mt-3 text-sm text-stone">Distressed cream print, front logo</figcaption>
+          <figure data-rise className="w-full max-w-[18rem]">
+            <LoopVideo
+              src={loops.teeSweep.src}
+              poster={loops.teeSweep.poster.src}
+              alt={loops.teeSweep.poster.alt}
+              sizes="288px"
+              className="aspect-[4/5] bg-charcoal"
+            />
+            <figcaption className="mt-3 text-sm text-stone">The back print, distressed cream on vintage black.</figcaption>
           </figure>
         </div>
       </div>

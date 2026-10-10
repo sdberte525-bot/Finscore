@@ -234,3 +234,21 @@ html.lenis body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Homepage ticker: two identical runs slide left by one run's width, so the loop is seamless. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+}

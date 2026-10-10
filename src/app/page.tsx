@@ -1,11 +1,17 @@
 import { ClosingStatement } from "@/components/home/ClosingStatement";
 import { CollectionFeature } from "@/components/home/CollectionFeature";
+import { FirstAccess } from "@/components/home/FirstAccess";
 import { FirstDrop } from "@/components/home/FirstDrop";
+import { Follow } from "@/components/home/Follow";
 import { HomeHero } from "@/components/home/HomeHero";
+import { Marquee } from "@/components/home/Marquee";
 import { OurStory } from "@/components/home/OurStory";
+import { Scripture } from "@/components/home/Scripture";
+import { TurnAround } from "@/components/home/TurnAround";
 import { business } from "@/data/business";
 import { campaign } from "@/data/campaign";
 import { getCatalog } from "@/lib/commerce";
+import { isStoreOpen } from "@/lib/commerce/status";
 import type { Product, ProductImage } from "@/lib/commerce/types";
 
 function pick(products: Product[], label: string, prefer?: string): ProductImage {
@@ -19,6 +25,7 @@ function pick(products: Product[], label: string, prefer?: string): ProductImage
 
 export default async function HomePage() {
   const products = await getCatalog();
+  const storeOpen = isStoreOpen();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -32,10 +39,15 @@ export default async function HomePage() {
 
   return (
     <>
-      <HomeHero campaignImage={campaign.hero} productImage={pick(products, "Back", "through-christ")} />
+      <HomeHero storeOpen={storeOpen} />
+      <Marquee />
       <FirstDrop products={products} />
-      <CollectionFeature campaignImage={campaign.feature} lead={pick(products, "Back", "strong-courageous")} detail={pick(products, "Chest", "strong-courageous")} />
-      <OurStory campaignImage={campaign.story} image={pick(products, "Back print", "through-christ")} />
+      <TurnAround products={products} />
+      <Scripture products={products} />
+      <CollectionFeature campaignImage={campaign.feature} lead={pick(products, "Back", "strong-courageous")} />
+      <OurStory campaignImage={campaign.story} image={pick(products, "Back", "through-christ")} />
+      <FirstAccess storeOpen={storeOpen} />
+      <Follow />
       <ClosingStatement />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>

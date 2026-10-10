@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
+import { NewsletterForm } from "@/components/site/NewsletterForm";
+import { useStoreOpen } from "@/components/site/StoreStatus";
 import { isVariantAvailable, maxQuantity, type Product, type Size } from "@/lib/commerce/types";
 import { formatPrice } from "@/lib/format";
 import { lockScroll, scroller } from "@/lib/motion";
@@ -9,13 +11,14 @@ import { SizeChart } from "./SizeChart";
 
 export function ProductForm({ product }: { product: Product }) {
   const { add } = useCart();
+  const storeOpen = useStoreOpen();
   const [color, setColor] = useState(product.colors[0]?.name ?? "");
   const [size, setSize] = useState<Size | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
   const [showBar, setShowBar] = useState(false);
-  const button = useRef<HTMLButtonElement>(null);
+  const cta = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
 
   const sizes = product.variants.filter((v) => v.color === color);
@@ -32,7 +35,7 @@ export function ProductForm({ product }: { product: Product }) {
 
   // Mobile: keep add-to-cart reachable once the main button scrolls away.
   useEffect(() => {
-    const el = button.current;
+    const el = cta.current;
     if (!el) return;
     const io = new IntersectionObserver(([entry]) => setShowBar(!entry.isIntersecting && entry.boundingClientRect.top < 0));
     io.observe(el);
@@ -138,34 +141,52 @@ export function ProductForm({ product }: { product: Product }) {
         )}
       </fieldset>
 
-      <div className="mt-6 flex gap-3">
-        <div className="flex shrink-0 items-center rounded-[2px] border border-ink/25" role="group" aria-label="Quantity">
-          <button
-            type="button"
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            disabled={quantity <= 1}
-            className="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30"
-            aria-label="Decrease quantity"
-          >
-            &minus;
-          </button>
-          <span className="w-6 text-center tabular-nums" aria-live="polite" aria-label={`Quantity ${quantity}`}>
-            {quantity}
-          </span>
-          <button
-            type="button"
-            onClick={() => setQuantity((q) => Math.min(variant ? maxQuantity(variant) : 10, q + 1))}
-            disabled={variant ? quantity >= maxQuantity(variant) : quantity >= 10}
-            className="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30"
-            aria-label="Increase quantity"
-          >
-            +
+      {storeOpen ? (
+        <div ref={cta} className="mt-6 flex gap-3">
+          <div className="flex shrink-0 items-center rounded-[2px] border border-ink/25" role="group" aria-label="Quantity">
+            <button
+              type="button"
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              disabled={quantity <= 1}
+              className="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30"
+              aria-label="Decrease quantity"
+            >
+              &minus;
+            </button>
+            <span className="w-6 text-center tabular-nums" aria-live="polite" aria-label={`Quantity ${quantity}`}>
+              {quantity}
+            </span>
+            <button
+              type="button"
+              onClick={() => setQuantity((q) => Math.min(variant ? maxQuantity(variant) : 10, q + 1))}
+              disabled={variant ? quantity >= maxQuantity(variant) : quantity >= 10}
+              className="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+          <button type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-w-0 flex-1 text-[0.9375rem]">
+            {soldOut ? "Sold out" : `Add to cart, ${formatPrice(product.price * quantity)}`}
           </button>
         </div>
-        <button ref={button} type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-w-0 flex-1 text-[0.9375rem]">
-          {soldOut ? "Sold out" : `Add to cart, ${formatPrice(product.price * quantity)}`}
-        </button>
-      </div>
+      ) : (
+        <div ref={cta} id="notify" className="mt-6 scroll-mt-28 border border-ink/15 bg-plaster/60 p-5">
+          <p className="caps text-ash">Coming soon</p>
+          <p className="mt-2 text-[0.9375rem] leading-relaxed text-charcoal">
+            The first drop isn&rsquo;t live yet. Leave your email and we&rsquo;ll tell you the moment {size ? `size ${size}` : "it"} is available.
+          </p>
+          <div className="mt-4">
+            <NewsletterForm
+              key={size ?? "any"}
+              source={`notify:${product.slug}${size ? `:${size}` : ""}`}
+              tone="light"
+              cta="Notify me"
+              done="Done. You’ll hear from us the moment it drops."
+            />
+          </div>
+        </div>
+      )}
 
       <div
         className={`fixed inset-x-0 bottom-0 z-30 border-t border-ink/10 bg-bone/95 px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md transition-transform duration-500 ease-[var(--ease-out-quint)] lg:hidden ${
@@ -177,11 +198,17 @@ export function ProductForm({ product }: { product: Product }) {
         <div className="flex items-center gap-4">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[0.9375rem]">{product.name}</p>
-            <p className="text-sm text-ash">{size ? `${color}, size ${size}` : "No size selected"}</p>
+            <p className="text-sm text-ash">{storeOpen ? (size ? `${color}, size ${size}` : "No size selected") : "Coming soon"}</p>
           </div>
-          <button type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-h-12 px-6">
-            Add to cart
-          </button>
+          {storeOpen ? (
+            <button type="button" onClick={onAdd} disabled={soldOut} className="button button-solid min-h-12 px-6">
+              Add to cart
+            </button>
+          ) : (
+            <a href="#notify" className="button button-solid min-h-12 px-6">
+              Notify me
+            </a>
+          )}
         </div>
       </div>
 
@@ -191,7 +218,7 @@ export function ProductForm({ product }: { product: Product }) {
         onClick={(e) => e.target === dialog.current && setGuideOpen(false)}
         aria-labelledby="size-guide-title"
         data-lenis-prevent
-        className="m-auto w-[min(36rem,calc(100vw-2rem))] bg-bone p-0 text-ink backdrop:bg-ink/40"
+        className="m-auto max-h-[calc(100dvh-2rem)] w-[min(38rem,calc(100vw-2rem))] overflow-auto bg-bone p-0 text-ink backdrop:bg-ink/40"
       >
         <div className="p-6 md:p-8">
           <div className="flex items-baseline justify-between gap-4">
@@ -202,9 +229,15 @@ export function ProductForm({ product }: { product: Product }) {
               Close
             </button>
           </div>
-          {product.fit ? <p className="mt-4 text-[0.9375rem] text-charcoal">{product.fit}</p> : null}
           <div className="mt-6">
-            <SizeChart category={product.category} />
+            <SizeChart
+              category={product.category}
+              onPick={(s) => {
+                setSize(s);
+                setError(false);
+                setGuideOpen(false);
+              }}
+            />
           </div>
         </div>
       </dialog>

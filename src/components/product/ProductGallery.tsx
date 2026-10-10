@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { LoopVideo } from "@/components/ui/LoopVideo";
 import type { ProductImage } from "@/lib/commerce/types";
 import { lockScroll } from "@/lib/motion";
 
@@ -53,6 +54,11 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
             >
               <span className={`relative block aspect-[4/5] overflow-hidden bg-studio ring-1 ${i === index ? "ring-ink" : "ring-transparent"}`}>
                 <Image src={img.src} alt="" fill sizes="80px" className={img.fit === "cover" ? "object-cover" : "object-contain p-1"} />
+                {img.video ? (
+                  <span aria-hidden="true" className="absolute bottom-1 right-1 grid h-5 w-5 place-items-center rounded-full bg-bone/90 text-[0.5rem] text-ink">
+                    &#9654;
+                  </span>
+                ) : null}
               </span>
               <span className="mt-1.5 block truncate text-xs text-ash">{img.label}</span>
             </button>
@@ -81,7 +87,7 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
           className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline-offset-[-2px] [&::-webkit-scrollbar]:hidden"
         >
           {images.map((img, i) => (
-            <Slide key={img.src} image={img} priority={i === 0} onOpen={() => setViewer(i)} />
+            <Slide key={img.src} image={img} priority={i === 0} active={i === index} onOpen={() => setViewer(i)} />
           ))}
         </div>
 
@@ -121,9 +127,17 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
 }
 
 /** One slide. On desktop the image magnifies under the cursor. */
-function Slide({ image, priority, onOpen }: { image: ProductImage; priority: boolean; onOpen: () => void }) {
+function Slide({ image, priority, active, onOpen }: { image: ProductImage; priority: boolean; active: boolean; onOpen: () => void }) {
   const [zoom, setZoom] = useState<string | null>(null);
   const contain = image.fit !== "cover";
+
+  if (image.video) {
+    return (
+      <button type="button" tabIndex={-1} onClick={onOpen} aria-label={`Enlarge: ${image.alt}`} className="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-charcoal">
+        <LoopVideo src={image.video} poster={image.src} alt={image.alt} sizes="(min-width: 1024px) 52vw, 100vw" priority={priority} playing={active} className="absolute inset-0" />
+      </button>
+    );
+  }
 
   return (
     <button
@@ -265,7 +279,11 @@ function Viewer({ images, start, name, onClose }: { images: ProductImage[]; star
             className={`absolute inset-0 ${scale > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"} transition-transform duration-200 ease-out motion-reduce:transition-none`}
             style={{ transform: `scale(${scale}) translate(${pan.x}px, ${pan.y}px)` }}
           >
-            <Image key={img.src} src={img.src} alt={img.alt} fill sizes="100vw" quality={90} className="object-contain p-4" draggable={false} />
+            {img.video ? (
+              <video key={img.video} src={img.video} poster={img.src} autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-contain p-4" />
+            ) : (
+              <Image key={img.src} src={img.src} alt={img.alt} fill sizes="100vw" quality={90} className="object-contain p-4" draggable={false} />
+            )}
           </div>
         </div>
 

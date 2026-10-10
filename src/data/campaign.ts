@@ -1,13 +1,12 @@
 import type { ProductImage } from "@/lib/commerce/types";
+import { photos } from "./media";
 
 /*
- * Campaign photography. Each slot is null until real, licensed photography is
- * available. While a slot is null the section shows product photography from
- * src/data/products.ts instead, so nothing stands in for the real shoot.
+ * Campaign photography for editorial slots. The first-drop campaign images live
+ * in src/data/media.ts; a null slot falls back to product photography.
  *
- * To add a photo: put the file in public/images/campaign/, then set the slot to
- *   { src: "/images/campaign/hero.jpg", alt: "…", width: 2400, height: 1600 }
- * Use files at least 2400px on the long edge for full-width slots.
+ * To use a new photo: add it to media.ts (or put the file in
+ * public/images/campaign/) and point the slot at it.
  *
  * Art direction for the shoot: natural, cinematic light; neutral, slightly warm
  * grade with subtle film character; real gyms and simple architecture;
@@ -20,10 +19,10 @@ export const campaign = {
   /** Homepage hero. Landscape, at least 2400px wide, with calm space on the left for the headline. */
   hero: null as CampaignImage | null,
   /** "More than what you wear" feature. Portrait (4:5). */
-  feature: null as CampaignImage | null,
+  feature: photos.teeGymHook as CampaignImage | null,
   /** "Strength has a purpose" story section. Portrait (4:5). */
-  story: null as CampaignImage | null,
+  story: photos.lsLocker as CampaignImage | null,
   /** About page. opening: wide (16:9); inspiration: portrait (4:5). */
-  aboutOpening: null as CampaignImage | null,
-  aboutInspiration: null as CampaignImage | null,
+  aboutOpening: photos.vintageGym as CampaignImage | null,
+  aboutInspiration: photos.teeFlatLay as CampaignImage | null,
 };

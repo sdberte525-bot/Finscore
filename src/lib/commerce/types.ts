@@ -14,6 +14,8 @@ export type ProductImage = {
   label?: string;
   /** "contain" for cut-out garments on the studio backdrop, "cover" for close-up crops. */
   fit?: "contain" | "cover";
+  /** A muted, looping video for this view; `src` is then its poster frame. */
+  video?: string;
 };
 
 export type ColorOption = {
@@ -79,4 +81,9 @@ export function maxQuantity(v: ProductVariant): number {
 /** Product cards show the first image, then the full back on hover (or the back print when there's no full back). */
 export function cardHoverImage(product: Product): ProductImage | undefined {
   return product.images.find((i) => i.label === "Back") ?? product.images.find((i) => i.label === "Back print");
+}
+
+/** The product's turn video, played on card hover. */
+export function cardVideo(product: Product): ProductImage | undefined {
+  return product.images.find((i) => i.video && i.label === "Turn") ?? product.images.find((i) => i.video);
 }

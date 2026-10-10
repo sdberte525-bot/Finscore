@@ -6,7 +6,8 @@ import { contactTopics } from "@/lib/contactTopics";
  * Delivers contact-form messages. Configure one of:
  *   RESEND_API_KEY + CONTACT_TO_EMAIL (+ optional CONTACT_FROM_EMAIL): sends an email through Resend
  *   CONTACT_WEBHOOK_URL: POSTs the message as JSON (Zapier, Make, Formspree, your helpdesk)
- * With neither set, the form tells visitors it isn’t connected yet.
+ * With neither set, the browser submits the "contact" form to Netlify Forms (public/__forms.html),
+ * which emails it to the address set under Forms > Notifications in the Netlify dashboard.
  */
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -77,12 +78,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Your message didn’t send. Try again in a moment." }, { status: 502 });
   }
 
-  return NextResponse.json(
-    {
-      error: business.email
-        ? `The contact form isn’t connected yet. Email us at ${business.email} instead.`
-        : "The contact form isn’t connected yet, so this message wasn’t sent.",
-    },
-    { status: 503 },
-  );
+  // Validated, but no server-side destination: let the browser hand it to Netlify Forms.
+  return NextResponse.json({ ok: false, fallback: "netlify" });
 }

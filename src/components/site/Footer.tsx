@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { business } from "@/data/business";
+import { InstagramIcon, TikTokIcon } from "./Icons";
 import { NewsletterForm } from "./NewsletterForm";
 
 type FooterLink = { label: string; href: string };
@@ -36,22 +37,40 @@ const columns: { title: string; links: FooterLink[] }[] = [
 ];
 
 export function Footer() {
-  const allColumns = business.social.length > 0 ? [...columns, { title: "Follow", links: business.social }] : columns;
 
   return (
     <footer data-tone="dark" className="relative overflow-hidden border-t border-bone/10 bg-ink text-bone">
       <div className="gutter pb-12 pt-24 md:pt-32">
         <div className="grid gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <h2 className="display text-[2.5rem] md:text-[3.25rem]">Hear about new pieces first</h2>
-            <p className="mt-4 max-w-[40ch] text-stone">Occasional emails about new releases and restocks. Nothing else.</p>
+            <h2 className="display text-[2.5rem] md:text-[3.25rem]">Get first access</h2>
+            <p className="mt-4 max-w-[40ch] text-stone">New drops go to the list first. Occasional emails about releases and restocks, nothing else.</p>
             <div className="mt-8">
-              <NewsletterForm />
+              <NewsletterForm source="footer" />
             </div>
+            {business.social.length > 0 && (
+              <ul className="mt-6 flex flex-wrap gap-3" aria-label="Follow Swolvation">
+                {business.social.map((s) => (
+                  <li key={s.href}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex min-h-11 items-center gap-2.5 rounded-[2px] border border-bone/20 px-4 text-sm transition-colors hover:border-bone"
+                    >
+                      {s.icon === "instagram" ? <InstagramIcon /> : <TikTokIcon />}
+                      <span>
+                        {s.label} <span className="text-stone">{s.handle}</span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-6 lg:col-start-7">
-            {allColumns.map((col) => (
+            {columns.map((col) => (
               <nav key={col.title} aria-label={col.title}>
                 <h3 className="text-sm text-stone">{col.title}</h3>
                 <ul className="mt-5 space-y-3 text-[0.9375rem]">

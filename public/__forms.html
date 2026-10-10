@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Form definitions</title>
+  </head>
+  <body>
+    <!--
+      Netlify Forms definitions, detected at deploy time. The site's own forms
+      submit to this file with fetch (see src/lib/netlifyForms.ts) whenever no
+      other destination is configured. Field names must match what's sent.
+    -->
+    <form name="newsletter" data-netlify="true" netlify-honeypot="company" hidden>
+      <input type="email" name="email" />
+      <input type="text" name="source" />
+      <input type="text" name="company" />
+    </form>
+    <form name="contact" data-netlify="true" netlify-honeypot="company" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="topic" />
+      <input type="text" name="order" />
+      <textarea name="message"></textarea>
+      <input type="text" name="company" />
+    </form>
+  </body>
+</html>

@@ -2,67 +2,76 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
-import { cardHoverImage, isProductAvailable, isVariantAvailable, type Product, type ProductImage } from "@/lib/commerce/types";
+import { useStoreOpen } from "@/components/site/StoreStatus";
+import { cardVideo, isProductAvailable, isVariantAvailable, type Product } from "@/lib/commerce/types";
 import { formatPrice } from "@/lib/format";
-
-function CardImage({ image, sizes, priority, className = "" }: { image: ProductImage; sizes: string; priority?: boolean; className?: string }) {
-  const contain = image.fit !== "cover";
-  return (
-    <Image
-      src={image.src}
-      alt={image.alt}
-      fill
-      sizes={sizes}
-      priority={priority}
-      className={`${contain ? "object-contain p-[6%]" : "object-cover"} ${className}`}
-    />
-  );
-}
 
 export function ProductCard({ product, priority = false, sizes }: { product: Product; priority?: boolean; sizes: string }) {
   const { add } = useCart();
+  const storeOpen = useStoreOpen();
   const [quickOpen, setQuickOpen] = useState(false);
-  // Touch screens can't hover, so they get an explicit front/back toggle instead.
-  const [showBack, setShowBack] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [ready, setReady] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
   const front = product.images[0];
-  const back = cardHoverImage(product);
+  const turn = cardVideo(product);
   const available = isProductAvailable(product);
-  const quickAdd = available && product.colors.length === 1;
+  const quickAdd = storeOpen && available && product.colors.length === 1;
+
+  useEffect(() => {
+    const v = video.current;
+    if (!v) return;
+    if (playing) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else v.pause();
+  }, [playing]);
 
   return (
-    <article className="group">
-      <div data-reveal-tile className="relative aspect-square overflow-hidden bg-studio">
+    <article className="group" onPointerEnter={(e) => e.pointerType === "mouse" && setPlaying(true)} onPointerLeave={(e) => e.pointerType === "mouse" && setPlaying(false)}>
+      <div data-reveal-tile className="relative aspect-[4/5] overflow-hidden bg-charcoal">
         <Link href={`/shop/${product.slug}`} className="absolute inset-0 block" aria-label={product.name} tabIndex={-1}>
           <div data-reveal-image className="absolute inset-0">
-            <CardImage
-              image={front}
+            <Image
+              src={front.src}
+              alt={front.alt}
+              fill
               sizes={sizes}
               priority={priority}
-              className={`transition-opacity duration-300 ease-out ${back ? (showBack ? "opacity-0" : "pointer-fine:group-hover:opacity-0") : ""}`}
+              quality={90}
+              className={`${front.fit === "contain" ? "object-contain p-[6%]" : "object-cover"} transition-transform duration-[1.2s] ease-[var(--ease-out-quint)] pointer-fine:group-hover:scale-[1.03]`}
             />
-            {back ? (
-              <div
-                aria-hidden={!showBack}
-                className={`absolute inset-0 transition-opacity duration-300 ease-out ${showBack ? "opacity-100" : "opacity-0 pointer-fine:group-hover:opacity-100"}`}
-              >
-                <CardImage image={back} sizes={sizes} />
-              </div>
+            {turn?.video ? (
+              <video
+                ref={video}
+                src={playing || ready ? turn.video : undefined}
+                poster={turn.src}
+                muted
+                loop
+                playsInline
+                preload="none"
+                aria-hidden="true"
+                onPlaying={() => setReady(true)}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${playing && ready ? "opacity-100" : "opacity-0"}`}
+              />
             ) : null}
           </div>
         </Link>
 
         {!available && <span className="absolute left-3 top-3 rounded-[2px] bg-bone/90 px-3 py-1 text-xs text-charcoal">Sold out</span>}
+        {!storeOpen && <span className="absolute left-3 top-3 rounded-[2px] bg-ink/80 px-3 py-1.5 text-[0.6875rem] font-medium uppercase tracking-[0.14em] text-bone backdrop-blur-md">Coming soon</span>}
 
-        {back && (
+        {turn?.video && (
           <button
             type="button"
-            onClick={() => setShowBack((v) => !v)}
-            aria-pressed={showBack}
-            className="absolute right-3 top-3 z-10 min-h-11 rounded-[2px] bg-bone/90 px-4 text-sm text-charcoal backdrop-blur-md pointer-fine:hidden"
+            onClick={() => setPlaying((v) => !v)}
+            aria-pressed={playing}
+            className="absolute right-3 top-3 z-10 min-h-10 rounded-[2px] bg-bone/90 px-4 text-sm text-charcoal backdrop-blur-md pointer-fine:hidden"
           >
-            {showBack ? "Front" : "Back"}
+            {playing ? "Stop" : "Turn"}
           </button>
         )}
 
@@ -121,6 +130,7 @@ export function ProductCard({ product, priority = false, sizes }: { product: Pro
               {product.category === "tee" ? "oversized tee" : "long sleeve"}
             </span>
           </div>
+          {product.scripture ? <p className="mt-1.5 text-xs uppercase tracking-[0.14em] text-ash">{product.scripture.reference}</p> : null}
         </div>
         <div className="flex shrink-0 flex-col items-end gap-1.5">
           <p className="text-base tabular-nums">{formatPrice(product.price)}</p>

@@ -1,25 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
+import { joinList } from "@/lib/netlifyForms";
 
 type State = { kind: "idle" } | { kind: "sending" } | { kind: "done" } | { kind: "error"; message: string };
 
-export function NewsletterForm() {
+/**
+ * Email sign-up used across the site. `source` tags where the sign-up came from
+ * (footer, popup, homepage, notify:<product>:<size>) so the list can be segmented.
+ */
+export function NewsletterForm({
+  source = "footer",
+  tone = "dark",
+  cta = "Sign up",
+  done = "You’re on the list. We’ll only write when there’s something worth opening.",
+  onDone,
+}: {
+  source?: string;
+  tone?: "dark" | "light";
+  cta?: string;
+  done?: string;
+  onDone?: () => void;
+}) {
+  const id = useId();
   const [state, setState] = useState<State>({ kind: "idle" });
+  const dark = tone === "dark";
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const email = String(new FormData(e.currentTarget).get("email") ?? "");
+    const form = new FormData(e.currentTarget);
+    const email = String(form.get("email") ?? "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setState({ kind: "error", message: "Enter a valid email address." });
+      return;
+    }
     setState({ kind: "sending" });
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = (await res.json()) as { error?: string };
-      if (!res.ok) throw new Error(data.error ?? "That didn’t go through. Try again in a moment.");
+      await joinList(email, source, String(form.get("company") ?? ""));
       setState({ kind: "done" });
+      try {
+        localStorage.setItem("swolvation.subscribed", "1");
+      } catch {}
+      onDone?.();
     } catch (err) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "That didn’t go through." });
     }
@@ -27,34 +49,38 @@ export function NewsletterForm() {
 
   if (state.kind === "done") {
     return (
-      <p role="status" className="text-lg">
-        You&rsquo;re on the list. We&rsquo;ll only write when there&rsquo;s something new.
+      <p role="status" className={`text-lg leading-snug ${dark ? "text-bone" : "text-ink"}`}>
+        {done}
       </p>
     );
   }
 
   return (
     <form onSubmit={onSubmit} noValidate className="w-full max-w-md">
-      <label htmlFor="newsletter-email" className="mb-3 block text-sm text-stone">
+      <label htmlFor={`${id}-email`} className="sr-only">
         Email address
       </label>
       <div className="flex flex-col gap-3 sm:flex-row">
         <input
-          id="newsletter-email"
+          id={`${id}-email`}
           name="email"
           type="email"
           required
           autoComplete="email"
-          placeholder="you@example.com"
-          aria-describedby="newsletter-status"
-          className="field border-bone/40 text-bone focus:border-bone"
+          inputMode="email"
+          placeholder="Your email address"
+          aria-describedby={`${id}-status`}
+          aria-invalid={state.kind === "error"}
+          className={`field ${dark ? "border-bone/40 text-bone placeholder:text-stone focus:border-bone" : "border-ink/30 text-ink placeholder:text-ash focus:border-ink"}`}
         />
-        <button type="submit" className="button button-light shrink-0" disabled={state.kind === "sending"}>
-          {state.kind === "sending" ? "Signing up" : "Sign up"}
+        <button type="submit" className={`button shrink-0 ${dark ? "button-light" : "button-solid"}`} disabled={state.kind === "sending"}>
+          {state.kind === "sending" ? "Joining" : cta}
         </button>
       </div>
-      <p id="newsletter-status" role="status" className={`mt-3 min-h-5 text-xs ${state.kind === "error" ? "text-bone" : "text-stone"}`}>
-        {state.kind === "error" ? state.message : "Unsubscribe anytime."}
+      {/* Honeypot for bots: hidden from people and assistive tech. */}
+      <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
+      <p id={`${id}-status`} role="status" className={`mt-3 min-h-5 text-xs ${state.kind === "error" ? (dark ? "text-bone" : "text-oxblood") : dark ? "text-stone" : "text-ash"}`}>
+        {state.kind === "error" ? state.message : "Drop alerts and restocks only. Unsubscribe anytime."}
       </p>
     </form>
   );

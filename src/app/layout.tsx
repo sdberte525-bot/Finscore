@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Big_Shoulders } from "next/font/google";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { AnnouncementBar } from "@/components/site/AnnouncementBar";
+import { EmailPopup } from "@/components/site/EmailPopup";
+import { StoreStatusProvider } from "@/components/site/StoreStatus";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
@@ -8,6 +11,7 @@ import { SearchProvider } from "@/components/site/Search";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { business } from "@/data/business";
 import { getCatalog } from "@/lib/commerce";
+import { isStoreOpen } from "@/lib/commerce/status";
 import "./globals.css";
 
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", display: "swap" });
@@ -30,7 +34,7 @@ export const metadata: Metadata = {
     siteName: business.name,
     title: business.name,
     description: business.description,
-    images: [{ url: "/images/products/strong-courageous/back.webp", width: 1220, height: 1331, alt: "Swolvation Be Strong & Courageous tee, back" }],
+    images: [{ url: "/images/campaign/tee-flat-lay.webp", width: 1280, height: 1589, alt: "The Swolvation Be Strong & Courageous tee laid flat on a gym floor" }],
   },
   twitter: { card: "summary_large_image" },
   icons: { icon: "/icon.svg" },
@@ -44,6 +48,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const products = await getCatalog();
+  const storeOpen = isStoreOpen();
   return (
     <html lang="en" className={`${archivo.variable} ${shoulders.variable}`} suppressHydrationWarning>
       <head>
@@ -51,15 +56,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js=''" }} />
       </head>
       <body>
-        <CartProvider products={products}>
-          <SearchProvider products={products}>
-          <SmoothScroll />
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-          <CartDrawer />
-          </SearchProvider>
-        </CartProvider>
+        <StoreStatusProvider open={storeOpen}>
+          <CartProvider products={products}>
+            <SearchProvider products={products}>
+              <SmoothScroll />
+              <AnnouncementBar open={storeOpen} />
+              <Header />
+              <main id="main">{children}</main>
+              <Footer />
+              <CartDrawer />
+              <EmailPopup />
+            </SearchProvider>
+          </CartProvider>
+        </StoreStatusProvider>
         <div className="grain" aria-hidden="true" />
       </body>
     </html>

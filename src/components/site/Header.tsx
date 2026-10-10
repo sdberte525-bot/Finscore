@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { business, nav } from "@/data/business";
 import { lockScroll } from "@/lib/motion";
-import { CartIcon, CloseIcon, MenuIcon, SearchIcon } from "./Icons";
+import { CartIcon, CloseIcon, InstagramIcon, MenuIcon, SearchIcon, TikTokIcon } from "./Icons";
 import { useSearch } from "./Search";
 
 /** Sticky store header: wordmark, primary navigation, search and cart. */
@@ -15,6 +15,8 @@ export function Header() {
   const { count, open: openCart } = useCart();
   const { open: openSearch } = useSearch();
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const [menuTop, setMenuTop] = useState(64);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -45,6 +47,7 @@ export function Header() {
         Skip to content
       </a>
       <header
+        ref={headerRef}
         className={`sticky top-0 z-50 border-b bg-bone/95 backdrop-blur-md transition-colors duration-200 ${
           scrolled || menuOpen ? "border-ink/10" : "border-transparent"
         }`}
@@ -57,7 +60,10 @@ export function Header() {
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={() => {
+                setMenuTop(headerRef.current?.getBoundingClientRect().bottom ?? 64);
+                setMenuOpen((v) => !v);
+              }}
             >
               {menuOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
@@ -102,7 +108,8 @@ export function Header() {
       <div
         id="mobile-menu"
         data-lenis-prevent
-        className={`fixed inset-x-0 bottom-0 top-16 z-40 flex flex-col justify-between bg-bone px-5 pb-10 pt-6 transition-[opacity,transform] duration-300 ease-out lg:hidden ${
+        style={{ top: menuTop }}
+        className={`fixed inset-x-0 bottom-0 z-40 flex flex-col justify-between bg-bone px-5 pb-10 pt-6 transition-[opacity,transform] duration-300 ease-out lg:hidden ${
           menuOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
         }`}
         aria-hidden={!menuOpen}
@@ -133,6 +140,14 @@ export function Header() {
             <Link href="/shipping">Shipping</Link>
             <Link href="/returns">Returns</Link>
             <Link href="/size-guide">Size guide</Link>
+          </div>
+          <div className="flex items-center gap-3">
+            {business.social.map((s) => (
+              <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-2 text-ink" aria-label={`${s.label} ${s.handle}`}>
+                {s.icon === "instagram" ? <InstagramIcon /> : <TikTokIcon />}
+                <span className="text-sm">{s.label}</span>
+              </a>
+            ))}
           </div>
           <p>{business.tagline}</p>
         </div>

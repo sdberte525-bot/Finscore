@@ -104,7 +104,7 @@ export function AboutView() {
           <figure className="md:col-span-5 md:col-start-8">
             <EditorialImage
               image={campaign.aboutInspiration}
-              fallback={productImage("strong-courageous", "Back print")}
+              fallback={productImage("strong-courageous", "Chest")}
               aspect="aspect-[4/5]"
               sizes="(min-width: 768px) 40vw, 92vw"
             />

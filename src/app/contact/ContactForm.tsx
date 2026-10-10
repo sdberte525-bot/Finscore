@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { contactTopics } from "@/lib/contactTopics";
+import { netlifySubmit } from "@/lib/netlifyForms";
 
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
@@ -23,10 +24,13 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      const json = (await res.json()) as { error?: string; errors?: Record<string, string> };
+      const json = (await res.json()) as { error?: string; errors?: Record<string, string>; fallback?: string };
       if (!res.ok) {
         setErrors(json.errors ?? {});
         throw new Error(json.error ?? "Your message didn’t send. Try again in a moment.");
+      }
+      if (json.fallback === "netlify" && !(await netlifySubmit("contact", data as Record<string, string>))) {
+        throw new Error("The contact form isn’t connected yet. Email us at swolvation@gmail.com instead.");
       }
       setStatus({ kind: "sent" });
     } catch (err) {
