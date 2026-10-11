@@ -445,11 +445,11 @@
 1. **Audience:** warm viewers ready to buy.
 2. **Hook:** "two shirts. two verses." *Variants:* "Christian gym shirts under $45." / "scripture you can lift in."
 3. **Script (11.4s):**
-   - 0–2.2 tee back, "Joshua 1:9" label
-   - 2.2–4.4 long-sleeve back, "Philippians 4:13"
+   - 0–2.2 tee back (the hook card only; Joshua 1:9 is printed on the shirt)
+   - 2.2–4.4 long-sleeve back, "Philippians 4:13" above the shirt
    - 4.4–6.0 front: "a small cross on the front. that's it."
-   - 6.0–7.6 "the tee · $34.99"
-   - 7.6–9.2 "the long sleeve · $44.99"
+   - 6.0–7.6 "the tee · $34.99" over the flat lay, inset on black
+   - 7.6–9.2 "the long sleeve · $44.99" over the flat lay, inset on black
    - 9.2–11.4 logo, "printed to order · link in bio"
 4. **On-screen text:** as above.
 5. **Storyboard:** g16 → g17 → n8fix → p_teeflat → p_lsflat → black.

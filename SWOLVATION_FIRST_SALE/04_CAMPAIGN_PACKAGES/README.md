@@ -16,7 +16,7 @@
 
 **Files:**
 - **Videos:** download links in the table below. They're hosted in your Higgsfield library; the ZIP has everything.
-- **Covers:** `covers/` in this folder, plus the ZIP.
+- **Covers:** download links in the table below, plus the ZIP.
 - **Reproduce or re-cut:** the sandbox edit lists are `~/mk/edl/fs_*.json`. The generator is `~/mk/fs.py`, mirrored in the repo at `SWOLVATION_FIRST_SALE/04_CAMPAIGN_PACKAGES/fs.py`.
 
 **About the covers:**
@@ -29,7 +29,26 @@
 - "Printed to order" is true because the shirts are print-on-demand.
 - Prices are the live prices on 11 Oct 2026.
 
-{{LINKS_TABLE}}
+## Downloads
+
+**Everything in one file:** [SWOLVATION_FIRST_SALE_PACKAGES.zip](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/b145ee13-e582-4f21-9fad-ed19cba7d5f6.zip) (120 MB). It contains `videos/` (15 videos) and `covers/` (5 covers).
+
+| Package | Length | Hook A | Hook B | Hook C | Reel cover |
+|---|---|---|---|---|---|
+| P1 Front Quiet. Back Loud. | 7.4s | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/5967d68c-8884-4223-98a0-b1956563086a.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/cf6d884e-ff28-43a7-84e4-59b551aee8ce.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/94ad8b74-ae7d-42fc-9971-196b4890e71a.mp4) | [jpg](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/08f9dc7f-f83e-4899-af1f-86dc0621b05b.jpg) |
+| P2 Not Church Merch | 11.0s | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/c039c0b6-30de-4336-8bcf-cb4b6f8a3899.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/8265b1d7-fa1e-4318-89b7-f49084d48d3f.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/1ce20c54-12da-48ca-9dc4-04b4925b9eef.mp4) | [jpg](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/a61a4b6f-22a0-4fe3-90cc-0926bb391545.jpg) |
+| P3 3 Details You Missed | 12.6s | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/d711ac9e-b87c-49b5-b683-12d6d88aae9c.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/245d86fc-1233-45c0-a40b-19f7e171f1e6.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/016a64ea-dfd1-4fb1-b818-6ca2d8e5d8e8.mp4) | [jpg](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/8502087d-b0ac-4127-94df-33c65b654252.jpg) |
+| P4 Rate the Back /10 | 7.0s | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/ad0700c4-5fa5-44d7-a004-c3db6ed8cdbf.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/dbafd034-b1f4-4859-8852-300e0f538a13.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/f9f2f6e7-fd79-4e2d-ae3d-98c0ae0e71fb.mp4) | [jpg](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/acd8abc3-6d53-499a-b181-1af81a119aba.jpg) |
+| P5 Two Shirts. Two Verses. (new) | 11.4s | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/ef6fbd48-74c0-4697-a6d3-02fcd113939f.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/9d2c7f56-3149-4500-bd2d-20d58b5b47b8.mp4) | [mp4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/235206e5-b5a0-43b4-bfa3-2bb58ac63e95.mp4) | [jpg](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/73c2aeec-6b94-41c5-9e35-4343954ed859.jpg) |
+
+For P1–P4, Hook A is the original video produced in the marketing round. B and C are new for this mission. All three P5 hooks are new.
+
+**Technical check:** H.264 1080×1920, AAC. Loudness −14.1 to −14.4 LUFS, true peak ≤ −2.0 dBFS.
+
+**Visual check, frame by frame:**
+- No caption covers scripture lettering. P5's price labels sit on black above an inset flat lay, and P2 hook B was moved up 60px.
+- No people, hands or mannequins appear.
+- Text stays inside the TikTok safe area (x 110–880, y 230–1350).
 
 ---
 
@@ -123,11 +142,10 @@
 - **C:** "scripture you can lift in."
 
 **Sequence:**
-- tee back with the label "Joshua 1:9"
-- long-sleeve back with "Philippians 4:13"
+- tee back (Joshua 1:9 is printed on it, so no extra label)
+- long-sleeve back, with "Philippians 4:13" in clear space above the shirt
 - front: "a small cross on the front. that's it."
-- "the tee · $34.99"
-- "the long sleeve · $44.99"
+- each flat lay inset on black, with "the tee · $34.99" and "the long sleeve · $44.99" above it
 - logo with "printed to order · link in bio"
 
 **Instagram caption:**
