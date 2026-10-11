@@ -1,0 +1,49 @@
+{%- liquid
+  assign open = false
+  if settings.store_mode == 'open'
+    assign open = true
+  endif
+-%}
+<section id="first-access" class="gutter scroll-mt-28 bg-plaster py-20 md:py-28">
+  <div class="grid gap-10 md:grid-cols-12 md:items-end md:gap-8">
+    <div class="md:col-span-7">
+      {%- if open -%}
+        <p class="caps text-ash">{{ section.settings.open_eyebrow }}</p>
+        <h2 class="display mt-4 text-[3.5rem] md:text-[6rem]">{{ section.settings.open_heading }}</h2>
+        <p class="mt-5 max-w-[42ch] text-lg leading-relaxed text-charcoal">{{ section.settings.open_text }}</p>
+      {%- else -%}
+        <p class="caps text-ash">{{ section.settings.prelaunch_eyebrow }}</p>
+        <h2 class="display mt-4 text-[3.5rem] md:text-[6rem]">{{ section.settings.prelaunch_heading }}</h2>
+        <p class="mt-5 max-w-[42ch] text-lg leading-relaxed text-charcoal">{{ section.settings.prelaunch_text }}</p>
+      {%- endif -%}
+    </div>
+    <div class="md:col-span-5">
+      {%- if open -%}
+        {%- assign cta = section.settings.open_cta -%}
+      {%- else -%}
+        {%- assign cta = section.settings.prelaunch_cta -%}
+      {%- endif -%}
+      {%- render 'newsletter-form', id: 'home', source: 'home', tone: 'light', cta: cta, done: 'You’re on the list. Watch your inbox.' -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Email sign-up",
+  "class": "section-first-access",
+  "settings": [
+    { "type": "header", "content": "Store open" },
+    { "type": "text", "id": "open_eyebrow", "label": "Eyebrow", "default": "The list" },
+    { "type": "text", "id": "open_heading", "label": "Heading", "default": "Hear it first." },
+    { "type": "textarea", "id": "open_text", "label": "Text", "default": "New drops and restocks go to the list before they’re announced anywhere else." },
+    { "type": "text", "id": "open_cta", "label": "Button", "default": "Join the list" },
+    { "type": "header", "content": "Pre-launch" },
+    { "type": "text", "id": "prelaunch_eyebrow", "label": "Eyebrow", "default": "Before anyone else" },
+    { "type": "text", "id": "prelaunch_heading", "label": "Heading", "default": "Get first access." },
+    { "type": "textarea", "id": "prelaunch_text", "label": "Text", "default": "The first drop goes to the list before it’s announced anywhere else. One email when it’s live, then only when there’s something new." },
+    { "type": "text", "id": "prelaunch_cta", "label": "Button", "default": "Get first access" }
+  ],
+  "presets": [{ "name": "Email sign-up" }]
+}
+{% endschema %}

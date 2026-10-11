@@ -1,0 +1,14 @@
+{%- capture body -%}
+  {%- if page.content != blank -%}
+    <div class="rte max-w-[62ch] text-[1.0625rem] leading-relaxed text-charcoal">{{ page.content }}</div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- render 'info-layout', current: request.path, title: page.title, body: body -%}
+
+{% schema %}
+{
+  "name": "Page",
+  "class": "section-main-page",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+<section data-reveal-scope class="gutter bg-plaster py-20 md:py-28">
+  <div class="grid items-center gap-12 md:grid-cols-12 md:gap-8">
+    <div data-rise class="md:col-span-6">
+      <h2 class="display text-[2.75rem] md:text-[4rem]">{{ section.settings.heading }}</h2>
+      <div class="mt-8 max-w-[50ch] space-y-5 text-lg leading-relaxed text-charcoal">{{ section.settings.text }}</div>
+    </div>
+    <figure class="md:col-span-5 md:col-start-8">
+      {%- render 'editorial-image', image: section.settings.image, key: 'tee-flat-lay', alt: section.settings.alt, aspect: 'aspect-[4/5]', sizes: '(min-width: 768px) 40vw, 92vw' -%}
+    </figure>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About: text and image",
+  "class": "section-about-clothing",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The clothing" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Our designs take their cues from vintage training gear: boxy tees, faded black, distressed cream prints. A small logo sits on the front. The back carries the message: gothic crosses and artwork built around a verse.</p><p>We want them to feel as right on a rest day as they do under a barbell. Clothes with a point of view, not slogans for the sake of it.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Defaults to the tee flat lay." },
+    { "type": "text", "id": "alt", "label": "Image description (alt text)", "default": "The Be Strong & Courageous tee laid flat on a gym floor beside a 45 lb plate and a leather belt" }
+  ],
+  "presets": [{ "name": "About: text and image" }]
+}
+{% endschema %}

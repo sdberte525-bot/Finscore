@@ -1,0 +1,27 @@
+{%- comment -%} Prints a CSS colour for a colour option value. Params: value (product_option_value or string) {%- endcomment -%}
+{%- liquid
+  assign hex = ''
+  if value.swatch.color
+    assign hex = value.swatch.color
+  endif
+  if hex == blank
+    assign n = value | downcase | strip
+    case n
+      when 'vintage black', 'washed black', 'faded black'
+        assign hex = '#2b2927'
+      when 'black'
+        assign hex = '#1a1918'
+      when 'white', 'off white', 'off-white', 'bone'
+        assign hex = '#f5f3ef'
+      when 'cream', 'natural', 'sand'
+        assign hex = '#e8e0d1'
+      when 'charcoal', 'dark heather', 'dark grey', 'dark gray'
+        assign hex = '#333333'
+      when 'grey', 'gray', 'heather grey', 'heather gray', 'sport grey'
+        assign hex = '#9a9893'
+      else
+        assign hex = n | replace: ' ', ''
+    endcase
+  endif
+-%}
+{{- hex -}}

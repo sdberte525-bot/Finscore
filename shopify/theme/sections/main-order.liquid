@@ -1,0 +1,39 @@
+{%- capture intro -%}Placed {{ order.created_at | date: '%B %-d, %Y' }}{% if order.cancelled %}. Cancelled {{ order.cancelled_at | date: '%B %-d, %Y' }}{% endif %}.{%- endcapture -%}
+{%- capture body -%}
+  <a href="{{ routes.account_url }}" class="link-underline text-[0.9375rem] text-ash">Back to your account</a>
+  <ul class="mt-8 divide-y divide-ink/15 border-y border-ink/15">
+    {%- for line in order.line_items -%}
+      <li class="flex items-start justify-between gap-4 py-5 text-[0.9375rem]">
+        <div>
+          <p>{{ line.title }}</p>
+          <p class="mt-1 text-sm text-ash">Quantity {{ line.quantity }}{% if line.fulfillment %} · {{ line.fulfillment.created_at | date: '%B %-d' }}{% endif %}</p>
+          {%- if line.fulfillment.tracking_url -%}<a href="{{ line.fulfillment.tracking_url }}" class="mt-1 inline-block text-sm underline underline-offset-4">Track shipment</a>{%- endif -%}
+        </div>
+        <p class="tabular-nums">{{ line.final_line_price | money }}</p>
+      </li>
+    {%- endfor -%}
+  </ul>
+  <dl class="mt-6 space-y-2 text-[0.9375rem]">
+    <div class="flex justify-between"><dt class="text-ash">Subtotal</dt><dd class="tabular-nums">{{ order.line_items_subtotal_price | money }}</dd></div>
+    {%- for discount in order.cart_level_discount_applications -%}
+      <div class="flex justify-between"><dt class="text-ash">{{ discount.title }}</dt><dd class="tabular-nums">&minus;{{ discount.total_allocated_amount | money }}</dd></div>
+    {%- endfor -%}
+    {%- for shipping in order.shipping_methods -%}
+      <div class="flex justify-between"><dt class="text-ash">Shipping ({{ shipping.title }})</dt><dd class="tabular-nums">{{ shipping.price | money }}</dd></div>
+    {%- endfor -%}
+    {%- for tax in order.tax_lines -%}
+      <div class="flex justify-between"><dt class="text-ash">{{ tax.title }}</dt><dd class="tabular-nums">{{ tax.price | money }}</dd></div>
+    {%- endfor -%}
+    <div class="flex justify-between border-t border-ink/15 pt-3"><dt>Total</dt><dd class="tabular-nums">{{ order.total_price | money_with_currency }}</dd></div>
+  </dl>
+  <div class="mt-12 grid gap-8 sm:grid-cols-2 text-[0.9375rem]">
+    <div><h2 class="label">Shipping address</h2><div class="mt-2">{{ order.shipping_address | format_address }}</div></div>
+    <div><h2 class="label">Billing address</h2><div class="mt-2">{{ order.billing_address | format_address }}</div></div>
+  </div>
+{%- endcapture -%}
+{%- assign title = 'Order ' | append: order.name -%}
+{%- render 'account-frame', title: title, intro: intro, body: body -%}
+
+{% schema %}
+{ "name": "Order", "class": "section-order", "settings": [] }
+{% endschema %}

@@ -1,0 +1,95 @@
+<section data-tone="dark" data-reveal-scope class="bg-charcoal py-20 text-bone md:py-28">
+  <div class="gutter">
+    <div data-rise class="grid gap-6 md:grid-cols-12 md:items-end">
+      <div class="md:col-span-7">
+        <p class="caps text-stone">{{ section.settings.eyebrow }}</p>
+        <h2 class="display mt-4 text-[3.25rem] md:text-[5.5rem]">
+          <span class="block">{{ section.settings.line_1 }}</span>
+          <span class="block text-plaster">{{ section.settings.line_2 }}</span>
+        </h2>
+      </div>
+      <p class="max-w-[38ch] text-lg leading-relaxed text-stone md:col-span-4 md:col-start-9">{{ section.settings.text }}</p>
+    </div>
+
+    <div class="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 md:mt-16 md:gap-x-8">
+      {%- for block in section.blocks -%}
+        {%- capture handle -%}{%- render 'resolve-product', block: block -%}{%- endcapture -%}
+        {%- assign p = all_products[handle] -%}
+        {%- liquid
+          if p != blank
+            capture reference
+              render 'product-merch', product: p, field: 'scripture_reference'
+            endcapture
+            assign href = p.url
+            assign title = p.title
+          else
+            assign reference = block.settings.reference
+            assign href = routes.all_products_collection_url
+            assign title = block.settings.title
+          endif
+        -%}
+        <a href="{{ href }}" class="group block" {{ block.shopify_attributes }}>
+          {%- render 'loop-video',
+            video: block.settings.video,
+            src: block.settings.video_url,
+            poster_key: block.settings.builtin_poster,
+            poster_image: block.settings.poster,
+            alt: block.settings.alt,
+            sizes: '(min-width: 640px) 46vw, 92vw',
+            class: 'aspect-[4/5] bg-ink'
+          -%}
+          <div class="mt-4 flex items-baseline justify-between gap-4">
+            <div>
+              <p class="text-base">{{ title }}</p>
+              {%- if reference != blank -%}
+                <p class="mt-1 text-xs uppercase tracking-[0.14em] text-stone">{{ reference }}</p>
+              {%- endif -%}
+            </div>
+            <p class="flex items-baseline gap-4 tabular-nums">
+              {%- if p != blank -%}{{ p.price_min | money_without_trailing_zeros }}{%- endif -%}
+              <span class="caps link-underline text-stone group-hover:text-bone">View</span>
+            </p>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Front and back",
+  "class": "section-turnaround",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Front and back" },
+    { "type": "text", "id": "line_1", "label": "Heading, line 1", "default": "Front: quiet." },
+    { "type": "text", "id": "line_2", "label": "Heading, line 2", "default": "Back: loud." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "A small cross and wordmark up front. The statement, and the verse behind it, across the back." }
+  ],
+  "blocks": [
+    {
+      "type": "piece",
+      "name": "Piece",
+      "limit": 4,
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "handle", "label": "Or product handle", "info": "Used when no product is picked." },
+        { "type": "text", "id": "title", "label": "Name shown before the product exists" },
+        { "type": "text", "id": "reference", "label": "Verse reference shown before the product exists" },
+        { "type": "video", "id": "video", "label": "Turn video" },
+        { "type": "text", "id": "video_url", "label": "Or video URL (MP4)" },
+        { "type": "image_picker", "id": "poster", "label": "Poster image" },
+        {
+          "type": "select", "id": "builtin_poster", "label": "Built-in poster", "default": "poster-tee-turn",
+          "options": [
+            { "value": "poster-tee-turn", "label": "Tee turn" },
+            { "value": "poster-ls-turn", "label": "Long sleeve turn" }
+          ]
+        },
+        { "type": "text", "id": "alt", "label": "Description (alt text)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Front and back" }]
+}
+{% endschema %}

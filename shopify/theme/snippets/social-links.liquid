@@ -1,0 +1,45 @@
+{%- comment -%}
+  Loops the configured social accounts. Params: style ('menu' | 'footer' | 'button'), class
+{%- endcomment -%}
+{%- liquid
+  assign handle = settings.social_handle | default: '@swolvation'
+-%}
+{%- for platform in (1..2) -%}
+  {%- liquid
+    if forloop.index == 1
+      assign href = settings.social_instagram
+      assign label = 'Instagram'
+      assign icon_name = 'instagram'
+    else
+      assign href = settings.social_tiktok
+      assign label = 'TikTok'
+      assign icon_name = 'tiktok'
+    endif
+  -%}
+  {%- if href != blank -%}
+    {%- case style -%}
+      {%- when 'menu' -%}
+        <a href="{{ href }}" target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center gap-2 text-ink" aria-label="{{ label }} {{ handle }}">
+          {%- render 'icon', name: icon_name -%}
+          <span class="text-sm">{{ label }}</span>
+        </a>
+      {%- when 'footer' -%}
+        <li>
+          <a href="{{ href }}" target="_blank" rel="noopener noreferrer" class="flex min-h-11 items-center gap-2.5 rounded-[2px] border border-bone/20 px-4 text-sm transition-colors hover:border-bone">
+            {%- render 'icon', name: icon_name -%}
+            <span>{{ label }} <span class="text-stone">{{ handle }}</span></span>
+          </a>
+        </li>
+      {%- when 'button' -%}
+        <li>
+          <a href="{{ href }}" target="_blank" rel="noopener noreferrer" class="button gap-2.5">
+            {%- render 'icon', name: icon_name -%}
+            {{ label }}
+          </a>
+        </li>
+      {%- when 'inline' -%}
+        {%- unless forloop.first -%} and {% endunless -%}
+        <a href="{{ href }}" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-ink">{{ label }}</a>
+    {%- endcase -%}
+  {%- endif -%}
+{%- endfor -%}

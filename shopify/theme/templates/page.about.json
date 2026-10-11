@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "intro": { "type": "about-intro", "settings": {} },
+    "why": { "type": "about-why", "settings": {} },
+    "values": {
+      "type": "about-beliefs",
+      "blocks": {
+        "strength": { "type": "value", "settings": { "title": "Strength", "text": "Built slowly, one session at a time. Nobody hands it to you." } },
+        "discipline": { "type": "value", "settings": { "title": "Discipline", "text": "Showing up on the days you don’t feel like it. Those days count the most." } },
+        "faith": { "type": "value", "settings": { "title": "Faith", "text": "The reason behind the work. It’s printed on our shirts because it’s part of why we train." } },
+        "perseverance": { "type": "value", "settings": { "title": "Perseverance", "text": "Falling short, then coming back for it. Every lifter knows the feeling." } }
+      },
+      "block_order": ["strength", "discipline", "faith", "perseverance"],
+      "settings": {}
+    },
+    "clothing": { "type": "about-clothing", "settings": {} },
+    "cta": { "type": "about-cta", "settings": {} }
+  },
+  "order": ["intro", "why", "values", "clothing", "cta"]
+}

@@ -1,0 +1,30 @@
+<section data-reveal-scope class="gutter bg-bone py-20 md:py-28">
+  <h2 class="display text-[2.75rem] md:text-[4rem]">{{ section.settings.heading }}</h2>
+  <dl class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+    {%- for block in section.blocks -%}
+      <div data-rise class="border-t-2 border-ink pt-5" {{ block.shopify_attributes }}>
+        <dt class="display text-[1.75rem]">{{ block.settings.title }}</dt>
+        <dd class="mt-3 leading-relaxed text-charcoal">{{ block.settings.text }}</dd>
+      </div>
+    {%- endfor -%}
+  </dl>
+</section>
+
+{% schema %}
+{
+  "name": "About: values",
+  "class": "section-about-beliefs",
+  "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "What we stand for" }],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Strength" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Built slowly, one session at a time. Nobody hands it to you." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "About: values" }]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{%- capture body -%}
+  {%- form 'activate_customer_password', class: 'grid gap-8' -%}
+    {%- if form.errors -%}<p role="alert" class="text-[0.9375rem] text-oxblood">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <div><label for="act-pw" class="block text-[0.9375rem]">Password</label><input id="act-pw" type="password" name="customer[password]" autocomplete="new-password" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+    <div><label for="act-pw2" class="block text-[0.9375rem]">Confirm password</label><input id="act-pw2" type="password" name="customer[password_confirmation]" autocomplete="new-password" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+    <div class="flex flex-wrap gap-3">
+      <button type="submit" class="button button-solid">Activate account</button>
+      <button type="submit" name="decline" class="button">Decline</button>
+    </div>
+  {%- endform -%}
+{%- endcapture -%}
+{%- render 'account-frame', title: 'Activate your account', intro: 'Create a password to finish setting up your account.', body: body -%}
+
+{% schema %}
+{ "name": "Activate account", "class": "section-activate", "settings": [] }
+{% endschema %}

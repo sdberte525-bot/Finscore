@@ -1,0 +1,28 @@
+{%- assign items = section.settings.items | split: ',' -%}
+{%- capture run -%}
+  <div class="flex shrink-0 items-center">
+    {%- for item in items -%}
+      <span class="flex items-center">
+        <span class="display whitespace-nowrap px-6 text-[1.5rem] md:px-8 md:text-[2rem]">{{ item | strip }}</span>
+        {%- render 'icon', name: 'cross', class: 'shrink-0 text-ash' -%}
+      </span>
+    {%- endfor -%}
+  </div>
+{%- endcapture -%}
+<div aria-hidden="true" class="overflow-hidden border-y border-ink/10 bg-bone py-4 text-ink md:py-5">
+  <div class="marquee flex w-max">
+    {{ run }}
+    {{ run }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "class": "section-marquee",
+  "settings": [
+    { "type": "textarea", "id": "items", "label": "Items", "info": "Separate items with commas.", "default": "Built through adversity, The first drop, Joshua 1:9, Philippians 4:13, Strength has a purpose, @swolvation" }
+  ],
+  "presets": [{ "name": "Marquee" }]
+}
+{% endschema %}

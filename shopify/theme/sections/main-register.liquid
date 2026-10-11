@@ -1,0 +1,34 @@
+{%- capture body -%}
+  {%- form 'create_customer', class: 'grid gap-8', novalidate: 'novalidate' -%}
+    {%- if form.errors -%}<p role="alert" class="text-[0.9375rem] text-oxblood">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <div class="grid gap-8 sm:grid-cols-2">
+      <div>
+        <label for="reg-first" class="block text-[0.9375rem]">First name</label>
+        <input id="reg-first" name="customer[first_name]" autocomplete="given-name" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+      </div>
+      <div>
+        <label for="reg-last" class="block text-[0.9375rem]">Last name</label>
+        <input id="reg-last" name="customer[last_name]" autocomplete="family-name" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+      </div>
+    </div>
+    <div>
+      <label for="reg-email" class="block text-[0.9375rem]">Email</label>
+      <input id="reg-email" type="email" name="customer[email]" autocomplete="email" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+    </div>
+    <div>
+      <label for="reg-password" class="block text-[0.9375rem]">Password</label>
+      <input id="reg-password" type="password" name="customer[password]" autocomplete="new-password" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+    </div>
+    <label class="flex items-start gap-3 text-[0.9375rem] text-charcoal">
+      <input type="checkbox" name="customer[accepts_marketing]" value="true" class="mt-1 h-4 w-4 accent-ink">
+      <span>Email me about new drops and restocks.</span>
+    </label>
+    <button type="submit" class="button button-solid sm:w-fit sm:min-w-48">Create account</button>
+    <p class="text-[0.9375rem] text-ash">Already have an account? <a href="{{ routes.account_login_url }}" class="underline underline-offset-4">Sign in</a></p>
+  {%- endform -%}
+{%- endcapture -%}
+{%- render 'account-frame', title: 'Create an account', body: body -%}
+
+{% schema %}
+{ "name": "Create account", "class": "section-register", "settings": [] }
+{% endschema %}

@@ -1,0 +1,10 @@
+{%- comment -%}
+  The main navigation as a list of url|label pairs. Uses the menu picked in the header
+  settings, or Swolvation's own four links when none is picked.
+  Output is captured by the caller: {% capture nav %}{% render 'nav-links', menu: section.settings.menu %}{% endcapture %}
+{%- endcomment -%}
+{%- if menu != blank and linklists[menu].links.size > 0 -%}
+  {%- for link in linklists[menu].links -%}{{ link.url }}|{{ link.title }}{% unless forloop.last %}^^{% endunless %}{%- endfor -%}
+{%- else -%}
+  {{- routes.all_products_collection_url }}|Shop^^/collections/new-drop|New drop^^/pages/about|Our story^^/pages/contact|Contact
+{%- endif -%}

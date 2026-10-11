@@ -1,0 +1,90 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-faq",
+      "blocks": {
+        "fit": {
+          "type": "question",
+          "settings": {
+            "question": "How do Swolvation pieces fit?",
+            "answer": "<p>Fit notes for each piece are on its product page, and measurements are in the <a href=\"/pages/size-guide\" title=\"Size guide\">size guide</a>. If you’re between sizes, <a href=\"/pages/contact\" title=\"Contact us\">send us a message</a> and we’ll help you choose.</p>"
+          }
+        },
+        "sizes": {
+          "type": "sizes",
+          "settings": {
+            "question": "What sizes do you offer?"
+          }
+        },
+        "where": {
+          "type": "shipping_where",
+          "settings": {
+            "question": "Where do you ship?"
+          }
+        },
+        "time": {
+          "type": "shipping_time",
+          "settings": {
+            "question": "How long will my order take to arrive?"
+          }
+        },
+        "returns": {
+          "type": "returns",
+          "settings": {
+            "question": "Can I return or exchange something?"
+          }
+        },
+        "care": {
+          "type": "question",
+          "settings": {
+            "question": "How should I care for my clothes?",
+            "answer": "<p>Care instructions are listed on each product page, under Care.</p>"
+          }
+        },
+        "secure": {
+          "type": "question",
+          "settings": {
+            "question": "Is checkout secure?",
+            "answer": "<p>Payment is handled on Shopify’s secure checkout. Your card details go straight to the payment processor; Swolvation never sees or stores your card number.</p>"
+          }
+        },
+        "discounts": {
+          "type": "question",
+          "settings": {
+            "question": "Where do I enter a discount code?",
+            "answer": "<p>At checkout. There’s a field for discount codes on the first step, before you pay.</p>"
+          }
+        },
+        "change": {
+          "type": "question",
+          "settings": {
+            "question": "Can I change or cancel my order?",
+            "answer": "<p><a href=\"/pages/contact\" title=\"Contact us\">Contact us</a> as soon as possible with your order number and we’ll see what we can do before it ships.</p>"
+          }
+        },
+        "social": {
+          "type": "social",
+          "settings": {
+            "question": "Are you on social media?"
+          }
+        }
+      },
+      "block_order": [
+        "fit",
+        "sizes",
+        "where",
+        "time",
+        "returns",
+        "care",
+        "secure",
+        "discounts",
+        "change",
+        "social"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

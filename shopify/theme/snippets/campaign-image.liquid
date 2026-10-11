@@ -1,0 +1,21 @@
+{%- comment -%}
+  An editorial photograph: a Shopify image from an image_picker setting when set, otherwise
+  the bundled campaign image `key`. Params: image, key, alt, sizes, class, priority
+{%- endcomment -%}
+{%- if image != blank -%}
+  {%- liquid
+    assign img_alt = alt
+    if image.alt != blank
+      assign img_alt = image.alt
+    endif
+    assign fp = 'auto'
+    assign ld = 'lazy'
+    if priority
+      assign fp = 'high'
+      assign ld = 'eager'
+    endif
+  -%}
+  {{ image | image_url: width: 2000 | image_tag: widths: '600, 900, 1200, 1600, 2000', sizes: sizes, class: class, alt: img_alt, loading: ld, fetchpriority: fp }}
+{%- else -%}
+  {%- render 'media-image', key: key, alt: alt, sizes: sizes, class: class, priority: priority -%}
+{%- endif -%}

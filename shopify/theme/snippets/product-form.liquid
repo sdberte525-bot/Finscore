@@ -1,0 +1,171 @@
+{%- comment -%}
+  Options, quantity and add to cart (or, before launch, a per-size "Notify me" sign-up), plus
+  the mobile sticky bar and the size guide dialog. Behaviour: theme.js, [data-product-form].
+  Params: product, open, category, preselected, section_id
+{%- endcomment -%}
+{%- liquid
+  assign form_id = 'product-form-' | append: section_id
+  assign current = preselected | default: product.selected_or_first_available_variant
+  assign size_index = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname == 'size'
+      assign size_index = forloop.index0
+    endif
+  endfor
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+  if category == 'long-sleeve'
+    assign chart_rows = settings.size_ls_rows
+  else
+    assign chart_rows = settings.size_tee_rows
+  endif
+-%}
+<div
+  data-product-form
+  data-form-id="{{ form_id }}"
+  data-size-index="{{ size_index }}"
+  data-preselected="{% if preselected %}true{% endif %}"
+  data-handle="{{ product.handle }}"
+>
+  <script type="application/json" data-variants>
+    [{%- for v in product.variants -%}{"id":{{ v.id }},"options":{{ v.options | json }},"available":{{ v.available | json }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"max":{% if v.inventory_management == 'shopify' and v.inventory_policy == 'deny' %}{{ v.inventory_quantity | at_least: 0 | at_most: 10 }}{% else %}10{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+  </script>
+
+  {%- form 'product', product, id: form_id, novalidate: 'novalidate' -%}
+    <input type="hidden" name="id" value="{{ current.id }}" data-variant-input>
+
+    {%- unless product.has_only_default_variant -%}
+      {%- comment -%} Colour first, then size and any other options, whatever their order in Shopify. {%- endcomment -%}
+      {%- for pass in (1..2) -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign oname = option.name | downcase -%}
+        {%- assign oi = forloop.index0 -%}
+        {%- assign is_color = false -%}
+        {%- if oname == 'color' or oname == 'colour' -%}{%- assign is_color = true -%}{%- endif -%}
+        {%- if pass == 1 and is_color == false -%}{%- continue -%}{%- endif -%}
+        {%- if pass == 2 and is_color -%}{%- continue -%}{%- endif -%}
+        {%- if is_color -%}
+          <fieldset class="mb-8" data-option="{{ oi }}" data-color-option>
+            <legend class="text-[0.9375rem]">{{ option.name }}: <span class="text-ash" data-option-value>{{ option.selected_value }}</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {%- for value in option.values -%}
+                {%- capture hex -%}{%- render 'swatch', value: value -%}{%- endcapture -%}
+                {%- assign selected = false -%}
+                {%- if value == option.selected_value -%}{%- assign selected = true -%}{%- endif -%}
+                <label class="relative cursor-pointer" title="{{ value | escape }}">
+                  <input type="radio" name="option-{{ oi }}" value="{{ value | escape }}" {% if selected %}checked{% endif %} class="peer sr-only">
+                  <span class="grid h-11 w-11 place-items-center rounded-[2px] border transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-oxblood border-ink/15 hover:border-ink/40 peer-checked:border-ink peer-checked:hover:border-ink">
+                    <span class="h-7 w-7 rounded-full ring-1 ring-ink/20" style="background: {{ hex }}"></span>
+                  </span>
+                  <span class="sr-only">{{ value }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- else -%}
+          {%- assign is_size = false -%}
+          {%- if oi == size_index -%}{%- assign is_size = true -%}{%- endif -%}
+          <fieldset {% if is_size %}id="size-options-fieldset"{% else %}class="mb-8"{% endif %} data-option="{{ oi }}" {% if is_size %}data-size-option aria-describedby=""{% endif %}>
+            <div class="flex items-baseline justify-between">
+              <legend class="text-[0.9375rem]">
+                {{ option.name }}<span class="text-ash" data-option-label{% unless preselected %} hidden{% endunless %}>: <span data-option-value>{% if preselected %}{{ option.selected_value }}{% endif %}</span></span>
+              </legend>
+              {%- if is_size and chart_rows != blank -%}
+                <button type="button" data-size-guide-open class="link-underline py-1 text-[0.9375rem] text-ash">Size guide</button>
+              {%- endif -%}
+            </div>
+            <div {% if is_size %}id="size-options"{% endif %} class="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-6">
+              {%- for value in option.values -%}
+                {%- assign checked = false -%}
+                {%- if preselected and value == option.selected_value -%}{%- assign checked = true -%}{%- endif -%}
+                {%- unless is_size or preselected -%}
+                  {%- if value == option.selected_value -%}{%- assign checked = true -%}{%- endif -%}
+                {%- endunless -%}
+                <label class="relative">
+                  <input type="radio" name="option-{{ oi }}" value="{{ value | escape }}" {% if checked %}checked{% endif %} {% unless value.available %}disabled{% endunless %} class="peer sr-only">
+                  <span class="grid h-12 cursor-pointer place-items-center rounded-[2px] border border-ink/20 text-[0.9375rem] transition-colors hover:border-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:text-bone peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-oxblood peer-disabled:cursor-not-allowed peer-disabled:text-stone peer-disabled:line-through peer-disabled:hover:border-ink/20">
+                    {{ value }}
+                  </span>
+                  <span class="sr-only" data-sold-out-label {% if value.available %}hidden{% endif %}>, sold out</span>
+                </label>
+              {%- endfor -%}
+            </div>
+            {%- if is_size -%}
+              <p id="size-error" role="alert" class="mt-3 text-[0.9375rem] text-oxblood" data-size-error hidden>Choose a size to add this to your cart.</p>
+            {%- endif -%}
+          </fieldset>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- endfor -%}
+    {%- endunless -%}
+
+    {%- if open -%}
+      <div data-cta class="mt-6 flex gap-3">
+        <div class="flex shrink-0 items-center rounded-[2px] border border-ink/25" role="group" aria-label="Quantity">
+          <button type="button" data-qty-minus disabled class="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30" aria-label="Decrease quantity">&minus;</button>
+          <span class="w-6 text-center tabular-nums" aria-live="polite" data-qty>1</span>
+          <input type="hidden" name="quantity" value="1" data-qty-input>
+          <button type="button" data-qty-plus class="grid h-[3.25rem] w-11 place-items-center text-lg disabled:opacity-30" aria-label="Increase quantity">+</button>
+        </div>
+        <button type="submit" name="add" data-add {% if sold_out %}disabled{% endif %} class="button button-solid min-w-0 flex-1 text-[0.9375rem]">
+          {%- if sold_out -%}Sold out{%- else -%}Add to cart, {{ current.price | money_without_trailing_zeros }}{%- endif -%}
+        </button>
+      </div>
+      <p class="mt-3 text-[0.9375rem] text-oxblood" data-add-error role="alert" hidden></p>
+    {%- endif -%}
+  {%- endform -%}
+
+  {%- unless open -%}
+    <div data-cta id="notify" class="mt-6 scroll-mt-28 border border-ink/15 bg-plaster/60 p-5">
+      <p class="caps text-ash">Coming soon</p>
+      <p class="mt-2 text-[0.9375rem] leading-relaxed text-charcoal">
+        The first drop isn&rsquo;t live yet. Leave your email and we&rsquo;ll tell you the moment <span data-notify-size>it</span> is available.
+      </p>
+      <div class="mt-4" data-notify>
+        {%- assign notify_source = 'notify:' | append: product.handle -%}
+        {%- render 'newsletter-form', id: 'notify', source: notify_source, tone: 'light', cta: 'Notify me', done: 'Done. You’ll hear from us the moment it drops.' -%}
+      </div>
+    </div>
+  {%- endunless -%}
+
+  <div
+    data-sticky-bar
+    class="fixed inset-x-0 bottom-0 z-30 translate-y-full border-t border-ink/10 bg-bone/95 px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md transition-transform duration-500 ease-[var(--ease-out-quint)] lg:hidden"
+    aria-hidden="true"
+    inert
+  >
+    <div class="flex items-center gap-4">
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-[0.9375rem]">{{ product.title }}</p>
+        <p class="text-sm text-ash" data-sticky-status>{% if open %}No size selected{% else %}Coming soon{% endif %}</p>
+      </div>
+      {%- if open -%}
+        <button type="button" data-sticky-add {% if sold_out %}disabled{% endif %} class="button button-solid min-h-12 px-6">Add to cart</button>
+      {%- else -%}
+        <a href="#notify" class="button button-solid min-h-12 px-6">Notify me</a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if size_index >= 0 and chart_rows != blank -%}
+    <dialog
+      data-size-guide
+      aria-labelledby="size-guide-title"
+      data-lenis-prevent
+      class="m-auto max-h-[calc(100dvh-2rem)] w-[min(38rem,calc(100vw-2rem))] overflow-auto bg-bone p-0 text-ink backdrop:bg-ink/40"
+    >
+      <div class="p-6 md:p-8">
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 id="size-guide-title" class="display text-[2.25rem]">Size guide</h2>
+          <button type="button" data-size-guide-close class="link-underline py-1 text-[0.9375rem]">Close</button>
+        </div>
+        <div class="mt-6">
+          {%- render 'size-chart', category: category, pick: true -%}
+        </div>
+      </div>
+    </dialog>
+  {%- endif -%}
+</div>

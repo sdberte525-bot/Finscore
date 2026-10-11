@@ -1,0 +1,26 @@
+{%- comment -%} First-access sign-up, shown once per visitor after a delay or half a page of scrolling (theme.js, [data-popup]). {%- endcomment -%}
+{%- if settings.popup_enabled -%}
+  <dialog
+    data-popup
+    data-delay="{{ settings.popup_delay | default: 15 }}"
+    aria-labelledby="popup-title"
+    tabindex="-1"
+    data-lenis-prevent
+    class="m-auto w-[min(56rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-auto bg-ink p-0 text-bone backdrop:bg-ink/70 backdrop:backdrop-blur-sm focus:outline-none"
+  >
+    <div class="grid md:grid-cols-2">
+      <div class="relative aspect-[16/10] md:aspect-auto md:min-h-[32rem]">
+        {%- render 'campaign-image', image: settings.popup_image, key: 'ls-gym-hook', alt: '', sizes: '(min-width: 768px) 28rem, 100vw', class: 'absolute inset-0 h-full w-full object-cover object-[50%_35%]' -%}
+      </div>
+      <div class="flex flex-col justify-center p-7 md:p-10">
+        <p class="caps text-stone">The first drop</p>
+        <h2 id="popup-title" class="display mt-3 text-[2.75rem] md:text-[3.5rem]" data-popup-title data-done-text="You’re in.">{{ settings.popup_heading }}</h2>
+        <p class="mt-4 max-w-[34ch] leading-relaxed text-stone" data-popup-text data-done-text="We’ll email you the moment the drop goes live. Follow {{ settings.social_handle | default: '@swolvation' }} for everything in between.">{{ settings.popup_text }}</p>
+        <div class="mt-7">
+          {%- render 'newsletter-form', id: 'popup', source: 'popup', cta: 'Get access', done: 'You’re on the list.' -%}
+        </div>
+        <button type="button" data-popup-dismiss class="link-underline mt-2 self-start py-2 text-sm text-stone" data-done-text="Close">No thanks</button>
+      </div>
+    </div>
+  </dialog>
+{%- endif -%}

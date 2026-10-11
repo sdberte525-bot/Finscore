@@ -1,0 +1,33 @@
+{%- comment -%}
+  Shared frame for customer-information pages: title, intro, and a side menu of the other help pages.
+  Params: current (path of this page), title, intro (HTML), updated, body (HTML)
+{%- endcomment -%}
+{%- assign help = '/pages/faq|FAQ^^/pages/shipping|Shipping^^/pages/returns|Returns and exchanges^^/pages/size-guide|Size guide^^/pages/contact|Contact us^^/policies/privacy-policy|Privacy policy^^/policies/terms-of-service|Terms and conditions' | split: '^^' -%}
+<div data-tone="light" class="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pb-32 md:pt-16">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-8">
+    <aside class="order-last lg:order-first lg:col-span-3">
+      <nav aria-label="Customer information" class="lg:sticky lg:top-28">
+        <h2 class="label">Help</h2>
+        <ul class="mt-4 space-y-1 text-[0.9375rem]">
+          {%- for entry in help -%}
+            {%- assign l = entry | split: '|' -%}
+            <li>
+              {%- if l[0] == current -%}
+                <a href="{{ l[0] }}" aria-current="page" class="inline-block py-1.5 text-ink underline underline-offset-4">{{ l[1] }}</a>
+              {%- else -%}
+                <a href="{{ l[0] }}" class="inline-block py-1.5 text-ash hover:text-ink">{{ l[1] }}</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="lg:col-span-7 lg:col-start-5">
+      <h1 class="display text-[3rem] md:text-[4.25rem]">{{ title }}</h1>
+      {%- if updated != blank -%}<p class="mt-4 text-sm text-ash">{{ updated }}</p>{%- endif -%}
+      {%- if intro != blank -%}<div class="mt-6 max-w-[58ch] text-lg leading-relaxed text-charcoal">{{ intro }}</div>{%- endif -%}
+      <div class="mt-14 space-y-14">{{ body }}</div>
+    </article>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<article class="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pb-32 md:pt-16">
+  <div class="mx-auto max-w-[62ch]">
+    <p class="text-sm text-ash"><a href="{{ blog.url }}" class="link-underline">{{ blog.title }}</a> / {{ article.published_at | date: '%B %-d, %Y' }}</p>
+    <h1 class="display mt-4 text-[3rem] md:text-[4.25rem]">{{ article.title }}</h1>
+  </div>
+  {%- if article.image -%}
+    <div class="mx-auto mt-10 max-w-5xl">
+      {{ article.image | image_url: width: 2000 | image_tag: widths: '800, 1200, 1600, 2000', sizes: '(min-width: 1024px) 64rem, 100vw', class: 'h-auto w-full', loading: 'eager' }}
+    </div>
+  {%- endif -%}
+  <div class="rte mx-auto mt-10 max-w-[62ch] text-[1.0625rem] leading-relaxed text-charcoal">{{ article.content }}</div>
+</article>
+
+{% schema %}
+{ "name": "Article", "class": "section-main-article", "settings": [] }
+{% endschema %}

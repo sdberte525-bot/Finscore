@@ -1,0 +1,2 @@
+# Files in the theme folder that should never be uploaded to Shopify.
+.DS_Store

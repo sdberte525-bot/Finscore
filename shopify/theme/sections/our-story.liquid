@@ -1,0 +1,32 @@
+<section id="story" data-reveal-scope class="gutter scroll-mt-24 bg-bone py-20 md:py-32">
+  <div class="grid items-center gap-12 md:grid-cols-12 md:gap-8">
+    <figure class="md:col-span-5">
+      {%- render 'editorial-image', image: section.settings.image, key: 'ls-locker', alt: section.settings.alt, aspect: 'aspect-[4/5]', sizes: '(min-width: 768px) 40vw, 92vw' -%}
+    </figure>
+    <div data-rise class="md:col-span-6 md:col-start-7">
+      <p class="caps text-ash">{{ section.settings.eyebrow }}</p>
+      <h2 class="display mt-4 text-[3.25rem] md:text-[5rem]">{{ section.settings.heading }}</h2>
+      <div class="mt-8 max-w-[52ch] space-y-5 text-lg leading-relaxed text-charcoal">
+        {{ section.settings.text }}
+      </div>
+      <a href="{{ section.settings.button_link | default: '/pages/about' }}" class="button button-solid mt-10">{{ section.settings.button_label }}</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our story",
+  "class": "section-our-story",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait. Defaults to the long sleeve in the locker room." },
+    { "type": "text", "id": "alt", "label": "Image description (alt text)", "default": "The Through Christ long sleeve on a wooden peg in a sunlit 1990s gym locker room" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our story" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Strength has a purpose." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Swolvation brings together two things: the discipline of training and the faith that gives it meaning. The gym is where you learn to keep going when it gets hard. That lesson doesn’t stay in the gym.</p><p>Our clothing carries that idea. Old-school training culture, gothic artwork and scripture, on pieces made to be worn through every kind of day.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Read our story" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Defaults to the Our story page." }
+  ],
+  "presets": [{ "name": "Our story" }]
+}
+{% endschema %}

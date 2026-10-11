@@ -1,0 +1,27 @@
+{%- capture intro -%}<p>{{ section.settings.intro }}</p>{%- endcapture -%}
+{%- capture body -%}
+  {%- capture glance -%}
+    {%- assign rows = 'Where we ship~' | append: settings.shipping_regions | append: '^^Processing time~' | append: settings.shipping_processing | append: '^^Delivery estimate~' | append: settings.shipping_delivery | append: '^^Shipping rates~' | append: settings.shipping_rates -%}
+    {%- render 'info-rows', rows: rows -%}
+    <p>Shipping costs are shown at checkout before you pay.</p>
+  {%- endcapture -%}
+  {%- render 'info-section', title: 'At a glance', body: glance -%}
+  {%- if page.content != blank -%}
+    {%- capture more -%}<div class="rte">{{ page.content }}</div>{%- endcapture -%}
+    {%- render 'info-section', title: 'More details', body: more -%}
+  {%- endif -%}
+  {%- capture questions -%}<p>If something about your delivery doesn&rsquo;t look right, <a href="/pages/contact" class="underline underline-offset-4">contact us</a> with your order number and we&rsquo;ll look into it.</p>{%- endcapture -%}
+  {%- render 'info-section', title: 'Questions about an order', body: questions -%}
+{%- endcapture -%}
+{%- render 'info-layout', current: '/pages/shipping', title: page.title, intro: intro, body: body -%}
+
+{% schema %}
+{
+  "name": "Shipping",
+  "class": "section-shipping",
+  "settings": [
+    { "type": "paragraph", "content": "The details come from Theme settings > Shipping and returns. Anything written in the page's content in Shopify appears under \"More details\"." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Everything you need to know about getting your order." }
+  ]
+}
+{% endschema %}

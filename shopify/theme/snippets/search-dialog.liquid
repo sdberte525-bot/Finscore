@@ -1,0 +1,74 @@
+{%- comment -%} Product search in a dialog. The catalog is small, so it filters in the browser (theme.js, [data-search]). {%- endcomment -%}
+<dialog
+  data-search
+  aria-label="Search products"
+  data-lenis-prevent
+  class="mx-auto mb-auto mt-0 w-full max-w-none bg-bone p-0 text-ink backdrop:bg-ink/50"
+>
+  <form role="search" action="{{ routes.search_url }}" method="get" data-search-form class="gutter flex h-20 items-center gap-4 border-b border-ink/10">
+    {%- render 'icon', name: 'search', class: 'shrink-0 text-muted' -%}
+    <label for="site-search" class="sr-only">Search products</label>
+    <input type="hidden" name="type" value="product">
+    <input
+      id="site-search"
+      name="q"
+      type="search"
+      autocomplete="off"
+      placeholder="Search the collection"
+      data-search-input
+      class="h-full min-w-0 flex-1 bg-transparent text-lg outline-none placeholder:text-muted"
+    >
+    <button type="button" data-search-close class="grid h-11 w-11 place-items-center" aria-label="Close search">
+      {%- render 'icon', name: 'close' -%}
+    </button>
+  </form>
+  <div class="gutter py-8">
+    <p class="caps text-ash" aria-live="polite" data-search-count data-default="The first drop">The first drop</p>
+    <p class="mt-6 text-lg" data-search-empty hidden>Nothing matches &ldquo;<span data-search-query></span>&rdquo;. Try a product name or a verse, like &ldquo;Joshua&rdquo;.</p>
+    <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-search-results>
+      {%- for product in collections['all'].products limit: 48 -%}
+        {%- liquid
+          capture verse
+            render 'product-merch', product: product, field: 'scripture_text'
+          endcapture
+          capture reference
+            render 'product-merch', product: product, field: 'scripture_reference'
+          endcapture
+          capture category
+            render 'product-merch', product: product, field: 'category'
+          endcapture
+          capture card_key
+            render 'product-merch', product: product, field: 'card_key'
+          endcapture
+          if category == 'tee'
+            assign kind = 'short sleeve tee t-shirt'
+          else
+            assign kind = 'long sleeve'
+          endif
+          assign tags_text = product.tags | join: ' '
+          assign desc_text = product.description | strip_html
+          assign text = product.title | append: ' ' | append: desc_text | append: ' ' | append: verse | append: ' ' | append: reference | append: ' ' | append: kind | append: ' ' | append: product.type | append: ' ' | append: tags_text
+          for option in product.options_with_values
+            assign values_text = option.values | join: ' '
+            assign text = text | append: ' ' | append: values_text
+          endfor
+        -%}
+        <li data-search-item data-text="{{ text | downcase | escape }}">
+          <a href="{{ product.url }}" class="group flex items-center gap-4">
+            <span class="relative block aspect-[4/5] w-20 shrink-0 overflow-hidden bg-studio">
+              {%- if card_key != blank and settings.launch_gallery != 'shopify' -%}
+                {%- render 'media-image', key: card_key, alt: '', sizes: '80px', class: 'absolute inset-0 h-full w-full object-contain p-1.5' -%}
+              {%- elsif product.featured_media -%}
+                {{ product.featured_media | image_url: width: 240 | image_tag: alt: '', class: 'absolute inset-0 h-full w-full object-contain p-1.5', loading: 'lazy' }}
+              {%- endif -%}
+            </span>
+            <span>
+              <span class="link-underline block">{{ product.title }}</span>
+              <span class="mt-1 block text-sm tabular-nums text-ash">{{ product.price_min | money_without_trailing_zeros }}</span>
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</dialog>

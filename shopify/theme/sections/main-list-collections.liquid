@@ -1,0 +1,31 @@
+<div class="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pb-32 md:pt-16">
+  <h1 class="display text-[3.5rem] md:text-[6rem]">{{ section.settings.heading }}</h1>
+  <ul class="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
+    {%- for c in collections -%}
+      {%- if c.products_count > 0 -%}
+        <li>
+          <a href="{{ c.url }}" class="group block">
+            <span class="relative block aspect-[4/5] overflow-hidden bg-charcoal">
+              {%- assign img = c.image | default: c.products.first.featured_media -%}
+              {%- if img -%}
+                {{ img | image_url: width: 1200 | image_tag: widths: '400, 800, 1200', sizes: '(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 92vw', class: 'absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-[var(--ease-out-quint)] group-hover:scale-[1.03]', loading: 'lazy' }}
+              {%- endif -%}
+            </span>
+            <span class="mt-4 flex items-baseline justify-between">
+              <span class="link-underline text-base">{{ c.title }}</span>
+              <span class="text-sm text-ash">{{ c.products_count }} {{ c.products_count | pluralize: 'product', 'products' }}</span>
+            </span>
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "class": "section-list-collections",
+  "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "Collections" }]
+}
+{% endschema %}

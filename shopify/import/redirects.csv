@@ -1,0 +1,20 @@
+Redirect from,Redirect to
+/shop,/collections/all
+/shop/strong-courageous,/products/strong-courageous
+/shop/through-christ,/products/through-christ
+/new-drop,/collections/new-drop
+/about,/pages/about
+/faq,/pages/faq
+/shipping,/pages/shipping
+/returns,/pages/returns
+/size-guide,/pages/size-guide
+/contact,/pages/contact
+/privacy,/policies/privacy-policy
+/terms,/policies/terms-of-service
+/bag,/cart
+/checkout/success,/
+/shop/courageous-oversized-tee,/products/strong-courageous
+/shop/courageous-heavyweight-tee,/products/strong-courageous
+/shop/strengthened-long-sleeve,/products/through-christ
+/shop/rise-again-long-sleeve,/collections/all
+/shop/though-i-fall,/collections/all

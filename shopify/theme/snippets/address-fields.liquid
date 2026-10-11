@@ -1,0 +1,20 @@
+{%- comment -%} Address form fields. Params: form, id {%- endcomment -%}
+<div class="grid gap-6 sm:grid-cols-2">
+  <div><label for="a-first-{{ id }}" class="block text-[0.9375rem]">First name</label><input id="a-first-{{ id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+  <div><label for="a-last-{{ id }}" class="block text-[0.9375rem]">Last name</label><input id="a-last-{{ id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+</div>
+<div><label for="a-1-{{ id }}" class="block text-[0.9375rem]">Address</label><input id="a-1-{{ id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+<div><label for="a-2-{{ id }}" class="block text-[0.9375rem]">Apartment, suite, etc.</label><input id="a-2-{{ id }}" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+<div class="grid gap-6 sm:grid-cols-2">
+  <div><label for="a-city-{{ id }}" class="block text-[0.9375rem]">City</label><input id="a-city-{{ id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+  <div><label for="a-zip-{{ id }}" class="block text-[0.9375rem]">Postal code</label><input id="a-zip-{{ id }}" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+</div>
+<div class="grid gap-6 sm:grid-cols-2">
+  <div>
+    <label for="a-country-{{ id }}" class="block text-[0.9375rem]">Country</label>
+    <select id="a-country-{{ id }}" name="address[country]" data-default="{{ form.country }}" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none cursor-pointer">{{ all_country_option_tags }}</select>
+  </div>
+  <div><label for="a-province-{{ id }}" class="block text-[0.9375rem]">State or province</label><input id="a-province-{{ id }}" name="address[province]" value="{{ form.province }}" autocomplete="address-level1" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+</div>
+<div><label for="a-phone-{{ id }}" class="block text-[0.9375rem]">Phone</label><input id="a-phone-{{ id }}" type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none"></div>
+<label class="flex items-center gap-3 text-[0.9375rem]"><input type="checkbox" name="address[default]" value="1" {% if form.set_as_default_checkbox %}checked{% endif %} class="h-4 w-4 accent-ink"> Set as default address</label>

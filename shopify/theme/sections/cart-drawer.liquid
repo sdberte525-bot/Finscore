@@ -1,0 +1,56 @@
+<div data-cart-drawer class="pointer-events-none fixed inset-0 z-[70]" aria-hidden="true" inert>
+  <div data-cart-overlay class="absolute inset-0 bg-ink/40 opacity-0 transition-opacity duration-500"></div>
+  <div
+    data-cart-panel
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cart-title"
+    tabindex="-1"
+    data-lenis-prevent
+    class="absolute inset-y-0 right-0 flex w-full max-w-[28rem] translate-x-full flex-col bg-bone outline-none transition-transform duration-700 ease-[var(--ease-out-quint)]"
+  >
+    <div data-cart-contents class="flex min-h-0 flex-1 flex-col" data-count="{{ cart.item_count }}">
+      <div class="flex h-16 shrink-0 items-center justify-between px-6 md:h-20 md:px-8">
+        <h2 id="cart-title" class="text-sm">Cart <span class="tabular-nums text-ash">({{ cart.item_count }})</span></h2>
+        <button type="button" data-cart-close class="link-underline py-1 text-sm">Close</button>
+      </div>
+
+      {%- if cart.item_count == 0 -%}
+        <div class="flex flex-1 flex-col items-start justify-center gap-6 px-6 md:px-8">
+          <p class="display text-[2.75rem]">Your cart is empty.</p>
+          <p class="max-w-[30ch] text-ash">Pieces you add will stay here on this device until you check out.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="button button-solid">Shop the collection</a>
+        </div>
+      {%- else -%}
+        <div class="min-h-0 flex-1 overflow-y-auto px-6 md:px-8">
+          {%- render 'cart-lines', compact: true -%}
+        </div>
+        <form action="{{ routes.cart_url }}" method="post" class="border-t border-ink/15 px-6 pb-8 pt-6 md:px-8">
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <dl class="mb-2 flex items-baseline justify-between text-sm text-ash">
+              <dt>{{ discount.title }}</dt>
+              <dd class="tabular-nums">&minus;{{ discount.total_allocated_amount | money_without_trailing_zeros }}</dd>
+            </dl>
+          {%- endfor -%}
+          <dl class="flex items-baseline justify-between text-sm">
+            <dt>Subtotal</dt>
+            <dd class="tabular-nums">{{ cart.total_price | money_without_trailing_zeros }}</dd>
+          </dl>
+          <p class="mt-1 text-xs text-ash">Shipping, taxes and discount codes are applied at checkout.</p>
+          <div class="mt-6 grid gap-3">
+            <button type="submit" name="checkout" class="button button-solid w-full">Checkout</button>
+            <a href="{{ routes.cart_url }}" class="button w-full">View cart</a>
+          </div>
+        </form>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "class": "section-cart-drawer",
+  "settings": []
+}
+{% endschema %}

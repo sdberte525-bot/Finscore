@@ -1,0 +1,11 @@
+{%- comment -%} Label/value rows; a blank value shows "To be confirmed". Params: rows ("Label~value^^Label~value") {%- endcomment -%}
+<dl class="divide-y divide-ink/10 border-y border-ink/10">
+  {%- assign list = rows | split: '^^' -%}
+  {%- for row in list -%}
+    {%- assign r = row | split: '~' -%}
+    <div class="grid gap-1 py-4 sm:grid-cols-[12rem_1fr] sm:gap-6">
+      <dt class="text-ash">{{ r[0] }}</dt>
+      <dd>{%- if r[1] != blank -%}{{ r[1] }}{%- else -%}{%- render 'pending' -%}{%- endif -%}</dd>
+    </div>
+  {%- endfor -%}
+</dl>

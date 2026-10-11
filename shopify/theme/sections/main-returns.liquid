@@ -1,0 +1,37 @@
+{%- capture intro -%}<p>{{ section.settings.intro }}</p>{%- endcapture -%}
+{%- capture body -%}
+  {%- capture policy -%}
+    {%- liquid
+      assign window = ''
+      if settings.returns_days != blank
+        assign window = settings.returns_days | append: ' days from delivery'
+      endif
+      assign rows = 'Return window~' | append: window | append: '^^Condition~' | append: settings.returns_condition | append: '^^Exchanges~' | append: settings.returns_exchanges | append: '^^Refunds~' | append: settings.returns_refunds
+    -%}
+    {%- render 'info-rows', rows: rows -%}
+    {%- if shop.refund_policy.body != blank -%}
+      <p>Read the full <a href="{{ shop.refund_policy.url }}" class="underline underline-offset-4">refund policy</a>.</p>
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- render 'info-section', title: 'Our policy', body: policy -%}
+  {%- capture how -%}
+    <ol class="list-inside list-decimal space-y-3 marker:text-ash">
+      <li><a href="/pages/contact" class="underline underline-offset-4">Send us a message</a> and choose &ldquo;Returns and exchanges&rdquo; as the topic.</li>
+      <li>Include your order number and the item you&rsquo;d like to return or swap.</li>
+      <li>We&rsquo;ll reply with the next steps.</li>
+    </ol>
+  {%- endcapture -%}
+  {%- render 'info-section', title: 'How to start a return or exchange', body: how -%}
+{%- endcapture -%}
+{%- render 'info-layout', current: '/pages/returns', title: page.title, intro: intro, body: body -%}
+
+{% schema %}
+{
+  "name": "Returns",
+  "class": "section-returns",
+  "settings": [
+    { "type": "paragraph", "content": "The details come from Theme settings > Shipping and returns." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "If something isn’t right, here’s how to send it back or swap it." }
+  ]
+}
+{% endschema %}

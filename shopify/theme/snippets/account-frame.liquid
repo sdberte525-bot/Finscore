@@ -1,0 +1,8 @@
+{%- comment -%} Simple centred frame for account pages. Params: title, intro, body {%- endcomment -%}
+<div data-tone="light" class="gutter min-h-[80vh] bg-bone pb-24 pt-12 md:pb-32 md:pt-16">
+  <div class="mx-auto max-w-xl">
+    <h1 class="display text-[3rem] md:text-[4.25rem]">{{ title }}</h1>
+    {%- if intro != blank -%}<p class="mt-5 text-lg leading-relaxed text-charcoal">{{ intro }}</p>{%- endif -%}
+    <div class="mt-10">{{ body }}</div>
+  </div>
+</div>

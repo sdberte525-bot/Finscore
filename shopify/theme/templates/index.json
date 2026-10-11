@@ -1,0 +1,77 @@
+{
+  "sections": {
+    "hero": { "type": "home-hero", "settings": {} },
+    "marquee": { "type": "marquee", "settings": {} },
+    "first_drop": { "type": "featured-products", "settings": {} },
+    "turnaround": {
+      "type": "turnaround",
+      "blocks": {
+        "tee": {
+          "type": "piece",
+          "settings": {
+            "handle": "strong-courageous",
+            "title": "Be Strong & Courageous",
+            "reference": "Joshua 1:9",
+            "video_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/e0c9664b-d124-4af4-927a-e1446cada634.mp4",
+            "builtin_poster": "poster-tee-turn",
+            "alt": "The Be Strong & Courageous tee turning from front to back"
+          }
+        },
+        "long_sleeve": {
+          "type": "piece",
+          "settings": {
+            "handle": "through-christ",
+            "title": "Through Christ Who Strengthens Me",
+            "reference": "Philippians 4:13",
+            "video_url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/4182375c-37d2-4a5f-a9ed-6be7f2005c7c.mp4",
+            "builtin_poster": "poster-ls-turn",
+            "alt": "The Through Christ long sleeve turning from front to back"
+          }
+        }
+      },
+      "block_order": ["tee", "long_sleeve"],
+      "settings": {}
+    },
+    "scripture": {
+      "type": "scripture",
+      "blocks": {
+        "tee": {
+          "type": "verse",
+          "settings": {
+            "handle": "strong-courageous",
+            "builtin_image": "tee-studio-back",
+            "alt": "Back of the Be Strong & Courageous tee: a gothic cross between two skulls under Be strong and courageous, Joshua 1:9",
+            "button_label": "Shop the tee"
+          }
+        },
+        "long_sleeve": {
+          "type": "verse",
+          "settings": {
+            "handle": "through-christ",
+            "builtin_image": "ls-studio-back",
+            "alt": "Back of the Through Christ long sleeve: a skull on a thorned cross inside an arch of Philippians 4:13",
+            "button_label": "Shop the long sleeve"
+          }
+        }
+      },
+      "block_order": ["tee", "long_sleeve"],
+      "settings": {}
+    },
+    "feature": { "type": "collection-feature", "settings": {} },
+    "story": { "type": "our-story", "settings": {} },
+    "first_access": { "type": "first-access", "settings": {} },
+    "follow": {
+      "type": "follow",
+      "blocks": {
+        "t1": { "type": "tile", "settings": { "builtin_image": "knurling", "alt": "Macro of chalk-packed barbell knurling under a hard light" } },
+        "t2": { "type": "tile", "settings": { "builtin_image": "chalk", "alt": "Chalk dust drifting through a beam of window light above a chalk bowl" } },
+        "t3": { "type": "tile", "settings": { "builtin_image": "dumbbells", "alt": "A row of heavy hex dumbbells rim-lit in a dark gym" } },
+        "t4": { "type": "tile", "settings": { "builtin_image": "vintage-gym", "alt": "An empty 1990s bodybuilding gym in golden afternoon light" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": {}
+    },
+    "closing": { "type": "closing-statement", "settings": {} }
+  },
+  "order": ["hero", "marquee", "first_drop", "turnaround", "scripture", "feature", "story", "first_access", "follow", "closing"]
+}

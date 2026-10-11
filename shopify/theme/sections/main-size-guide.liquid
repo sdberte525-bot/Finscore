@@ -1,0 +1,29 @@
+{%- capture intro -%}<p>{{ section.settings.intro }}</p>{%- endcapture -%}
+{%- capture body -%}
+  {%- capture measure -%}
+    <ul class="space-y-2">
+      {%- assign lines = section.settings.how_to_measure | newline_to_br | split: '<br />' -%}
+      {%- for line in lines -%}{%- assign l = line | strip_newlines | strip -%}{%- if l != blank -%}<li>{{ l }}</li>{%- endif -%}{%- endfor -%}
+    </ul>
+  {%- endcapture -%}
+  {%- render 'info-section', title: 'How to measure', body: measure -%}
+  {%- capture tee -%}{%- render 'size-chart', category: 'tee' -%}{%- endcapture -%}
+  {%- render 'info-section', title: 'Short sleeves', body: tee -%}
+  {%- capture ls -%}{%- render 'size-chart', category: 'long-sleeve' -%}{%- endcapture -%}
+  {%- render 'info-section', title: 'Long sleeves', body: ls -%}
+  {%- capture unsure -%}<p>Tell us your usual size and how you like things to fit, and we&rsquo;ll point you to the right one. <a href="/pages/contact" class="underline underline-offset-4">Contact us</a></p>{%- endcapture -%}
+  {%- render 'info-section', title: 'Still not sure?', body: unsure -%}
+{%- endcapture -%}
+{%- render 'info-layout', current: '/pages/size-guide', title: page.title, intro: intro, body: body -%}
+
+{% schema %}
+{
+  "name": "Size guide",
+  "class": "section-size-guide",
+  "settings": [
+    { "type": "paragraph", "content": "Measurements and fit notes are in Theme settings > Size guide." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "The easiest way to find your size: measure a shirt you already love, then compare it with the charts below." },
+    { "type": "textarea", "id": "how_to_measure", "label": "How to measure", "info": "One line each.", "default": "Chest: lay the garment flat and measure straight across, armpit to armpit.\nLength: measure from the highest point of the shoulder down to the hem.\nSleeve: measure from the centre of the back of the collar, over the shoulder, to the end of the cuff." }
+  ]
+}
+{% endschema %}

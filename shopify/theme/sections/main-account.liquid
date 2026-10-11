@@ -1,0 +1,31 @@
+{%- capture body -%}
+  <div class="flex flex-wrap gap-x-6 gap-y-2 text-[0.9375rem]">
+    <a href="{{ routes.account_addresses_url }}" class="link-underline">Addresses ({{ customer.addresses_count }})</a>
+    <a href="{{ routes.account_logout_url }}" class="link-underline text-ash">Sign out</a>
+  </div>
+  <h2 class="display mt-12 text-[2rem]">Orders</h2>
+  {%- paginate customer.orders by 20 -%}
+    {%- if customer.orders.size == 0 -%}
+      <p class="mt-4 text-charcoal">You haven&rsquo;t placed any orders yet.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="button button-solid mt-6">Shop the collection</a>
+    {%- else -%}
+      <ul class="mt-6 divide-y divide-ink/15 border-y border-ink/15">
+        {%- for order in customer.orders -%}
+          <li class="flex flex-wrap items-center justify-between gap-4 py-5 text-[0.9375rem]">
+            <a href="{{ order.customer_url }}" class="link-underline">{{ order.name }}</a>
+            <span class="text-ash">{{ order.created_at | date: '%B %-d, %Y' }}</span>
+            <span class="text-ash">{{ order.fulfillment_status_label }}</span>
+            <span class="tabular-nums">{{ order.total_price | money }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  {%- endpaginate -%}
+{%- endcapture -%}
+{%- assign greeting = 'Hello, ' | append: customer.first_name | default: 'Your account' -%}
+{%- if customer.first_name == blank -%}{%- assign greeting = 'Your account' -%}{%- endif -%}
+{%- render 'account-frame', title: greeting, body: body -%}
+
+{% schema %}
+{ "name": "Account", "class": "section-account", "settings": [] }
+{% endschema %}

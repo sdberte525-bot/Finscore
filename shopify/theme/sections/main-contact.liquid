@@ -1,0 +1,86 @@
+{%- capture intro -%}
+  <p>
+    {{ section.settings.intro }}
+    {%- if settings.contact_email != blank %} You can also email <a href="mailto:{{ settings.contact_email }}" class="underline underline-offset-4">{{ settings.contact_email }}</a>.{%- endif -%}
+  </p>
+{%- endcapture -%}
+{%- capture body -%}
+  <section aria-labelledby="quick-answers">
+    <h2 id="quick-answers" class="label">You might find a quick answer here</h2>
+    <ul class="mt-5 grid gap-px overflow-hidden border border-ink/15 bg-ink/15 sm:grid-cols-2">
+      {%- assign shortcuts = 'Shipping~Where we ship and how long it takes.~/pages/shipping^^Sizing~Measurements and how to find your fit.~/pages/size-guide^^Returns and exchanges~How to send something back or swap a size.~/pages/returns^^FAQ~Answers to the questions we hear most.~/pages/faq' | split: '^^' -%}
+      {%- for s in shortcuts -%}
+        {%- assign x = s | split: '~' -%}
+        <li class="bg-bone">
+          <a href="{{ x[2] }}" class="group block h-full p-6 transition-colors hover:bg-plaster/60">
+            <span class="block text-lg">{{ x[0] }}</span>
+            <span class="mt-1 block text-[0.9375rem] text-ash">{{ x[1] }}</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </section>
+
+  <section aria-labelledby="send-message" class="border-t border-ink/15 pt-10" id="contact-form">
+    <h2 id="send-message" class="display text-[2.25rem] md:text-[2.75rem]">Send a message</h2>
+    <div class="mt-8">
+      {%- form 'contact', id: 'contact-form-main', novalidate: 'novalidate', class: 'grid gap-8' -%}
+        {%- if form.posted_successfully? -%}
+          <div role="status" class="border border-ink/15 p-8">
+            <p class="display text-[2rem]">Message sent.</p>
+            <p class="mt-3 text-charcoal">Thanks for writing. We&rsquo;ll reply to the email address you gave us.</p>
+          </div>
+        {%- else -%}
+          {%- assign field = 'w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none aria-[invalid=true]:border-oxblood' -%}
+          {%- if form.errors -%}
+            <p role="alert" class="text-[0.9375rem] text-oxblood">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+          <div class="grid gap-8 sm:grid-cols-2">
+            <div>
+              <label for="contact-name" class="block text-[0.9375rem]">Name</label>
+              <input id="contact-name" name="contact[name]" autocomplete="name" required value="{{ form.name }}" class="{{ field }}">
+            </div>
+            <div>
+              <label for="contact-email" class="block text-[0.9375rem]">Email</label>
+              <input id="contact-email" name="contact[email]" type="email" autocomplete="email" required value="{{ form.email }}" class="{{ field }}" {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}>
+            </div>
+          </div>
+          <div class="grid gap-8 sm:grid-cols-2">
+            <div>
+              <label for="contact-topic" class="block text-[0.9375rem]">What&rsquo;s it about?</label>
+              <select id="contact-topic" name="contact[Topic]" required class="{{ field }} cursor-pointer" data-contact-topic>
+                <option value="" disabled selected>Choose a topic</option>
+                {%- assign topics = 'An order,Sizing and fit,Returns and exchanges,Wholesale or collaboration,Press,Something else' | split: ',' -%}
+                {%- for t in topics -%}<option>{{ t }}</option>{%- endfor -%}
+              </select>
+            </div>
+            <div data-contact-order hidden>
+              <label for="contact-order" class="block text-[0.9375rem]">Order number <span class="text-ash">(optional)</span></label>
+              <input id="contact-order" name="contact[Order number]" class="{{ field }}">
+            </div>
+          </div>
+          <div>
+            <label for="contact-message" class="block text-[0.9375rem]">Message</label>
+            <textarea id="contact-message" name="contact[body]" required rows="6" class="{{ field }} resize-y">{{ form.body }}</textarea>
+          </div>
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <button type="submit" class="button button-solid sm:min-w-48">Send message</button>
+            <p role="status" class="text-[0.9375rem] text-ash" data-contact-status></p>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </section>
+{%- endcapture -%}
+{%- render 'info-layout', current: '/pages/contact', title: page.title, intro: intro, body: body -%}
+
+{% schema %}
+{
+  "name": "Contact",
+  "class": "section-contact",
+  "settings": [
+    { "type": "paragraph", "content": "Messages are emailed to the store's sender email (Settings > Notifications)." },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Questions about an order, sizing, or anything else? Send us a message and we’ll get back to you." }
+  ]
+}
+{% endschema %}

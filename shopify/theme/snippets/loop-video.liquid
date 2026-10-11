@@ -1,0 +1,44 @@
+{%- comment -%}
+  A muted, looping video over a poster image. The video loads only near the viewport,
+  pauses when off screen, and never plays with reduced motion (theme.js, [data-loop-video]).
+  Params:
+    video        Shopify-hosted video from a `video` setting (optional, wins over src)
+    src          fallback MP4 URL
+    poster_key   campaign image key for the poster (media-image snippet), used when no Shopify video
+    poster_image Shopify image to use as poster (optional)
+    alt, sizes, class, priority, fit ('cover' | 'contain'), playing (false holds on the poster)
+{%- endcomment -%}
+{%- liquid
+  assign fit_class = 'object-cover'
+  if fit == 'contain'
+    assign fit_class = 'object-contain'
+  endif
+  assign video_src = src
+  if video != blank
+    assign mp4 = video.sources | where: 'mime_type', 'video/mp4' | sort: 'height' | last
+    if mp4
+      assign video_src = mp4.url
+    endif
+  endif
+  assign img_class = 'absolute inset-0 h-full w-full ' | append: fit_class
+-%}
+<div class="relative overflow-hidden {{ class }}" data-loop-video{% if playing == false %} data-paused{% endif %}>
+  {%- if poster_image != blank -%}
+    {{ poster_image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1800', sizes: sizes, class: img_class, alt: alt, loading: 'lazy' }}
+  {%- elsif video != blank and video.preview_image -%}
+    {{ video.preview_image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1800', sizes: sizes, class: img_class, alt: alt, loading: 'lazy' }}
+  {%- else -%}
+    {%- render 'media-image', key: poster_key, alt: alt, sizes: sizes, class: img_class, priority: priority -%}
+  {%- endif -%}
+  {%- if video_src != blank -%}
+    <video
+      data-src="{{ video_src }}"
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-hidden="true"
+      class="absolute inset-0 h-full w-full {{ fit_class }} opacity-0 transition-opacity duration-700"
+    ></video>
+  {%- endif -%}
+</div>

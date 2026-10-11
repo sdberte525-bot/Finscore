@@ -1,0 +1,23 @@
+{%- assign new_drop_url = routes.collections_url | append: '/new-drop' -%}
+<section data-tone="dark" data-reveal-scope class="gutter bg-charcoal py-24 text-bone md:py-32">
+  <p data-rise class="display max-w-[16ch] text-[3rem] sm:text-[4.5rem] lg:text-[6rem]">{{ section.settings.heading }}</p>
+  <div data-rise class="mt-12 flex flex-wrap gap-3">
+    <a href="{{ section.settings.primary_link | default: new_drop_url }}" class="button button-light">{{ section.settings.primary_label }}</a>
+    <a href="{{ section.settings.secondary_link | default: '/pages/contact' }}" class="button border-bone/40 text-bone hover:border-bone">{{ section.settings.secondary_label }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Statement and buttons",
+  "class": "section-about-cta",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Statement", "default": "For anyone who keeps showing up." },
+    { "type": "text", "id": "primary_label", "label": "First button", "default": "Shop the first drop" },
+    { "type": "url", "id": "primary_link", "label": "First button link", "info": "Defaults to the New drop collection." },
+    { "type": "text", "id": "secondary_label", "label": "Second button", "default": "Get in touch" },
+    { "type": "url", "id": "secondary_link", "label": "Second button link", "info": "Defaults to the contact page." }
+  ],
+  "presets": [{ "name": "Statement and buttons" }]
+}
+{% endschema %}

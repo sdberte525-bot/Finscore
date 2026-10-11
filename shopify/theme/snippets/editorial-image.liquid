@@ -1,0 +1,16 @@
+{%- comment -%}
+  A photograph in an editorial frame that unmasks upward as it enters and drifts slightly
+  while in view ([data-reveal], [data-parallax] in theme.js).
+  Params: image (Shopify image, optional), key (bundled campaign image), alt, aspect (classes), sizes, priority, tone ('light' | 'dark'), class
+{%- endcomment -%}
+{%- liquid
+  assign bg = 'bg-plaster'
+  if tone == 'dark'
+    assign bg = 'bg-charcoal'
+  endif
+-%}
+<div data-reveal class="relative overflow-hidden {{ aspect }} {{ bg }} {{ class }}">
+  <div data-parallax class="absolute -inset-y-[6%] inset-x-0">
+    {%- render 'campaign-image', image: image, key: key, alt: alt, sizes: sizes, priority: priority, class: 'absolute inset-0 h-full w-full object-cover' -%}
+  </div>
+</div>

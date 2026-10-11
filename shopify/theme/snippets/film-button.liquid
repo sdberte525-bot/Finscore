@@ -1,0 +1,40 @@
+{%- comment -%} "Watch the film" button and player dialog: vertical on phones, widescreen above. Params: film (section settings), class {%- endcomment -%}
+{%- liquid
+  assign wide_src = film.film_url_wide
+  if film.film_video_wide != blank
+    assign wmp4 = film.film_video_wide.sources | where: 'mime_type', 'video/mp4' | sort: 'height' | last
+    if wmp4
+      assign wide_src = wmp4.url
+    endif
+  endif
+  assign vertical_src = film.film_url_vertical
+  if film.film_video_vertical != blank
+    assign vmp4 = film.film_video_vertical.sources | where: 'mime_type', 'video/mp4' | sort: 'height' | last
+    if vmp4
+      assign vertical_src = vmp4.url
+    endif
+  endif
+  if vertical_src == blank
+    assign vertical_src = wide_src
+  endif
+  if wide_src == blank
+    assign wide_src = vertical_src
+  endif
+-%}
+{%- if wide_src != blank -%}
+  <button
+    type="button"
+    data-film-open
+    data-wide="{{ wide_src }}"
+    data-wide-poster="{{ 'media-poster-film-wide-lg.webp' | asset_url }}"
+    data-vertical="{{ vertical_src }}"
+    data-vertical-poster="{{ 'media-poster-film-vertical-lg.webp' | asset_url }}"
+    data-title="{{ film.film_title | escape }}"
+    class="group inline-flex items-center gap-3 {{ class }}"
+  >
+    <span aria-hidden="true" class="grid h-11 w-11 place-items-center rounded-full border border-current transition-colors group-hover:bg-bone group-hover:text-ink">
+      {%- render 'icon', name: 'play' -%}
+    </span>
+    <span class="caps">{{ film.film_label | default: 'Watch the film' }}</span>
+  </button>
+{%- endif -%}

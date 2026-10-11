@@ -1,0 +1,74 @@
+{%- comment -%}
+  Email sign-up used across the site, posted to Shopify as a customer subscribed to email
+  marketing. `source` is saved as a customer tag (source:footer, source:popup, notify:<product>:<size>)
+  so the list can be segmented in Shopify > Customers.
+  Params: id (unique on the page), source, tone ('dark' | 'light'), cta, done
+{%- endcomment -%}
+{%- liquid
+  assign tone = tone | default: 'dark'
+  assign cta = cta | default: 'Sign up'
+  assign done = done | default: 'You’re on the list. We’ll only write when there’s something worth opening.'
+  assign form_id = 'newsletter-' | append: id
+  if tone == 'dark'
+    assign field_class = 'border-bone/40 text-bone placeholder:text-stone focus:border-bone'
+    assign button_class = 'button-light'
+    assign done_class = 'text-bone'
+    assign note_class = 'text-stone'
+    assign error_class = 'text-bone'
+  else
+    assign field_class = 'border-ink/30 text-ink placeholder:text-ash focus:border-ink'
+    assign button_class = 'button-solid'
+    assign done_class = 'text-ink'
+    assign note_class = 'text-ash'
+    assign error_class = 'text-oxblood'
+  endif
+-%}
+<div data-newsletter data-source="{{ source }}" data-done-class="{{ done_class }}">
+  {%- form 'customer', id: form_id, class: 'w-full max-w-md', novalidate: 'novalidate' -%}
+    {%- liquid
+      assign status = ''
+      if form.posted_successfully?
+        assign status = 'success'
+      elsif form.errors
+        assign status = 'error'
+      endif
+    -%}
+    <input type="hidden" name="contact[tags]" value="newsletter,{% if source contains 'notify:' %}{{ source }}{% else %}source:{{ source }}{% endif %}" data-tags>
+    <div data-status="{{ status }}" hidden></div>
+    {%- if status == 'success' -%}
+      <p role="status" class="text-lg leading-snug {{ done_class }}">{{ done }}</p>
+    {%- else -%}
+      <label for="{{ form_id }}-email" class="sr-only">Email address</label>
+      <div class="flex flex-col gap-3 sm:flex-row" data-fields>
+        <input
+          id="{{ form_id }}-email"
+          name="contact[email]"
+          type="email"
+          required
+          autocomplete="email"
+          inputmode="email"
+          placeholder="Your email address"
+          aria-describedby="{{ form_id }}-status"
+          {% if status == 'error' %}aria-invalid="true"{% endif %}
+          class="field {{ field_class }}"
+        >
+        <button type="submit" class="button shrink-0 {{ button_class }}" data-cta="{{ cta | escape }}">{{ cta }}</button>
+      </div>
+      <p
+        id="{{ form_id }}-status"
+        role="status"
+        data-note
+        data-note-class="{{ note_class }}"
+        data-error-class="{{ error_class }}"
+        class="mt-3 min-h-5 text-xs {% if status == 'error' %}{{ error_class }}{% else %}{{ note_class }}{% endif %}"
+      >
+        {%- if status == 'error' -%}
+          {{ form.errors.translated_fields.email | default: 'Email' }} {{ form.errors.messages.email | default: 'needs another look.' }}
+        {%- else -%}
+          Drop alerts and restocks only. Unsubscribe anytime.
+        {%- endif -%}
+      </p>
+      <p data-done hidden role="status" class="text-lg leading-snug {{ done_class }}">{{ done }}</p>
+    {%- endif -%}
+  {%- endform -%}
+</div>

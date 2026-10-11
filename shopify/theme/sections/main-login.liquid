@@ -1,0 +1,47 @@
+{%- capture body -%}
+  <div data-login>
+    {%- form 'customer_login', class: 'grid gap-8', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}<p role="alert" class="text-[0.9375rem] text-oxblood">{{ form.errors | default_errors }}</p>{%- endif -%}
+      <div>
+        <label for="login-email" class="block text-[0.9375rem]">Email</label>
+        <input id="login-email" type="email" name="customer[email]" autocomplete="email" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+      </div>
+      {%- if form.password_needed -%}
+        <div>
+          <label for="login-password" class="block text-[0.9375rem]">Password</label>
+          <input id="login-password" type="password" name="customer[password]" autocomplete="current-password" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+        </div>
+      {%- endif -%}
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <button type="submit" class="button button-solid sm:min-w-48">Sign in</button>
+        <a href="#recover" class="link-underline text-[0.9375rem] text-ash">Forgot your password?</a>
+      </div>
+      <p class="text-[0.9375rem] text-ash">New here? <a href="{{ routes.account_register_url }}" class="underline underline-offset-4">Create an account</a></p>
+    {%- endform -%}
+  </div>
+  <div id="recover" class="mt-16 border-t border-ink/15 pt-10">
+    <h2 class="display text-[2rem]">Reset your password</h2>
+    {%- form 'recover_customer_password', class: 'mt-6 grid gap-6' -%}
+      {%- if form.posted_successfully? -%}
+        <p role="status" class="text-charcoal">We&rsquo;ve sent you an email with a link to reset your password.</p>
+      {%- else -%}
+        {%- if form.errors -%}<p role="alert" class="text-[0.9375rem] text-oxblood">{{ form.errors | default_errors }}</p>{%- endif -%}
+        <div>
+          <label for="recover-email" class="block text-[0.9375rem]">Email</label>
+          <input id="recover-email" type="email" name="email" autocomplete="email" required class="w-full rounded-none border-0 border-b border-ink/30 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-ink focus-visible:outline-none">
+        </div>
+        <button type="submit" class="button sm:w-fit">Send reset link</button>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+  {%- if shop.checkout.guest_login -%}
+    <div class="mt-16 border-t border-ink/15 pt-10">
+      {%- form 'guest_login' -%}<button type="submit" class="button">Continue as a guest</button>{%- endform -%}
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- render 'account-frame', title: 'Sign in', body: body -%}
+
+{% schema %}
+{ "name": "Sign in", "class": "section-login", "settings": [] }
+{% endschema %}

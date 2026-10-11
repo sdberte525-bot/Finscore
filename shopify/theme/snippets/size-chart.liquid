@@ -1,0 +1,100 @@
+{%- comment -%}
+  Measurements table plus a two-question fit finder ([data-size-chart] in theme.js).
+  Data comes from Theme settings > Size guide. Params: category ('tee' | 'long-sleeve'), pick (true adds a "Select" button on the product page)
+{%- endcomment -%}
+{%- liquid
+  if category == 'long-sleeve'
+    assign columns = settings.size_ls_columns | split: ','
+    assign rows_raw = settings.size_ls_rows
+    assign fit_note = settings.size_ls_fit
+    assign shift_fitted = settings.size_ls_fitted
+    assign shift_relaxed = settings.size_ls_relaxed
+    assign label = 'Long sleeves'
+  else
+    assign columns = settings.size_tee_columns | split: ','
+    assign rows_raw = settings.size_tee_rows
+    assign fit_note = settings.size_tee_fit
+    assign shift_fitted = settings.size_tee_fitted
+    assign shift_relaxed = settings.size_tee_relaxed
+    assign label = 'Short sleeves'
+  endif
+  assign rows = rows_raw | newline_to_br | split: '<br />'
+-%}
+{%- if rows_raw == blank -%}
+  <div class="border border-ink/15 p-5 text-[0.9375rem] leading-relaxed">
+    <p>Measurements for {{ label | downcase }} will be published here before launch.</p>
+    <p class="mt-2 text-ash">Between sizes or unsure? <a href="/pages/contact" class="underline underline-offset-4">Ask us</a> and we&rsquo;ll help you choose.</p>
+  </div>
+{%- else -%}
+  <div data-size-chart data-fitted="{{ shift_fitted }}" data-relaxed="{{ shift_relaxed }}" {% if pick %}data-pick{% endif %}>
+    <p class="text-[0.9375rem] leading-relaxed text-charcoal">{{ fit_note }}</p>
+
+    <div class="mt-6 border border-ink/15 bg-plaster/50 p-5">
+      <p class="caps text-ash">Find your size</p>
+      <fieldset class="mt-4">
+        <legend class="text-sm text-charcoal">Your usual size in tees and tops</legend>
+        <div class="mt-2 grid grid-cols-6 gap-1.5">
+          {%- for row in rows -%}
+            {%- assign size = row | strip_newlines | split: ',' | first | strip -%}
+            {%- if size != blank -%}
+              <button type="button" data-usual="{{ size }}" aria-pressed="false" class="h-10 rounded-[2px] border border-ink/20 bg-bone text-sm transition-colors hover:border-ink">{{ size }}</button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </fieldset>
+      <fieldset class="mt-4">
+        <legend class="text-sm text-charcoal">How you like it to fit</legend>
+        <div class="mt-2 grid grid-cols-3 gap-1.5">
+          <button type="button" data-fit="fitted" aria-pressed="false" class="h-10 rounded-[2px] border border-ink/20 bg-bone text-sm transition-colors hover:border-ink">Closer</button>
+          <button type="button" data-fit="regular" aria-pressed="true" class="h-10 rounded-[2px] border border-ink bg-ink text-sm text-bone transition-colors">As designed</button>
+          <button type="button" data-fit="relaxed" aria-pressed="false" class="h-10 rounded-[2px] border border-ink/20 bg-bone text-sm transition-colors hover:border-ink">Roomier</button>
+        </div>
+      </fieldset>
+      <div role="status" aria-live="polite" class="mt-5 min-h-12" data-recommendation>
+        <p class="text-sm text-ash" data-rec-empty>Pick your usual size to see our recommendation.</p>
+        <div class="flex flex-wrap items-center justify-between gap-3" data-rec-result hidden>
+          <p class="text-[0.9375rem]">
+            We&rsquo;d go with <strong class="display text-[1.75rem] align-middle" data-rec-size></strong>
+            <span class="ml-2 text-sm text-ash" data-rec-detail></span>
+          </p>
+          {%- if pick -%}
+            <button type="button" data-rec-pick class="button button-solid min-h-10 px-5 text-sm">Select</button>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 overflow-x-auto">
+      <table class="w-full min-w-[20rem] text-left text-[0.9375rem]">
+        <caption class="sr-only">{{ label }} measurements in inches</caption>
+        <thead>
+          <tr class="border-b border-ink/20 text-ash">
+            {%- for c in columns -%}
+              <th scope="col" class="py-3 pr-4 text-sm font-normal">{{ c | strip }}</th>
+            {%- endfor -%}
+          </tr>
+        </thead>
+        <tbody class="tabular-nums">
+          {%- for row in rows -%}
+            {%- assign cells = row | strip_newlines | split: ',' -%}
+            {%- assign size = cells.first | strip -%}
+            {%- if size != blank -%}
+              <tr data-row="{{ size }}" data-chest="{{ cells[1] | strip }}" data-length="{{ cells[2] | strip }}" class="border-b border-ink/10">
+                {%- for cell in cells -%}
+                  {%- if forloop.first -%}
+                    <th scope="row" class="py-3 pr-4 font-normal">{{ cell | strip }}</th>
+                  {%- else -%}
+                    <td class="py-3 pr-4">{{ cell | strip }}</td>
+                  {%- endif -%}
+                {%- endfor -%}
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-3 text-sm text-ash">
+      Garment measurements in inches{% if settings.size_approximate %}, approximate (within about half an inch){% endif %}. &ldquo;Fits chest&rdquo; is the body measurement each size is made for.
+    </p>
+  </div>
+{%- endif -%}

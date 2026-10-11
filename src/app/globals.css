@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* The Shopify theme in /shopify has its own stylesheet build. */
+@source not "../../shopify";
 
 @theme {
   /* SWOLVATION palette: deep black and charcoal, warm off-white and vintage cream. */

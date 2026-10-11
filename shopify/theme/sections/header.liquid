@@ -1,0 +1,127 @@
+{%- capture nav_raw -%}{%- render 'nav-links', menu: section.settings.menu -%}{%- endcapture -%}
+{%- assign nav = nav_raw | strip | split: '^^' -%}
+{%- assign shop_url = routes.all_products_collection_url -%}
+
+<header
+  data-header
+  class="border-b border-transparent bg-bone/95 backdrop-blur-md transition-colors duration-200"
+>
+  <div class="gutter grid h-16 grid-cols-[1fr_auto_1fr] items-center md:h-[4.5rem]">
+    <div class="flex items-center">
+      <button
+        type="button"
+        data-menu-toggle
+        class="-ml-2.5 grid h-11 w-11 place-items-center lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <span data-menu-icon-open>{% render 'icon', name: 'menu' %}</span>
+        <span data-menu-icon-close hidden>{% render 'icon', name: 'close' %}</span>
+      </button>
+      <nav aria-label="Main" class="hidden lg:block">
+        <ul class="flex items-center gap-8">
+          {%- for item in nav -%}
+            {%- assign parts = item | split: '|' -%}
+            {%- assign url = parts[0] | strip -%}
+            {%- liquid
+              assign active = false
+              if request.path == url
+                assign active = true
+              elsif url == shop_url and request.page_type == 'product'
+                assign active = true
+              endif
+            -%}
+            <li>
+              <a href="{{ url }}" class="caps link-underline py-1" {% if active %}aria-current="page"{% endif %}>{{ parts[1] }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="wordmark text-[1.375rem] md:text-[1.625rem]" aria-label="{{ shop.name }}, home">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 480 | image_tag: class: 'h-7 w-auto md:h-8', alt: shop.name, loading: 'eager' }}
+      {%- else -%}
+        {{ shop.name | default: 'Swolvation' }}
+      {%- endif -%}
+    </a>
+
+    <div class="-mr-2.5 flex items-center justify-end gap-1">
+      <button type="button" data-search-open class="grid h-11 w-11 place-items-center" aria-label="Search">
+        {% render 'icon', name: 'search' %}
+      </button>
+      {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="hidden h-11 w-11 place-items-center sm:grid" aria-label="{% if customer %}Your account{% else %}Sign in{% endif %}">
+          {% render 'icon', name: 'account' %}
+        </a>
+      {%- endif -%}
+      <a
+        href="{{ routes.cart_url }}"
+        data-cart-open
+        class="relative grid h-11 w-11 place-items-center"
+        aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
+      >
+        {% render 'icon', name: 'cart' %}
+        <span
+          data-cart-count
+          class="absolute right-1 top-1 grid h-[1.125rem] min-w-[1.125rem] place-items-center rounded-full bg-ink px-1 text-[0.6875rem] font-semibold tabular-nums text-bone"
+          {% if cart.item_count == 0 %}hidden{% endif %}
+        >{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div
+  id="mobile-menu"
+  data-mobile-menu
+  data-lenis-prevent
+  style="top: 64px"
+  class="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex -translate-y-2 flex-col justify-between bg-bone px-5 pb-10 pt-6 opacity-0 transition-[opacity,transform] duration-300 ease-out lg:hidden"
+  aria-hidden="true"
+  inert
+>
+  <nav aria-label="Mobile">
+    <ul class="divide-y divide-ink/10 border-y border-ink/10">
+      {%- for item in nav -%}
+        {%- assign parts = item | split: '|' -%}
+        {%- assign url = parts[0] | strip -%}
+        <li>
+          <a href="{{ url }}" {% if request.path == url %}aria-current="page"{% endif %} class="display flex min-h-16 items-center justify-between text-[2rem]">
+            {{ parts[1] }}
+            <span aria-hidden="true" class="text-xl text-muted">&#8594;</span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+  <div class="space-y-4 text-[0.9375rem] text-ash">
+    <div class="flex flex-wrap gap-x-6 gap-y-2">
+      <a href="/pages/faq">FAQ</a>
+      <a href="/pages/shipping">Shipping</a>
+      <a href="/pages/returns">Returns</a>
+      <a href="/pages/size-guide">Size guide</a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}">{% if customer %}Your account{% else %}Sign in{% endif %}</a>
+      {%- endif -%}
+    </div>
+    <div class="flex items-center gap-3">
+      {%- render 'social-links', style: 'menu' -%}
+    </div>
+    <p>{{ settings.tagline }}</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header sticky top-0 z-50",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image", "info": "Optional. Without one, the header shows the store name in the Swolvation wordmark style." },
+    { "type": "link_list", "id": "menu", "label": "Menu", "info": "Optional. Leave empty to use Shop, New drop, Our story and Contact." },
+    { "type": "checkbox", "id": "show_account", "label": "Show account icon", "default": false, "info": "Shown only when customer accounts are turned on in Settings > Customer accounts." }
+  ]
+}
+{% endschema %}

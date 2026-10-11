@@ -1,0 +1,169 @@
+{%- comment -%}
+  Product gallery: a swipeable, scroll-snapping track with arrow buttons and keys, labelled
+  thumbnails, hover-to-zoom on desktop and a full-screen viewer (theme.js, [data-gallery]).
+
+  The two launch pieces use the campaign gallery built into the theme unless Theme settings >
+  Products says to use Shopify photos. Every other product uses its Shopify media; write image
+  alt text as "Label | description" (e.g. "Back | The back print") to name the thumbnails.
+  Params: product, curated ('tee' | 'ls' | '')
+{%- endcomment -%}
+{%- liquid
+  assign cdn = 'https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/'
+  assign entries = ''
+  if curated == 'tee'
+    assign entries = 'tee-flat-lay~~Flat lay~cover^^poster-tee-turn~' | append: cdn | append: 'e0c9664b-d124-4af4-927a-e1446cada634.mp4~Turn~cover^^tee-studio-back~~Back~cover^^tee-studio-front~~Front~cover^^tee-chest~~Chest~contain^^poster-tee-sweep~' | append: cdn | append: '9d9eede1-c0e9-4847-affa-f63d81d76c06.mp4~Print~cover^^tee-gym-hook~~In the gym~cover'
+  elsif curated == 'ls'
+    assign entries = 'ls-flat-lay~~Flat lay~cover^^poster-ls-turn~' | append: cdn | append: '4182375c-37d2-4a5f-a9ed-6be7f2005c7c.mp4~Turn~cover^^ls-studio-back~~Back~cover^^ls-studio-front~~Front~cover^^poster-ls-dawn~' | append: cdn | append: '98428e0f-58a6-4d16-aaf8-5859fe8f642f.mp4~In the gym~cover^^ls-locker~~Locker room~cover'
+  endif
+  assign curated_list = entries | split: '^^'
+  if curated_list.size > 0
+    assign total = curated_list.size
+    assign first_label = curated_list.first | split: '~'
+    assign first_label = first_label[2]
+  else
+    assign total = product.media.size
+    assign first_label = '1 / ' | append: total
+  endif
+-%}
+<div class="flex flex-col lg:flex-row lg:gap-4" data-gallery data-name="{{ product.title | escape }}">
+  {%- comment -%} Thumbnails {%- endcomment -%}
+  <ul class="order-last mt-3 flex gap-2 overflow-x-auto px-5 [scrollbar-width:none] lg:order-first lg:mt-0 lg:w-20 lg:shrink-0 lg:flex-col lg:px-0" aria-label="{{ product.title | escape }} views">
+    {%- if curated_list.size > 0 -%}
+      {%- for entry in curated_list -%}
+        {%- assign e = entry | split: '~' -%}
+        {%- assign thumb_fit = 'object-cover' -%}
+        {%- if e[3] == 'contain' -%}{%- assign thumb_fit = 'object-contain p-1' -%}{%- endif -%}
+        <li class="shrink-0">
+          <button type="button" data-gallery-thumb="{{ forloop.index0 }}" {% if forloop.first %}aria-current="true"{% endif %} aria-label="Show {{ e[2] }}" class="group block w-16 text-left transition-opacity lg:w-20 {% unless forloop.first %}opacity-60 hover:opacity-100{% endunless %}">
+            <span class="relative block aspect-[4/5] overflow-hidden bg-studio ring-1 {% if forloop.first %}ring-ink{% else %}ring-transparent{% endif %}">
+              <img src="{{ 'media-' | append: e[0] | append: '-sm.webp' | asset_url }}" alt="" width="160" height="200" loading="lazy" class="absolute inset-0 h-full w-full {{ thumb_fit }}">
+              {%- if e[1] != blank -%}
+                <span aria-hidden="true" class="absolute bottom-1 right-1 grid h-5 w-5 place-items-center rounded-full bg-bone/90 text-[0.5rem] text-ink">&#9654;</span>
+              {%- endif -%}
+            </span>
+            <span class="mt-1.5 block truncate text-xs text-ash">{{ e[2] }}</span>
+          </button>
+        </li>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for media in product.media -%}
+        {%- liquid
+          assign label = media.alt | split: ' | ' | first
+          if media.alt == blank or media.alt == product.title or label.size > 24
+            if media.media_type == 'video' or media.media_type == 'external_video'
+              assign label = 'Video ' | append: forloop.index
+            else
+              assign label = 'View ' | append: forloop.index
+            endif
+          endif
+          assign thumb_fit = 'object-contain p-1'
+          if media.preview_image.aspect_ratio > 0.7 and media.preview_image.aspect_ratio < 0.9
+            assign thumb_fit = 'object-cover'
+          endif
+          assign thumb_class = 'absolute inset-0 h-full w-full ' | append: thumb_fit
+        -%}
+        <li class="shrink-0">
+          <button type="button" data-gallery-thumb="{{ forloop.index0 }}" {% if forloop.first %}aria-current="true"{% endif %} aria-label="Show {{ label | escape }}" class="group block w-16 text-left transition-opacity lg:w-20 {% unless forloop.first %}opacity-60 hover:opacity-100{% endunless %}">
+            <span class="relative block aspect-[4/5] overflow-hidden bg-studio ring-1 {% if forloop.first %}ring-ink{% else %}ring-transparent{% endif %}">
+              {{ media.preview_image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy', class: thumb_class }}
+              {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                <span aria-hidden="true" class="absolute bottom-1 right-1 grid h-5 w-5 place-items-center rounded-full bg-bone/90 text-[0.5rem] text-ink">&#9654;</span>
+              {%- endif -%}
+            </span>
+            <span class="mt-1.5 block truncate text-xs text-ash">{{ label }}</span>
+          </button>
+        </li>
+      {%- endfor -%}
+    {%- endif -%}
+  </ul>
+
+  {%- comment -%} Track {%- endcomment -%}
+  <div class="relative min-w-0 flex-1">
+    <div
+      data-gallery-track
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="{{ product.title | escape }} images"
+      tabindex="0"
+      class="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] focus-visible:outline-offset-[-2px] [&::-webkit-scrollbar]:hidden"
+    >
+      {%- if curated_list.size > 0 -%}
+        {%- for entry in curated_list -%}
+          {%- assign e = entry | split: '~' -%}
+          {%- capture alt_text -%}{%- render 'media-alt', key: e[0] -%}{%- endcapture -%}
+          {%- assign alt_text = alt_text | escape -%}
+          {%- if e[1] != blank -%}
+            <button type="button" tabindex="-1" data-slide data-label="{{ e[2] }}" data-video="{{ e[1] }}" data-full="{{ 'media-' | append: e[0] | append: '-lg.webp' | asset_url }}" data-alt="{{ alt_text }}" aria-label="Enlarge: {{ alt_text }}" class="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-charcoal">
+              {%- render 'loop-video', src: e[1], poster_key: e[0], sizes: '(min-width: 1024px) 52vw, 100vw', class: 'h-full w-full', priority: forloop.first, playing: forloop.first -%}
+            </button>
+          {%- else -%}
+            {%- liquid
+              if e[3] == 'contain'
+                assign slide_fit = 'object-contain p-[5%]'
+              else
+                assign slide_fit = 'object-cover'
+              endif
+              assign slide_class = 'absolute inset-0 h-full w-full transition-transform duration-200 ease-out motion-reduce:transition-none ' | append: slide_fit
+            -%}
+            <button type="button" tabindex="-1" data-slide data-zoom data-label="{{ e[2] }}" data-full="{{ 'media-' | append: e[0] | append: '-lg.webp' | asset_url }}" data-alt="{{ alt_text }}" aria-label="Enlarge: {{ alt_text }}" class="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-studio pointer-fine:cursor-zoom-in">
+              {%- render 'media-image', key: e[0], sizes: '(min-width: 1024px) 52vw, 100vw', class: slide_class, priority: forloop.first -%}
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for media in product.media -%}
+          {%- liquid
+            assign label = media.alt | split: ' | ' | first
+            assign alt_text = media.alt | split: ' | ' | last | default: product.title
+            if media.alt == blank or media.alt == product.title or label.size > 24
+              if media.media_type == 'video' or media.media_type == 'external_video'
+                assign label = 'Video ' | append: forloop.index
+              else
+                assign label = 'View ' | append: forloop.index
+              endif
+            endif
+            assign slide_fit = 'object-contain p-[5%]'
+            if media.preview_image.aspect_ratio > 0.7 and media.preview_image.aspect_ratio < 0.9
+              assign slide_fit = 'object-cover'
+            endif
+            assign ld = 'lazy'
+            if forloop.first
+              assign ld = 'eager'
+            endif
+          -%}
+          {%- if media.media_type == 'video' -%}
+            {%- assign mp4 = media.sources | where: 'mime_type', 'video/mp4' | sort: 'height' | last -%}
+            <button type="button" tabindex="-1" data-slide data-label="{{ label | escape }}" data-video="{{ mp4.url }}" data-full="{{ media.preview_image | image_url: width: 2400 }}" data-alt="{{ alt_text | escape }}" aria-label="Enlarge: {{ alt_text | escape }}" class="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-charcoal">
+              {%- render 'loop-video', src: mp4.url, poster_image: media.preview_image, alt: alt_text, sizes: '(min-width: 1024px) 52vw, 100vw', class: 'h-full w-full', playing: forloop.first -%}
+            </button>
+          {%- elsif media.media_type == 'image' or media.media_type == 'external_video' -%}
+            {%- assign slide_class = 'absolute inset-0 h-full w-full transition-transform duration-200 ease-out motion-reduce:transition-none ' | append: slide_fit -%}
+            <button type="button" tabindex="-1" data-slide data-zoom data-label="{{ label | escape }}" data-full="{{ media.preview_image | image_url: width: 2400 }}" data-alt="{{ alt_text | escape }}" aria-label="Enlarge: {{ alt_text | escape }}" class="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-studio pointer-fine:cursor-zoom-in">
+              {%- assign fp = 'auto' -%}{%- if forloop.first -%}{%- assign fp = 'high' -%}{%- endif -%}
+              {{ media.preview_image | image_url: width: 2000 | image_tag: widths: '600, 800, 1000, 1400, 2000', sizes: '(min-width: 1024px) 52vw, 100vw', class: slide_class, alt: alt_text, loading: ld, fetchpriority: fp }}
+            </button>
+          {%- endif -%}
+        {%- else -%}
+          <div class="relative aspect-[4/5] w-full shrink-0 bg-studio">
+            {{ 'product-1' | placeholder_svg_tag: 'absolute inset-0 h-full w-full fill-stone/40 p-[10%]' }}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if total > 1 -%}
+      <button type="button" data-gallery-prev aria-label="Previous image" class="absolute left-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-[2px] bg-bone/85 text-lg backdrop-blur-md transition-colors hover:bg-bone md:grid">
+        <span aria-hidden="true">&#8592;</span>
+      </button>
+      <button type="button" data-gallery-next aria-label="Next image" class="absolute right-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-[2px] bg-bone/85 text-lg backdrop-blur-md transition-colors hover:bg-bone md:grid">
+        <span aria-hidden="true">&#8594;</span>
+      </button>
+    {%- endif -%}
+
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-4 text-sm text-charcoal">
+      <span class="rounded-[2px] bg-bone/85 px-3 py-1 tabular-nums backdrop-blur-md" aria-hidden="true" data-gallery-label>{{ first_label }}</span>
+      <span class="hidden rounded-[2px] bg-bone/85 px-3 py-1 backdrop-blur-md pointer-fine:inline">Hover to zoom, click to enlarge</span>
+      <span class="rounded-[2px] bg-bone/85 px-3 py-1 backdrop-blur-md pointer-fine:hidden">Tap to enlarge</span>
+    </div>
+  </div>
+</div>

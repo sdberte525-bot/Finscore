@@ -1,0 +1,55 @@
+{%- liquid
+  assign source = section.settings.collection
+  if source == blank
+    assign source = collections['all']
+  endif
+  assign list = source.products
+  assign count = list.size
+  if count > section.settings.limit
+    assign count = section.settings.limit
+  endif
+  if count <= 2
+    assign columns = 'sm:grid-cols-2'
+    assign sizes = '(min-width: 640px) 48vw, 92vw'
+  elsif count == 3
+    assign columns = 'sm:grid-cols-2 lg:grid-cols-3'
+    assign sizes = '(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 92vw'
+  else
+    assign columns = 'sm:grid-cols-2 lg:grid-cols-4'
+    assign sizes = '(min-width: 1024px) 24vw, (min-width: 640px) 48vw, 92vw'
+  endif
+-%}
+<section id="first-drop" data-reveal-tiles class="gutter scroll-mt-24 bg-bone py-20 md:py-28">
+  <div class="mb-10 flex flex-wrap items-end justify-between gap-6 md:mb-14">
+    <div>
+      <h2 class="display text-[3rem] md:text-[4.75rem]">{{ section.settings.heading }}</h2>
+      <p class="mt-3 text-lg text-ash">{{ section.settings.subheading }}</p>
+    </div>
+    <a href="{{ section.settings.link | default: routes.all_products_collection_url }}" class="caps link-underline py-2">{{ section.settings.link_label }}</a>
+  </div>
+  {%- if list.size > 0 -%}
+    <div class="grid gap-x-5 gap-y-12 md:gap-x-8 {{ columns }}">
+      {%- for product in list limit: section.settings.limit -%}
+        {%- render 'product-card', product: product, sizes: sizes, priority: forloop.first -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="text-lg text-ash">Products appear here once they’re added in Shopify.</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "class": "section-featured-products",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The first drop" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Purpose in every piece." },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Leave empty to show every product." },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 1, "max": 12, "step": 1, "default": 8 },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "View all" },
+    { "type": "url", "id": "link", "label": "Link", "default": "/collections/all" }
+  ],
+  "presets": [{ "name": "Featured products" }]
+}
+{% endschema %}

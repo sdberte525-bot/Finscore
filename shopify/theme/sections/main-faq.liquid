@@ -1,0 +1,136 @@
+{%- liquid
+  assign sizes = ''
+  assign seen = ''
+  for p in collections['all'].products
+    for option in p.options_with_values
+      assign oname = option.name | downcase
+      if oname == 'size'
+        for v in option.values
+          assign token = '|' | append: v | append: '|'
+          unless seen contains token
+            assign seen = seen | append: token
+            if sizes == blank
+              assign sizes = v
+            else
+              assign sizes = sizes | append: ',' | append: v
+            endif
+          endunless
+        endfor
+      endif
+    endfor
+  endfor
+  assign size_list = sizes | split: ','
+-%}
+{%- capture intro -%}<p>Can&rsquo;t find what you need? <a href="/pages/contact" class="underline underline-offset-4">Get in touch</a>.</p>{%- endcapture -%}
+{%- capture body -%}
+  <div class="divide-y divide-ink/15 border-y border-ink/15">
+    {%- for block in section.blocks -%}
+      {%- capture answer -%}
+        {%- case block.type -%}
+          {%- when 'sizes' -%}
+            {%- if size_list.size > 1 -%}
+              <p>The current collection comes in {{ size_list.first }} to {{ size_list.last }}. Availability by size is shown on each product page.</p>
+            {%- elsif size_list.size == 1 -%}
+              <p>The current collection comes in {{ size_list.first }}. Availability by size is shown on each product page.</p>
+            {%- else -%}
+              <p>The current collection comes in XS to XXL. Availability by size is shown on each product page.</p>
+            {%- endif -%}
+          {%- when 'shipping_where' -%}
+            <p>{%- if settings.shipping_regions != blank -%}We currently ship to {{ settings.shipping_regions }}.{%- else -%}{%- render 'pending', text: 'Shipping regions will be confirmed before launch.' -%}{%- endif -%}</p>
+          {%- when 'shipping_time' -%}
+            <p>
+              {%- if settings.shipping_processing != blank or settings.shipping_delivery != blank -%}
+                {%- if settings.shipping_processing != blank -%}Orders ship within {{ settings.shipping_processing }}. {% endif -%}
+                {%- if settings.shipping_delivery != blank -%}Delivery usually takes {{ settings.shipping_delivery }}.{%- endif -%}
+              {%- else -%}
+                {%- render 'pending', text: 'Processing and delivery times will be confirmed before launch.' -%}
+              {%- endif %}
+              <a href="/pages/shipping" class="underline underline-offset-4">Shipping details</a>
+            </p>
+          {%- when 'returns' -%}
+            <p>
+              {%- if settings.returns_days != blank -%}Yes, within {{ settings.returns_days }} days of delivery.{%- else -%}{%- render 'pending', text: 'Return and exchange terms will be confirmed before launch.' -%}{%- endif %}
+              <a href="/pages/returns" class="underline underline-offset-4">Returns and exchanges</a>
+            </p>
+          {%- when 'social' -%}
+            <p>Yes: {% render 'social-links', style: 'inline' %}.</p>
+          {%- else -%}
+            <div class="rte">{{ block.settings.answer }}</div>
+        {%- endcase -%}
+      {%- endcapture -%}
+      <details class="group" {{ block.shopify_attributes }}>
+        <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-4 text-lg [&::-webkit-details-marker]:hidden">
+          {{ block.settings.question }}
+          <span aria-hidden="true" class="text-2xl leading-none text-ash transition-transform duration-300 group-open:rotate-45">+</span>
+        </summary>
+        <div class="max-w-[60ch] pb-6 text-[1.0625rem] leading-relaxed text-charcoal">{{ answer }}</div>
+      </details>
+    {%- endfor -%}
+  </div>
+{%- endcapture -%}
+{%- render 'info-layout', current: '/pages/faq', title: page.title, intro: intro, body: body -%}
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- assign faq_count = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'question' -%}
+          {%- if faq_count > 0 -%},{%- endif -%}
+          {%- assign faq_count = faq_count | plus: 1 -%}
+          { "@type": "Question", "name": {{ block.settings.question | json }}, "acceptedAnswer": { "@type": "Answer", "text": {{ block.settings.answer | strip_html | json }} } }
+        {%- endif -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "class": "section-faq",
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer</p>" }
+      ]
+    },
+    {
+      "type": "sizes",
+      "name": "Sizes (automatic)",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "question", "label": "Question", "default": "What sizes do you offer?" }]
+    },
+    {
+      "type": "shipping_where",
+      "name": "Where we ship (automatic)",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "question", "label": "Question", "default": "Where do you ship?" }]
+    },
+    {
+      "type": "shipping_time",
+      "name": "Delivery times (automatic)",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "question", "label": "Question", "default": "How long will my order take to arrive?" }]
+    },
+    {
+      "type": "returns",
+      "name": "Returns (automatic)",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "question", "label": "Question", "default": "Can I return or exchange something?" }]
+    },
+    {
+      "type": "social",
+      "name": "Social (automatic)",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "question", "label": "Question", "default": "Are you on social media?" }]
+    }
+  ],
+  "presets": [{ "name": "FAQ" }]
+}
+{% endschema %}

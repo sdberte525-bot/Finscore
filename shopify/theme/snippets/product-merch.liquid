@@ -1,0 +1,115 @@
+{%- comment -%}
+  Merchandising details for a product, one field at a time:
+    {% capture verse %}{% render 'product-merch', product: product, field: 'scripture_text' %}{% endcapture %}
+
+  Each field comes from the product's metafields when set (Settings > Custom data > Products,
+  namespace "custom"), otherwise from the built-in defaults for the two launch pieces, which are
+  matched by handle (strong-courageous, through-christ) or by title.
+
+  Fields:
+    key                  'tee' | 'ls' | '' (launch piece this product is)
+    category             'tee' | 'long-sleeve'
+    scripture_text       custom.scripture_text
+    scripture_reference  custom.scripture_reference
+    details              custom.details (one per line; returned with lines joined by |)
+    material             custom.material
+    care                 custom.care (one per line; returned with lines joined by |)
+    turn_video           custom.turn_video_url, or the product's first video
+    turn_poster          bundled poster key for the launch pieces' turn videos
+    card_key             bundled image key for cards (flat lay) when the product has no images of its own to prefer
+{%- endcomment -%}
+{%- liquid
+  assign key = ''
+  assign t = product.title | downcase
+  if product.handle == 'strong-courageous' or t contains 'courageous'
+    assign key = 'tee'
+  elsif product.handle == 'through-christ' or t contains 'through christ'
+    assign key = 'ls'
+  endif
+  assign mf = product.metafields.custom
+  assign out = ''
+
+  case field
+    when 'key'
+      assign out = key
+
+    when 'category'
+      assign type = product.type | downcase
+      if key == 'ls' or type contains 'long'
+        assign out = 'long-sleeve'
+      elsif key == 'tee'
+        assign out = 'tee'
+      else
+        assign out = 'tee'
+        for tag in product.tags
+          assign tg = tag | downcase
+          if tg contains 'long'
+            assign out = 'long-sleeve'
+          endif
+        endfor
+      endif
+
+    when 'scripture_text'
+      assign out = mf.scripture_text.value
+      if out == blank and key == 'tee'
+        assign out = 'Be strong and courageous.'
+      elsif out == blank and key == 'ls'
+        assign out = 'I can do all things through Christ who strengthens me.'
+      endif
+
+    when 'scripture_reference'
+      assign out = mf.scripture_reference.value
+      if out == blank and key == 'tee'
+        assign out = 'Joshua 1:9'
+      elsif out == blank and key == 'ls'
+        assign out = 'Philippians 4:13'
+      endif
+
+    when 'details'
+      assign out = mf.details.value
+      if out == blank and key == 'tee'
+        assign out = 'Oversized, boxy fit with dropped shoulders|Small thorned cross and Swolvation wordmark on the chest|Large gothic cross between two skulls across the back|Arched blackletter verse with the Joshua 1:9 reference|Distressed cream print on vintage black'
+      elsif out == blank and key == 'ls'
+        assign out = 'Classic-fit long sleeve|Small thorned cross and Swolvation wordmark on the chest|Cream thorned-vine graphics down both sleeves|Skull on a thorned gothic cross across the back|Arched blackletter verse with the Philippians 4:13 reference'
+      endif
+
+    when 'material'
+      assign out = mf.material.value
+
+    when 'care'
+      assign out = mf.care.value
+
+    when 'turn_video'
+      assign out = mf.turn_video_url.value
+      if out == blank
+        assign vid = product.media | where: 'media_type', 'video' | first
+        if vid
+          assign mp4 = vid.sources | where: 'mime_type', 'video/mp4' | sort: 'height' | last
+          assign out = mp4.url
+        endif
+      endif
+      if out == blank and key == 'tee'
+        assign out = 'https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/e0c9664b-d124-4af4-927a-e1446cada634.mp4'
+      elsif out == blank and key == 'ls'
+        assign out = 'https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/4182375c-37d2-4a5f-a9ed-6be7f2005c7c.mp4'
+      endif
+
+    when 'turn_poster'
+      if key == 'tee'
+        assign out = 'poster-tee-turn'
+      elsif key == 'ls'
+        assign out = 'poster-ls-turn'
+      endif
+
+    when 'card_key'
+      if key == 'tee'
+        assign out = 'tee-flat-lay'
+      elsif key == 'ls'
+        assign out = 'ls-flat-lay'
+      endif
+  endcase
+-%}
+{%- if field == 'details' or field == 'care' -%}
+  {%- assign out = out | newline_to_br | replace: '<br />', '|' | strip_newlines -%}
+{%- endif -%}
+{{- out | strip -}}

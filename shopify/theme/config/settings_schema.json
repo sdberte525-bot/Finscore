@@ -1,0 +1,101 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Swolvation",
+    "theme_version": "1.0.0",
+    "theme_author": "Swolvation",
+    "theme_documentation_url": "https://github.com/sdberte525-bot/Finscore/blob/main/SHOPIFY_MIGRATION.md",
+    "theme_support_email": "swolvation@gmail.com"
+  },
+  {
+    "name": "Store status",
+    "settings": [
+      {
+        "type": "select",
+        "id": "store_mode",
+        "label": "Store status",
+        "options": [
+          { "value": "open", "label": "Open: add to cart and checkout" },
+          { "value": "prelaunch", "label": "Pre-launch: \"Coming soon\" and \"Notify me\" sign-ups" }
+        ],
+        "default": "open",
+        "info": "Pre-launch hides add to cart and collects per-size sign-ups instead. Switch to Open on drop day."
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "select",
+        "id": "launch_gallery",
+        "label": "Photos for the two launch pieces",
+        "options": [
+          { "value": "campaign", "label": "Campaign photos and videos (built into the theme)" },
+          { "value": "shopify", "label": "Photos uploaded to the product in Shopify" }
+        ],
+        "default": "campaign",
+        "info": "Keeps the campaign photography even when a print-on-demand app adds mockup images to the products. Every other product always uses its Shopify photos."
+      },
+      { "type": "checkbox", "id": "card_hover_video", "label": "Play the turn video when hovering product cards", "default": true }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "text", "id": "tagline", "label": "Tagline", "default": "Built through adversity." },
+      { "type": "text", "id": "contact_email", "label": "Customer email", "default": "swolvation@gmail.com" },
+      { "type": "text", "id": "legal_name", "label": "Legal business name", "info": "Shown in the footer. Leave blank to use the store name." },
+      { "type": "header", "content": "Social" },
+      { "type": "text", "id": "social_handle", "label": "Handle", "default": "@swolvation" },
+      { "type": "text", "id": "social_instagram", "label": "Instagram", "default": "https://www.instagram.com/swolvation" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok", "default": "https://www.tiktok.com/@swolvation" },
+      { "type": "header", "content": "Share image" },
+      { "type": "image_picker", "id": "share_image", "label": "Default social share image", "info": "Used when a page has no image of its own. Defaults to the tee flat lay." },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "Square, at least 64 × 64px." }
+    ]
+  },
+  {
+    "name": "Shipping and returns",
+    "settings": [
+      { "type": "paragraph", "content": "Leave a field blank and the site says it will be confirmed before launch, so nothing is promised early." },
+      { "type": "text", "id": "shipping_regions", "label": "Where you ship", "info": "e.g. the United States and Canada" },
+      { "type": "text", "id": "shipping_processing", "label": "Processing time", "info": "e.g. 2 to 5 business days" },
+      { "type": "text", "id": "shipping_delivery", "label": "Delivery estimate", "info": "e.g. 3 to 7 business days within the US" },
+      { "type": "text", "id": "shipping_rates", "label": "Shipping rates", "info": "e.g. Free on orders over $100, otherwise calculated at checkout" },
+      { "type": "number", "id": "returns_days", "label": "Return window (days)" },
+      { "type": "text", "id": "returns_condition", "label": "Return condition", "info": "e.g. Unworn and unwashed" },
+      { "type": "text", "id": "returns_exchanges", "label": "Exchanges" },
+      { "type": "text", "id": "returns_refunds", "label": "Refunds" }
+    ]
+  },
+  {
+    "name": "Size guide",
+    "settings": [
+      { "type": "paragraph", "content": "One row per line: size, then each measurement, separated by commas. Measurements are in inches." },
+      { "type": "checkbox", "id": "size_approximate", "label": "Measurements are approximate", "default": true },
+      { "type": "header", "content": "Short sleeves" },
+      { "type": "text", "id": "size_tee_columns", "label": "Columns", "default": "Size, Chest (pit to pit), Length, Fits chest" },
+      { "type": "textarea", "id": "size_tee_rows", "label": "Rows", "default": "XS, 21, 27, 32–34\nS, 22, 28, 35–37\nM, 23, 29, 38–40\nL, 24, 30, 41–43\nXL, 25.5, 31, 44–47\nXXL, 27, 32, 48–51" },
+      { "type": "textarea", "id": "size_tee_fit", "label": "Fit note", "default": "Oversized and boxy, with dropped shoulders. Take your usual size for the intended look, or size down for a closer fit." },
+      { "type": "range", "id": "size_tee_fitted", "label": "\"Closer\" fit: sizes to move", "min": -2, "max": 2, "step": 1, "default": -1 },
+      { "type": "range", "id": "size_tee_relaxed", "label": "\"Roomier\" fit: sizes to move", "min": -2, "max": 2, "step": 1, "default": 1 },
+      { "type": "header", "content": "Long sleeves" },
+      { "type": "text", "id": "size_ls_columns", "label": "Columns", "default": "Size, Chest (pit to pit), Length, Sleeve, Fits chest" },
+      { "type": "textarea", "id": "size_ls_rows", "label": "Rows", "default": "XS, 19, 26.5, 32.5, 32–34\nS, 20, 27.5, 33.5, 35–37\nM, 21.5, 28.5, 34.5, 38–40\nL, 23, 29.5, 35.5, 41–43\nXL, 24.5, 30.5, 36, 44–47\nXXL, 26, 31.5, 36.5, 48–51" },
+      { "type": "textarea", "id": "size_ls_fit", "label": "Fit note", "default": "A classic fit: close through the body without clinging. Take your usual size, or size up for a relaxed look." },
+      { "type": "range", "id": "size_ls_fitted", "label": "\"Closer\" fit: sizes to move", "min": -2, "max": 2, "step": 1, "default": 0 },
+      { "type": "range", "id": "size_ls_relaxed", "label": "\"Roomier\" fit: sizes to move", "min": -2, "max": 2, "step": 1, "default": 1 }
+    ]
+  },
+  {
+    "name": "Email popup",
+    "settings": [
+      { "type": "checkbox", "id": "popup_enabled", "label": "Show the first-access popup", "default": true },
+      { "type": "range", "id": "popup_delay", "label": "Delay", "min": 5, "max": 60, "step": 5, "unit": "s", "default": 15 },
+      { "type": "image_picker", "id": "popup_image", "label": "Image", "info": "Defaults to the long sleeve hanging in the gym." },
+      { "type": "text", "id": "popup_heading", "label": "Heading", "default": "Get first access." },
+      { "type": "textarea", "id": "popup_text", "label": "Text", "default": "Be the first to know when the drop goes live, before it’s announced anywhere else." }
+    ]
+  }
+]

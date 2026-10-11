@@ -1,0 +1,27 @@
+<section data-tone="dark" data-reveal-scope class="bg-ink text-bone">
+  <div class="grid md:grid-cols-12">
+    <div class="md:col-span-6">
+      {%- render 'editorial-image', image: section.settings.image, key: 'vintage-gym', alt: section.settings.alt, aspect: 'aspect-[4/5]', sizes: '(min-width: 768px) 50vw, 100vw', priority: true -%}
+    </div>
+    <div data-rise class="gutter flex flex-col justify-center py-16 md:col-span-6 md:py-20 lg:px-16">
+      <h2 class="display text-[2.75rem] md:text-[4rem]">{{ section.settings.heading }}</h2>
+      <div class="mt-8 max-w-[48ch] space-y-5 text-lg leading-relaxed text-stone [&_em]:not-italic [&_em]:text-bone">
+        {{ section.settings.text }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About: image and text",
+  "class": "section-about-why",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Defaults to the empty 1990s gym." },
+    { "type": "text", "id": "alt", "label": "Image description (alt text)", "default": "An empty 1990s bodybuilding gym in golden afternoon light" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Why Swolvation" },
+    { "type": "richtext", "id": "text", "label": "Text", "info": "Italic words are shown in white.", "default": "<p>The name is two words pushed together: <em>swole</em>, gym slang for the size that comes from years of showing up, and <em>salvation</em>. There’s a little humor in it. There’s also something we mean.</p><p>We’re a new brand. We don’t have decades of history to point to, just a clear idea of what we want to make and who we’re making it for.</p>" }
+  ],
+  "presets": [{ "name": "About: image and text" }]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+{%- liquid
+  assign new_drop_url = routes.collections_url | append: '/new-drop'
+  assign open = false
+  if settings.store_mode == 'open'
+    assign open = true
+  endif
+-%}
+<section data-tone="dark" data-hero class="relative overflow-hidden bg-ink text-bone">
+  <div class="grid lg:min-h-[calc(100svh-6.75rem)] lg:grid-cols-12">
+    <div data-hero-media class="relative lg:order-last lg:col-span-6">
+      {%- render 'loop-video',
+        video: section.settings.video,
+        src: section.settings.video_url,
+        poster_key: 'poster-ls-dawn',
+        poster_image: section.settings.poster,
+        alt: 'The Through Christ long sleeve hanging in a gym at dawn',
+        sizes: '(min-width: 1024px) 50vw, 100vw',
+        priority: true,
+        class: 'aspect-[4/5] lg:absolute lg:inset-0 lg:aspect-auto'
+      -%}
+      <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink to-transparent lg:inset-y-0 lg:left-0 lg:h-auto lg:w-32 lg:bg-gradient-to-r"></div>
+    </div>
+
+    <div class="gutter relative flex flex-col justify-center pb-14 pt-4 lg:col-span-6 lg:py-20">
+      <p data-hero-fade class="caps text-stone">
+        {{ section.settings.eyebrow }} <span class="text-muted">/</span> {{ section.settings.eyebrow_2 }}
+      </p>
+      <h1 class="display mt-4 text-[4rem] sm:text-[5.5rem] lg:text-[6.25rem] xl:text-[8rem]">
+        {%- assign words = section.settings.headline | split: ' ' -%}
+        {%- for word in words -%}
+          <span class="block overflow-hidden pb-[0.04em]"><span data-hero-word class="block">{{ word }}</span></span>
+        {%- endfor -%}
+      </h1>
+      <p data-hero-fade class="mt-6 max-w-[34ch] text-lg leading-relaxed text-stone">{{ section.settings.text }}</p>
+      <div data-hero-fade class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5">
+        <a href="{{ section.settings.button_link | default: new_drop_url }}" class="button button-light">
+          {%- if open -%}{{ section.settings.button_open }}{%- else -%}{{ section.settings.button_prelaunch }}{%- endif -%}
+        </a>
+        {%- if section.settings.show_film -%}
+          {%- render 'film-button', film: section.settings, class: 'text-bone' -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "class": "section-hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The first drop" },
+    { "type": "text", "id": "eyebrow_2", "label": "Eyebrow, second part", "default": "Scripture Series" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Built through adversity.", "info": "Each word sits on its own line." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Vintage-inspired training apparel rooted in strength, discipline and faith." },
+    { "type": "text", "id": "button_open", "label": "Button label (store open)", "default": "Shop the first drop" },
+    { "type": "text", "id": "button_prelaunch", "label": "Button label (pre-launch)", "default": "See the first drop" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Defaults to the New drop collection." },
+    { "type": "header", "content": "Loop video" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Upload in Content > Files. Muted and looping; short (under 15s) and under 10 MB works best." },
+    { "type": "text", "id": "video_url", "label": "Or video URL (MP4)", "default": "https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/98428e0f-58a6-4d16-aaf8-5859fe8f642f.mp4" },
+    { "type": "image_picker", "id": "poster", "label": "Poster image", "info": "Shown before the video plays. Defaults to its first frame." },
+    { "type": "header", "content": "Film" },
+    { "type": "checkbox", "id": "show_film", "label": "Show \"Watch the film\"", "default": true },
+    { "type": "text", "id": "film_label", "label": "Label", "default": "Watch the film" },
+    { "type": "text", "id": "film_title", "label": "Film title", "default": "The Iron Waits" },
+    { "type": "video", "id": "film_video_wide", "label": "Widescreen film" },
+    { "type": "text", "id": "film_url_wide", "label": "Or widescreen URL (MP4)", "default": "https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/1895bd70-52da-4ed6-8a9b-d2b8049550dd.mp4" },
+    { "type": "video", "id": "film_video_vertical", "label": "Vertical film (phones)" },
+    { "type": "text", "id": "film_url_vertical", "label": "Or vertical URL (MP4)", "default": "https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/e7f711fe-14ad-4f72-9cd1-90aaab2c1465.mp4" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

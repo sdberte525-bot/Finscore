@@ -1,0 +1,41 @@
+{%- liquid
+  assign new_drop_url = routes.collections_url | append: '/new-drop'
+  assign open = false
+  if settings.store_mode == 'open'
+    assign open = true
+  endif
+-%}
+<div class="bg-ink text-bone">
+  {%- if open -%}
+    <a href="{{ section.settings.open_link | default: new_drop_url }}" class="gutter flex min-h-9 items-center justify-center gap-3 py-2 text-center text-[0.75rem] font-medium uppercase tracking-[0.16em] hover:text-plaster">
+      <span>{{ section.settings.open_text }}</span>
+      <span aria-hidden="true" class="text-stone">/</span>
+      <span class="underline decoration-bone/40 underline-offset-4">{{ section.settings.open_cta }}</span>
+    </a>
+  {%- else -%}
+    <a href="{{ section.settings.prelaunch_link | default: '/#first-access' }}" class="gutter flex min-h-9 items-center justify-center gap-3 py-2 text-center text-[0.75rem] font-medium uppercase tracking-[0.16em] hover:text-plaster">
+      <span>{{ section.settings.prelaunch_text }}<span class="hidden sm:inline">{{ section.settings.prelaunch_text_wide }}</span></span>
+      <span aria-hidden="true" class="text-stone">/</span>
+      <span class="underline decoration-bone/40 underline-offset-4">{{ section.settings.prelaunch_cta }}</span>
+    </a>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "class": "section-announcement",
+  "settings": [
+    { "type": "paragraph", "content": "The bar follows the Store status in Theme settings." },
+    { "type": "header", "content": "Store open" },
+    { "type": "text", "id": "open_text", "label": "Text", "default": "The first drop is live" },
+    { "type": "text", "id": "open_cta", "label": "Link label", "default": "Shop now" },
+    { "type": "url", "id": "open_link", "label": "Link", "info": "Defaults to the New drop collection." },
+    { "type": "header", "content": "Pre-launch" },
+    { "type": "text", "id": "prelaunch_text", "label": "Text", "default": "The first drop" },
+    { "type": "text", "id": "prelaunch_text_wide", "label": "Extra text on larger screens", "default": " is coming" },
+    { "type": "text", "id": "prelaunch_cta", "label": "Link label", "default": "Get first access" },
+    { "type": "url", "id": "prelaunch_link", "label": "Link", "info": "Defaults to the homepage sign-up." }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+{%- liquid
+  assign open = false
+  if settings.store_mode == 'open'
+    assign open = true
+  endif
+-%}
+<section data-tone="dark" class="gutter border-b border-bone/10 bg-charcoal py-24 text-bone md:py-36">
+  <h2 class="display text-[3.5rem] leading-[0.92] sm:text-[5.5rem] lg:text-[8rem]">
+    <span class="block">{{ section.settings.line_1 }}</span>
+    <span class="block text-stone">{{ section.settings.line_2 }}</span>
+  </h2>
+  <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
+    {%- if open -%}
+      <a href="{{ routes.all_products_collection_url }}" class="button button-light">{{ section.settings.button_open }}</a>
+    {%- else -%}
+      <a href="{{ routes.collections_url }}/new-drop" class="button button-light">{{ section.settings.button_prelaunch }}</a>
+    {%- endif -%}
+    <a href="/pages/size-guide" class="caps link-underline py-2 text-stone hover:text-bone">{{ section.settings.link_label }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Closing statement",
+  "class": "section-closing",
+  "settings": [
+    { "type": "text", "id": "line_1", "label": "Line 1", "default": "Built to endure." },
+    { "type": "text", "id": "line_2", "label": "Line 2", "default": "Made with purpose." },
+    { "type": "text", "id": "button_open", "label": "Button (store open)", "default": "Shop now" },
+    { "type": "text", "id": "button_prelaunch", "label": "Button (pre-launch)", "default": "See the first drop" },
+    { "type": "text", "id": "link_label", "label": "Size guide link", "default": "Find your size" }
+  ],
+  "presets": [{ "name": "Closing statement" }]
+}
+{% endschema %}

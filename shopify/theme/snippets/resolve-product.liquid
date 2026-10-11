@@ -1,0 +1,2 @@
+{%- comment -%} Prints the handle of a block's product: the picked product, else the typed handle. Params: block {%- endcomment -%}
+{%- if block.settings.product != blank -%}{{ block.settings.product.handle }}{%- else -%}{{ block.settings.handle | strip }}{%- endif -%}
