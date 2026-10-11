@@ -10,7 +10,8 @@ Nothing about the Netlify site has changed. It keeps running from this repositor
 | --- | --- |
 | `shopify/theme/` | The theme Shopify hosts: `layout`, `sections`, `snippets`, `templates`, `config`, `locales`, `assets` |
 | `shopify/src/theme.css` | Stylesheet source. Uses the same design tokens as the Next.js site and compiles to `theme/assets/theme.css` |
-| `shopify/scripts/` | `build.mjs` (CSS, fonts, scripts, image snippet) and `fetch-media.mjs` (campaign photos → Shopify-hosted WebP) |
+| `shopify/scripts/` | `build.mjs` (CSS, fonts, scripts, image snippet), `fetch-media.mjs` (campaign photos → Shopify-hosted WebP) and `preview.mjs` (offline preview) |
+| `shopify/src/fonts/` | Archivo and Big Shoulders, the same Google Fonts files the Next.js site serves |
 | `shopify/import/products.csv` | Both launch shirts, ready for **Products → Import** |
 | `shopify/import/redirects.csv` | Old Netlify URLs → Shopify URLs, ready for **URL redirects → Import** |
 
@@ -147,6 +148,8 @@ npm run build        # compiles CSS, copies fonts and scripts, generates the ima
 npx shopify theme check --path theme
 npx shopify theme push --path theme --unpublished --store your-store.myshopify.com
 ```
+
+`npm run preview` starts an offline approximation of the storefront on http://localhost:9393, built from `import/products.csv`. It's handy for checking layout changes without store access; `shopify theme dev` is the real thing.
 
 The first CLI command opens Shopify's browser login. Approve it with your Shopify account; no passwords or API keys are shared. Use `npx shopify theme dev --path theme --store …` for a live local preview.
 
