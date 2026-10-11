@@ -13,14 +13,13 @@ const nm = path.join(root, "node_modules");
 const assets = path.join(theme, "assets");
 
 const copies = [
-  ["@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2", "archivo-latin-wght-normal.woff2"],
-  ["@fontsource/big-shoulders/files/big-shoulders-latin-700-normal.woff2", "big-shoulders-latin-700-normal.woff2"],
-  ["@fontsource/big-shoulders/files/big-shoulders-latin-800-normal.woff2", "big-shoulders-latin-800-normal.woff2"],
   ["gsap/dist/gsap.min.js", "gsap.min.js"],
   ["gsap/dist/ScrollTrigger.min.js", "ScrollTrigger.min.js"],
   ["lenis/dist/lenis.min.js", "lenis.min.js"],
 ];
 for (const [from, to] of copies) await copyFile(path.join(nm, from), path.join(assets, to));
+// Brand fonts: the exact files the Next.js site gets from Google Fonts.
+for (const font of ["archivo-latin.woff2", "big-shoulders-latin.woff2"]) await copyFile(path.join(root, "src/fonts", font), path.join(assets, font));
 
 // Generated snippet: {% render 'media-image', key: 'tee-gym-hook', sizes: '50vw', class: '...' %}
 const { images } = JSON.parse(await readFile(path.join(root, "scripts/media.json"), "utf8"));

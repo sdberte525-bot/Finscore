@@ -7,30 +7,32 @@
 @source "../theme/**/*.liquid";
 @source "../theme/assets/theme.js";
 
-/* Self-hosted brand fonts (copied into theme/assets by the build). */
+/* Self-hosted brand fonts: the same Google Fonts files the Next.js site serves (shopify/src/fonts). */
 @font-face {
   font-family: "Archivo";
   font-style: normal;
   font-weight: 100 900;
+  font-stretch: 100%;
   font-display: swap;
-  src: url("archivo-latin-wght-normal.woff2") format("woff2-variations");
+  src: url("archivo-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Archivo Fallback";
+  src: local("Arial");
+  ascent-override: 88.96%;
+  descent-override: 21.28%;
+  line-gap-override: 0%;
+  size-adjust: 98.7%;
 }
 @font-face {
   font-family: "Big Shoulders";
   font-style: normal;
-  font-weight: 700;
+  font-weight: 700 800;
   font-display: swap;
-  src: url("big-shoulders-latin-700-normal.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Big Shoulders";
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url("big-shoulders-latin-800-normal.woff2") format("woff2");
+  src: url("big-shoulders-latin.woff2") format("woff2");
 }
 :root {
-  --font-archivo: "Archivo";
+  --font-archivo: "Archivo", "Archivo Fallback";
   --font-shoulders: "Big Shoulders";
 }
 

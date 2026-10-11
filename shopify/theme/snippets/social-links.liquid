@@ -38,7 +38,7 @@
           </a>
         </li>
       {%- when 'inline' -%}
-        {%- unless forloop.first -%} and {% endunless -%}
+        {%- if forloop.index == 2 and settings.social_instagram != blank %} and {% endif -%}
         <a href="{{ href }}" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-ink">{{ label }}</a>
     {%- endcase -%}
   {%- endif -%}
