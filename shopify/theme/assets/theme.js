@@ -826,6 +826,11 @@
         const checked = $("input:checked", fs);
         selected[Number(fs.dataset.option)] = checked ? checked.value : null;
       });
+      // Options with no picker on the page (a product with a single variant, whose only option
+      // is Shopify's "Title: Default Title") take their value from the variant the page loaded with.
+      const initial = variants.find((v) => idInput && String(v.id) === idInput.value) || variants[0];
+      const shownOptions = new Set(fieldsets.map((fs) => Number(fs.dataset.option)));
+      for (let i = 0; i < optionCount; i++) if (!shownOptions.has(i) && initial) selected[i] = initial.options[i];
 
       const matches = (v, sel) => sel.every((val, n) => val === null || v.options[n] === val);
       const current = () => (selected.every((v) => v !== null) ? variants.find((v) => matches(v, selected)) : null);
@@ -921,9 +926,12 @@
         if (e) e.preventDefault();
         const variant = current();
         if (!variant || !variant.available) {
-          if (sizeError) {
+          if (sizeError && sizeIndex >= 0 && selected[sizeIndex] === null) {
             sizeError.hidden = false;
             scrollToEl(document.getElementById("size-options"));
+          } else if (addError) {
+            addError.textContent = variant ? "This option is sold out." : "Choose an option to add this to your cart.";
+            addError.hidden = false;
           }
           return;
         }
