@@ -64,6 +64,7 @@ for (const p of products) {
     values: [...new Set(p.variants.map((v) => v.options[i]))].map((v) => new OptionValue(v)),
     get selected_value() { return this.values[0].name; } }));
   p.options = p._opts;
+  p.has_only_default_variant = p.variants.length === 1 && p.variants[0].options[0] === "Default Title";
 }
 const all = { handle: "all", title: "Products", url: "/collections/all", products, products_count: products.length, description: "", template_suffix: "" };
 const collections = { all, "new-drop": { ...all, handle: "new-drop", title: "New drop", url: "/collections/new-drop" } };
