@@ -27,7 +27,7 @@
             Purpose in every piece. {% if list.size == 2 %}Two{% else %}{{ list.size }}{% endif %} designs to start, each with a small logo on the front and a large scripture graphic across the back.
           {%- endif -%}
         </p>
-        <a href="/pages/size-guide" class="caps link-underline py-2 text-stone hover:text-bone">Size guide</a>
+        {%- if pages['size-guide'].url != blank -%}<a href="{{ pages['size-guide'].url }}" class="caps link-underline py-2 text-stone hover:text-bone">Size guide</a>{%- endif -%}
       </div>
     </section>
     <section class="gutter bg-bone py-16 md:py-24" aria-label="Products in {{ collection.title | escape }}" data-reveal-tiles>

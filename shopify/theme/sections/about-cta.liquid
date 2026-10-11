@@ -1,4 +1,9 @@
-{%- assign new_drop_url = routes.collections_url | append: '/new-drop' -%}
+{%- liquid
+  assign new_drop_url = routes.all_products_collection_url
+  if collections['new-drop'].id != blank
+    assign new_drop_url = collections['new-drop'].url
+  endif
+-%}
 <section data-tone="dark" data-reveal-scope class="gutter bg-charcoal py-24 text-bone md:py-32">
   <p data-rise class="display max-w-[16ch] text-[3rem] sm:text-[4.5rem] lg:text-[6rem]">{{ section.settings.heading }}</p>
   <div data-rise class="mt-12 flex flex-wrap gap-3">

@@ -13,9 +13,9 @@
     {%- if open -%}
       <a href="{{ routes.all_products_collection_url }}" class="button button-light">{{ section.settings.button_open }}</a>
     {%- else -%}
-      <a href="{{ routes.collections_url }}/new-drop" class="button button-light">{{ section.settings.button_prelaunch }}</a>
+      <a href="{%- if collections['new-drop'].id != blank -%}{{ collections['new-drop'].url }}{%- else -%}{{ routes.all_products_collection_url }}{%- endif -%}" class="button button-light">{{ section.settings.button_prelaunch }}</a>
     {%- endif -%}
-    <a href="/pages/size-guide" class="caps link-underline py-2 text-stone hover:text-bone">{{ section.settings.link_label }}</a>
+    {%- if pages['size-guide'].url != blank -%}<a href="{{ pages['size-guide'].url }}" class="caps link-underline py-2 text-stone hover:text-bone">{{ section.settings.link_label }}</a>{%- endif -%}
   </div>
 </section>
 

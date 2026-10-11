@@ -122,15 +122,19 @@
               </div>
             </details>
           {%- endif -%}
+          {%- comment -%} Material and care rows only appear once there is real information for them. {%- endcomment -%}
+          {%- assign material_text = material | strip -%}
+          {%- if material_text != blank -%}
           <details class="group" {% if details_list.size == 0 %}open{% endif %}>
             <summary class="caps flex min-h-14 cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden">
               Material
               <span aria-hidden="true" class="text-xl leading-none transition-transform duration-300 group-open:rotate-45">+</span>
             </summary>
             <div class="pb-5 text-[0.9375rem] leading-relaxed text-charcoal">
-              {%- if material != blank -%}<p>{{ material }}</p>{%- else -%}<span class="italic text-ash">Fabric details will be listed here before launch.</span>{%- endif -%}
+              <p>{{ material }}</p>
             </div>
           </details>
+          {%- endif -%}
           <details class="group">
             <summary class="caps flex min-h-14 cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden">
               Fit
@@ -144,6 +148,8 @@
               {%- endif -%}
             </div>
           </details>
+          {%- assign care_text = care | strip -%}
+          {%- if care_text != blank -%}
           <details class="group">
             <summary class="caps flex min-h-14 cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden">
               Care
@@ -151,13 +157,10 @@
             </summary>
             <div class="pb-5 text-[0.9375rem] leading-relaxed text-charcoal">
               {%- assign care_list = care | split: '|' -%}
-              {%- if care_list.size > 0 -%}
-                <ul class="space-y-1">{%- for line in care_list -%}{%- if line != blank -%}<li>{{ line | strip }}</li>{%- endif -%}{%- endfor -%}</ul>
-              {%- else -%}
-                <span class="italic text-ash">Care instructions will be listed here before launch.</span>
-              {%- endif -%}
+              <ul class="space-y-1">{%- for line in care_list -%}{%- if line != blank -%}<li>{{ line | strip }}</li>{%- endif -%}{%- endfor -%}</ul>
             </div>
           </details>
+          {%- endif -%}
           <details class="group">
             <summary class="caps flex min-h-14 cursor-pointer list-none items-center justify-between [&::-webkit-details-marker]:hidden">
               Shipping and returns
@@ -165,9 +168,19 @@
             </summary>
             <div class="pb-5 text-[0.9375rem] leading-relaxed text-charcoal">
               <div class="space-y-2">
-                <p>{%- if settings.shipping_processing != blank -%}Orders ship within {{ settings.shipping_processing }}.{%- else -%}<span class="italic text-ash">Shipping times will be confirmed before launch.</span>{%- endif -%}</p>
-                <p>{%- if settings.returns_days != blank -%}Returns accepted within {{ settings.returns_days }} days of delivery.{%- else -%}<span class="italic text-ash">Return terms will be confirmed before launch.</span>{%- endif -%}</p>
-                <p><a href="/pages/shipping" class="underline underline-offset-4">Shipping</a><span class="text-ash"> and </span><a href="/pages/returns" class="underline underline-offset-4">returns</a></p>
+                <p>{%- if settings.shipping_processing != blank -%}Orders ship within {{ settings.shipping_processing }}.{%- else -%}Shipping options and costs are shown at checkout, before you pay.{%- endif -%}</p>
+                <p>{%- if settings.returns_days != blank -%}Returns accepted within {{ settings.returns_days }} days of delivery.{%- else -%}Questions about sizing, an order or a return? <a href="/pages/contact" class="underline underline-offset-4">Contact us</a>.{%- endif -%}</p>
+                {%- liquid
+                  assign shipping_url = pages.shipping.url | default: shop.shipping_policy.url
+                  assign returns_url = pages.returns.url | default: shop.refund_policy.url
+                -%}
+                {%- if shipping_url != blank or returns_url != blank -%}
+                  <p>
+                    {%- if shipping_url != blank -%}<a href="{{ shipping_url }}" class="underline underline-offset-4">Shipping policy</a>{%- endif -%}
+                    {%- if shipping_url != blank and returns_url != blank -%}<span class="text-ash"> and </span>{%- endif -%}
+                    {%- if returns_url != blank -%}<a href="{{ returns_url }}" class="underline underline-offset-4">returns policy</a>{%- endif -%}
+                  </p>
+                {%- endif -%}
               </div>
             </div>
           </details>

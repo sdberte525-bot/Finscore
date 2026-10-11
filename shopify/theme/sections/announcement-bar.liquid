@@ -1,5 +1,9 @@
 {%- liquid
-  assign new_drop_url = routes.collections_url | append: '/new-drop'
+  # Falls back to all products while the new-drop collection doesn't exist, so the link never 404s.
+  assign new_drop_url = routes.all_products_collection_url
+  if collections['new-drop'].id != blank
+    assign new_drop_url = collections['new-drop'].url
+  endif
   assign open = false
   if settings.store_mode == 'open'
     assign open = true

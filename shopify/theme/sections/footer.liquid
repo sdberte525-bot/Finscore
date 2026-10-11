@@ -20,7 +20,7 @@
           <h3 class="text-sm text-stone">Shop</h3>
           <ul class="mt-5 space-y-3 text-[0.9375rem]">
             <li><a href="{{ shop_url }}" class="link-underline">Shop all</a></li>
-            <li><a href="{{ routes.collections_url }}/new-drop" class="link-underline">New drop</a></li>
+            {%- if collections['new-drop'].id != blank -%}<li><a href="{{ collections['new-drop'].url }}" class="link-underline">New drop</a></li>{%- endif -%}
             <li><a href="{{ shop_url }}?category=tee" class="link-underline">Short sleeves</a></li>
             <li><a href="{{ shop_url }}?category=long-sleeve" class="link-underline">Long sleeves</a></li>
             <li><a href="{{ routes.cart_url }}" class="link-underline">Cart</a></li>
@@ -29,10 +29,19 @@
         <nav aria-label="Help">
           <h3 class="text-sm text-stone">Help</h3>
           <ul class="mt-5 space-y-3 text-[0.9375rem]">
-            <li><a href="/pages/faq" class="link-underline">FAQ</a></li>
-            <li><a href="/pages/shipping" class="link-underline">Shipping</a></li>
-            <li><a href="/pages/returns" class="link-underline">Returns and exchanges</a></li>
-            <li><a href="/pages/size-guide" class="link-underline">Size guide</a></li>
+            {%- comment -%} Only link pages and policies that exist, so no footer link lands on a 404. {%- endcomment -%}
+            {%- if pages.faq.url != blank -%}<li><a href="{{ pages.faq.url }}" class="link-underline">FAQ</a></li>{%- endif -%}
+            {%- if pages.shipping.url != blank -%}
+              <li><a href="{{ pages.shipping.url }}" class="link-underline">Shipping</a></li>
+            {%- elsif shop.shipping_policy.url != blank -%}
+              <li><a href="{{ shop.shipping_policy.url }}" class="link-underline">Shipping</a></li>
+            {%- endif -%}
+            {%- if pages.returns.url != blank -%}
+              <li><a href="{{ pages.returns.url }}" class="link-underline">Returns and exchanges</a></li>
+            {%- elsif shop.refund_policy.url != blank -%}
+              <li><a href="{{ shop.refund_policy.url }}" class="link-underline">Returns and refunds</a></li>
+            {%- endif -%}
+            {%- if pages['size-guide'].url != blank -%}<li><a href="{{ pages['size-guide'].url }}" class="link-underline">Size guide</a></li>{%- endif -%}
             <li><a href="/pages/contact" class="link-underline">Contact us</a></li>
             {%- if shop.customer_accounts_enabled -%}
               <li><a href="{{ routes.account_url }}" class="link-underline">{% if customer %}Your account{% else %}Sign in{% endif %}</a></li>
@@ -42,9 +51,9 @@
         <nav aria-label="Company">
           <h3 class="text-sm text-stone">Company</h3>
           <ul class="mt-5 space-y-3 text-[0.9375rem]">
-            <li><a href="/pages/about" class="link-underline">Our story</a></li>
+            {%- if pages.about.url != blank -%}<li><a href="{{ pages.about.url }}" class="link-underline">Our story</a></li>{%- endif -%}
             <li><a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}" class="link-underline">Privacy policy</a></li>
-            <li><a href="{{ shop.terms_of_service.url | default: '/policies/terms-of-service' }}" class="link-underline">Terms and conditions</a></li>
+            {%- if shop.terms_of_service.url != blank -%}<li><a href="{{ shop.terms_of_service.url }}" class="link-underline">Terms and conditions</a></li>{%- endif -%}
           </ul>
         </nav>
       </div>

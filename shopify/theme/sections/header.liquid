@@ -99,10 +99,10 @@
   </nav>
   <div class="space-y-4 text-[0.9375rem] text-ash">
     <div class="flex flex-wrap gap-x-6 gap-y-2">
-      <a href="/pages/faq">FAQ</a>
-      <a href="/pages/shipping">Shipping</a>
-      <a href="/pages/returns">Returns</a>
-      <a href="/pages/size-guide">Size guide</a>
+      {%- if pages.faq.url != blank -%}<a href="{{ pages.faq.url }}">FAQ</a>{%- endif -%}
+      {%- if pages.shipping.url != blank -%}<a href="{{ pages.shipping.url }}">Shipping</a>{%- elsif shop.shipping_policy.url != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping</a>{%- endif -%}
+      {%- if pages.returns.url != blank -%}<a href="{{ pages.returns.url }}">Returns</a>{%- elsif shop.refund_policy.url != blank -%}<a href="{{ shop.refund_policy.url }}">Returns</a>{%- endif -%}
+      {%- if pages['size-guide'].url != blank -%}<a href="{{ pages['size-guide'].url }}">Size guide</a>{%- endif -%}
       {%- if shop.customer_accounts_enabled -%}
         <a href="{{ routes.account_url }}">{% if customer %}Your account{% else %}Sign in{% endif %}</a>
       {%- endif -%}

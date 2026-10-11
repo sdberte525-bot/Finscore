@@ -1110,8 +1110,9 @@
       const max = document.documentElement.scrollHeight - window.innerHeight;
       if (max > 0 && window.scrollY / max > 0.5) fire();
     };
-    window.setTimeout(fire, Number(dialog.dataset.delay || 15) * 1000);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.setTimeout(fire, Number(dialog.dataset.delay || 30) * 1000);
+    // Product pages are where people read details and pick a size; don't interrupt that on scroll.
+    if (!path.includes("/products/")) window.addEventListener("scroll", onScroll, { passive: true });
 
     const dismiss = () => {
       store.set(DISMISS_KEY, String(Date.now()));

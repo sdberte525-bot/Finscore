@@ -206,7 +206,7 @@
         "type": "textarea",
         "id": "size_tee_fit",
         "label": "Fit note",
-        "default": "Boxy and relaxed, with dropped shoulders and a heavyweight drape. Take your usual size for the boxy fit, or size up for an oversized look."
+        "default": "Boxy and relaxed. Take your usual size for the boxy fit, or size up for an oversized look."
       },
       {
         "type": "range",
@@ -246,7 +246,7 @@
         "type": "textarea",
         "id": "size_ls_fit",
         "label": "Fit note",
-        "default": "A slim fit: close through the body and arms. Take your usual size for a fitted look, or size up for a relaxed fit."
+        "default": "A closer, classic fit than the boxy tee. Take your usual size for a fitted look, or size up for a relaxed fit."
       },
       {
         "type": "range",
@@ -285,7 +285,7 @@
         "max": 60,
         "step": 5,
         "unit": "s",
-        "default": 15
+        "default": 30
       },
       {
         "type": "image_picker",
@@ -297,13 +297,13 @@
         "type": "text",
         "id": "popup_heading",
         "label": "Heading",
-        "default": "Get first access."
+        "default": "Hear it first."
       },
       {
         "type": "textarea",
         "id": "popup_text",
         "label": "Text",
-        "default": "Be the first to know when the drop goes live, before it’s announced anywhere else."
+        "default": "New pieces and restocks, by email. Nothing else."
       }
     ]
   }
