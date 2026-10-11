@@ -1,2 +1,36 @@
-{%- comment -%} Prints the handle of a block's product: the picked product, else the typed handle. Params: block {%- endcomment -%}
-{%- if block.settings.product != blank -%}{{ block.settings.product.handle }}{%- else -%}{{ block.settings.handle | strip }}{%- endif -%}
+{%- comment -%}
+  Prints the handle of a block's product: the picked product, else the typed handle when a
+  product with that handle exists. Otherwise it finds the launch piece the block is about
+  (a handle mentioning "courageous" means the tee, "christ" the long sleeve) among the store's
+  products, so the section keeps working when a print-on-demand app creates the products with
+  its own handles. Prefers available products over unavailable ones.
+  Params: block
+{%- endcomment -%}
+{%- liquid
+  assign wanted = block.settings.handle | strip
+  if block.settings.product != blank
+    echo block.settings.product.handle
+  elsif wanted != blank and all_products[wanted] != blank
+    echo wanted
+  else
+    assign want_key = ''
+    if wanted contains 'courageous'
+      assign want_key = 'tee'
+    elsif wanted contains 'christ'
+      assign want_key = 'ls'
+    endif
+    assign found = ''
+    if want_key != blank
+      for candidate in collections['all'].products
+        capture candidate_key
+          render 'product-merch', product: candidate, field: 'key'
+        endcapture
+        if candidate_key == want_key and candidate.available
+          assign found = candidate.handle
+          break
+        endif
+      endfor
+    endif
+    echo found
+  endif
+-%}

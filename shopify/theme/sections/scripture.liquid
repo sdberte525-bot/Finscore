@@ -12,6 +12,15 @@
         assign reference = block.settings.reference
         assign description = block.settings.description
         assign href = routes.all_products_collection_url
+        if verse == blank and p == blank
+          if block.settings.builtin_image contains 'ls-'
+            assign verse = 'I can do all things through Christ who strengthens me.'
+            assign reference = reference | default: 'Philippians 4:13'
+          else
+            assign verse = 'Be strong and courageous.'
+            assign reference = reference | default: 'Joshua 1:9'
+          endif
+        endif
         if p != blank
           if verse == blank
             capture verse
