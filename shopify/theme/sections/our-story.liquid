@@ -9,7 +9,10 @@
       <div class="mt-8 max-w-[52ch] space-y-5 text-lg leading-relaxed text-charcoal">
         {{ section.settings.text }}
       </div>
-      <a href="{{ section.settings.button_link | default: '/pages/about' }}" class="button button-solid mt-10">{{ section.settings.button_label }}</a>
+      {%- assign story_url = section.settings.button_link | default: pages.about.url -%}
+      {%- if story_url != blank -%}
+        <a href="{{ story_url }}" class="button button-solid mt-10">{{ section.settings.button_label }}</a>
+      {%- endif -%}
     </div>
   </div>
 </section>
