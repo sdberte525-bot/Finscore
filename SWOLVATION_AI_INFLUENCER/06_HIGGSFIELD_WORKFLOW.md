@@ -51,3 +51,10 @@ What's below was tested today, or quoted by Higgsfield's own cost tool. Prices a
 - **Kling loops:** pass the same image as `start_image` and `end_image`. V1's seam measured 1.35/255.
 - **Kling preset popup:** Higgsfield may suggest a preset (e.g. "IN THE DARK"). Decline with `declined_preset_id` to render the literal prompt.
 - **Generate silent** (`sound: off`). It's cheaper and avoids unclear music rights. Add our original audio, or a platform-licensed sound in the app.
+
+## Lessons from round 3 (product-print ads)
+- **Never let the AI camera push in on a graphic.** Push in digitally in post, and use the 2K still as the closing product hold. That's guaranteed faithful and sharp.
+- **Anchor every product video:** the same verified frame as `start_image` and `end_image`. Keep the action to the reps only. Standing up, turning around and setting the bar down are where the print morphs.
+- **Barbells seen from behind:** image models draw the bar behind the hips (impossible). Ask for "plates visible either side, bar hidden in front of her body", and use a high angle from behind.
+- **Image models resist a deep hinge viewed straight from behind.** A Yates-row angle (about 30°) is credible and keeps the print flat to the camera.
+- **Reject any frame where the graphic is reinterpreted**, even if the pose is great.

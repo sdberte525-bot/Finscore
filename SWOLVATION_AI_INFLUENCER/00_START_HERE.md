@@ -52,6 +52,34 @@ Each video comes in two versions:
 | Video 3 (10s) | 17.5 |
 | **Total this round** | **86.25** (500.11 → **413.86 left**) |
 
+
+## Round 3: back-print barbell-row ads (face hidden, product first)
+Both videos are 1080×1920, 10.5s, and come in two versions:
+- **With sound:** gym ambience, synced plate clanks and pulls, and a dark instrumental. All synthesized and original; −14.6 LUFS.
+- **Silent:** for adding an in-app sound.
+
+| # | Video | Concept | With sound | Silent |
+|---|---|---|---|---|
+| 4 | **The Back** | Locked behind her: two barbell rows, then a slow push-in on the back print, ending in a sharp 2.5s hero hold on the artwork | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/a96f98e8-1b7f-49b4-8f83-3a374970e872.mp4) | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/dc33b2fc-adce-466b-ae2e-b40b44c1b1be.mp4) |
+| 5 | **The Pull** | Rear three-quarter angle, sleeves rolled, biker shorts: heavy Yates-style rows showing arms, back and legs; push-in and hero hold on the print | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/c879ce53-0024-446b-96ff-e21e0e43121a.mp4) | [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/e883a794-dba7-4a30-8b79-197af334f771.mp4) |
+
+**How print fidelity was protected:**
+- Kling animates only the rows, with the same verified frame as first and last frame, so the print is anchored at both ends.
+- The push-in is a digital move in post (no AI).
+- The last 2.5s are the sharp 2K still itself, which is pixel-identical to the video's final frame, so the cut is invisible.
+
+**Known deviations:**
+- The headline renders as a gothic serif, not the exact blackletter in the print file. Every other element (cross, skulls, thorn frame, "JOSHUA 1:9", ornament) matches the real artwork.
+- V4: her grip is very wide.
+- V5: a brief fabric fold creases the headline mid-pull.
+
+**Suggested posts:**
+- **V4:** "Built for the back you're building. Be Strong and Courageous tee 🔗 in bio." Hashtags: #backday #barbellrow #christianapparel #swolvation #AIgenerated
+- **V5:** "Heavy rows. Heavier purpose. Joshua 1:9 on the back." Hashtags: #backday #gymwear #faithoverfear #swolvation #AIgenerated
+- Turn the AI label on. Turn on TikTok's "Your brand" disclosure (these are SWOLVATION product posts).
+
+Round 3 credits: **86.5** (20 stills + 66.5 video, including two failed first takes). **Balance: 327.36.**
+
 ## Your decisions
 1. **Approve the 3 videos for posting.** I haven't posted anything.
 2. **Register the handle** (`@selahstone.ai` or an alternate). I can't check availability from here.

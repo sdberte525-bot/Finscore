@@ -70,3 +70,33 @@
 - No burned-in captions.
 
 **Spend round 2: 86.25 credits** (32 stills + 54.25 video). Balance 413.86.
+
+---
+
+## Log: round 3 (12 Oct 2026): back-print barbell-row ads
+
+| Item | Job | Credits | Result | Notes |
+|---|---|---|---|---|
+| Start frames, direct-behind ×2 | `077e46fe`, `308a9766` | 4 | ⚠️ | Print faithful; she's upright and the bar is drawn *behind* her hips (impossible geometry) |
+| Start frames, rear 3/4 ×2 | `5f6d5186` ❌, `96a784e8` ✅ | 4 | | `5f6d5186` **invented a different graphic** (plain cross over two skulls). Rejected |
+| V4 take 1 (12s, push-in) | `bc9042a2` | 21 | ❌ | Barely rows; jump at about 4s; **duplicate figure** in the last second; headline wobbles during the AI push-in |
+| V5 take 1 (10s, row, set down, stand) | `cc380d30` | 17.5 | ❌ | Weak mechanics; bar geometry breaks; sleeves unroll by themselves; **print morphs** when she stands and turns |
+| Hinged rear-3/4 frames ×2 | `70da05e1`, **`370598e3`** ✅ | 4 | | About 30° torso (Yates row); excellent print |
+| V5 take 2 (8s, start = end) | `3c196fd4` | 14 | ✅ minor | Clear rows; bar stays in hand; sleeves stay rolled; print design holds every rep. Minor: a fabric fold briefly creases the headline; a sliver of profile shows |
+| Direct-behind frames ×2 | `2ac6860e`, `c6cc57cc` | 4 | ❌ | Upright again; bar drawn behind the hips |
+| High-angle direct-behind ×2 | `43c4164a` ❌, **`78c18be0`** ✅ | 4 | | `78c18be0`: plates either side, bar correctly hidden in front of her body; big, sharp print |
+| V4 take 2 (8s, start = end, locked camera) | `c6c55543` | 14 | ✅ minor | Two clean rows; shoulder blades squeeze; plates consistent; print stable every frame. Minor: very wide grip |
+
+**Finishing:**
+- Digital push-in (`tools/pushin.py`): V4 1.0→1.3× centered on the print (0.505, 0.40); V5 1.0→1.25× at (0.47, 0.40). Print centers were measured from the cream ink.
+- 2.5s hold from the 2K still: V4 1.3→1.6×, V5 1.25→1.45×.
+- The cut at 8.0s is invisible because the still equals the video's end frame.
+- Sound (`tools/rowsound.py`):
+  - room tone + distant gym clanks;
+  - pulls and plate clanks placed at motion-energy peaks (V4: pulls 0.4/3.6/6.0s, clanks 2.6/4.9/7.2s; V5: pulls 0.5/3.2/6.3s, clanks 1.7/4.8/7.3s);
+  - a dark half-time instrumental.
+  - Both mixes −14.6 LUFS / −1.9 dBTP.
+
+**Known deviation (both videos):** the headline is a gothic serif, not the exact blackletter of `tee-back_original.webp`. The cross, skulls, thorn frame, "JOSHUA 1:9" and ornament all match.
+
+**Spend round 3: 86.5 credits.** Balance 327.36.
