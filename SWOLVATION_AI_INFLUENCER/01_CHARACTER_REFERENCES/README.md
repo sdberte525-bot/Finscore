@@ -1,42 +1,35 @@
-# 1. Character reference images
+# 1. Character reference images (v2, locked)
 
-**Status: 1 of 6 approved-candidate, 5 rejected, 5 to redo.** Nothing has gone to video.
+All images are made with Nano Banana Pro + the master Element `selah-stone-master` (`bc238a33-7e53-4cdd-bfa6-ab6cf4689cfa`). They live in your Higgsfield library.
 
-The images live in your Higgsfield library (this environment can't download from Higgsfield's CDN into the repo). Open the links, or look in Higgsfield → History.
+## Approved set
+| Slot | Job ID | Link |
+|---|---|---|
+| **Master** (front, waist-up, smile) | `b39ec647-0d97-41eb-a8ae-43ea9ebb3cd0` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_190455_b39ec647-0d97-41eb-a8ae-43ea9ebb3cd0.png) |
+| Side profile | `dfa237c9-cca6-4a8a-a83e-9a164ae502fd` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_191104_dfa237c9-cca6-4a8a-a83e-9a164ae502fd.png) |
+| Full body standing | `b50a8e7a-cdb2-4633-a184-e2bc2daf171c` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_193614_b50a8e7a-cdb2-4633-a184-e2bc2daf171c.png) |
+| Upper-body flex (double biceps) | `930ea2a0-f729-4157-885b-bd47be57c3aa` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_193614_930ea2a0-f729-4157-885b-bd47be57c3aa.png) |
+| Natural gym pose (cable curl; video 1 start frame) | `4e65e594-75da-4bd2-99e0-1442ef6e4c17` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_202202_4e65e594-75da-4bd2-99e0-1442ef6e4c17.png) |
+| Casual smiling portrait (car, sweatshirt) | `2c396c56-c39f-45e0-887a-c9ccb52b31bc` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_191219_2c396c56-c39f-45e0-887a-c9ccb52b31bc.png) |
+| Video 2 start frame (black set, dumbbells) | `b8c63ff7-fd00-431d-b7c5-edb9d9980685` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_191218_b8c63ff7-fd00-431d-b7c5-edb9d9980685.png) |
+| Video 3 start frame (real tee, bench) | `0adc5782-0599-4833-9355-1caa839a1b56` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_191231_0adc5782-0599-4833-9355-1caa839a1b56.png) |
 
-| # | Slot | Status | Job ID | Link |
-|---|---|---|---|---|
-| 01 | Front portrait | ✅ **Approval candidate**: identity anchor, saved as Element `swolvation-athlete-01` (`853d0aaa-2bc3-4850-a0bf-f6964daf5493`) | `89edf381-382f-4939-b05b-bb00a8817901` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_182154_89edf381-382f-4939-b05b-bb00a8817901.png) |
-| 02 | Side profile | ❌ Rejected: front-facing selfie, different face | `ecf8df78-11e7-432d-b66b-0821c4a354e7` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_183114_ecf8df78-11e7-432d-b66b-0821c4a354e7.png) |
-| 03 | Full body standing | ❌ Rejected: chest-up selfie, different face, no legs or physique | `cb80ea6f-309a-4bbb-be21-acb4982172f7` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_183027_cb80ea6f-309a-4bbb-be21-acb4982172f7.png) |
-| 04 | Upper-body flex | ❌ Rejected: no flex, different face | `06bb2c25-8800-4fd6-8db9-aaeb8905ef90` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_183026_06bb2c25-8800-4fd6-8db9-aaeb8905ef90.png) |
-| 05 | Natural gym pose (cable) | ❌ Rejected: no cable or pose, different face, invented eye tattoo | `3193a2a6-c46b-4c7d-acf5-fc11ad4e6db0` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_183026_3193a2a6-c46b-4c7d-acf5-fc11ad4e6db0.png) |
-| 06 | Casual smiling portrait | ❌ Rejected: no hoodie, no smile, different face | `498b6440-2dfc-4a6f-a77a-65fe4f435aed` | [view](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261012_183027_498b6440-2dfc-4a6f-a77a-65fe4f435aed.png) |
+**Source face:** your pick, job `498b6440-2dfc-4a6f-a77a-65fe4f435aed`, saved as Element `selah-face-v2` (`45cae08f-dab0-4862-bbf2-f86367b0f4d1`).
 
-## Why 02–06 failed (root cause, confirmed from the job records)
-- When an image reference is attached, Soul 2.0 switched **`enhance_prompt` on by itself**.
-- It then **replaced the written prompt with an auto-caption of the reference image**. Every rejected job's stored prompt begins "A straight-on close-up portrait of a young … woman", which is not what was sent.
-- So the pose, framing and outfit instructions never reached the model. The result was five glam selfies with five different faces.
-- Image 01 had no reference, kept `enhance_prompt: false`, and followed the prompt.
-- **Lesson (now in the workflow):** don't use Soul 2.0 + image reference for pose or angle sheets.
+## How the identity was built
+1. **Face:** your choice (`498b6440`).
+2. **First anchor pass:** 2 takes. Face consistent, but the body read as "fit", not bodybuilder, and the hair came out shoulder-length. Rejected.
+3. **Second pass** with stronger muscle language and long hair: **`b39ec647` locked**. A full-resolution check confirmed real skin texture, natural teeth, the beauty mark, and true muscle (not CGI).
+4. **Master Element** created from it; every reference after that uses the Element.
 
-## Redo plan (needs credits; see `00_START_HERE.md`)
-- **Model:** Nano Banana Pro, 9:16, 2k, 2 credits each. It follows written pose instructions and honours reference images; that was proven on earlier SWOLVATION stills (e.g. R13).
-- **Identity:** pass the Element placeholder `<<<853d0aaa-2bc3-4850-a0bf-f6964daf5493>>>` in each prompt.
-- **Volume:** one take per slot (5 × 2 = **10 credits**). Allow one retake only for a slot that fails QA (up to 6 more).
-- **QA rule for approval:** same face as 01 (beauty mark below her right eye, brows, nose, lips), same hair, plausible anatomy, correct hands, no invented tattoos or logos.
+## Rejected takes (and why)
+| Job | Slot | Defect |
+|---|---|---|
+| `7d64466b`, `a0a1adda` | Anchor v1 | Physique not bodybuilder-level; hair too short |
+| `e2be914f` | Anchor v2 alt | Good, but `b39ec647` had more mass |
+| `78b3048a` | Full body | A phone on a tripod blocked her torso |
+| `99f17ad9` | Flex | No double-biceps pose (arms down) |
+| `cbf62998` | Cable pose | Front-on, one-handed grip |
+| `94707ca2`, `8f97b0de` | Cable pose | Cable ran to a *high* pulley (pushdown mechanics, not a curl). The second take copied the first because it was passed as a reference. |
 
-### Prompts (ready to run)
-Every prompt starts with:
-> `<<<853d0aaa-2bc3-4850-a0bf-f6964daf5493>>>, the exact same woman as the reference: same face, same small beauty mark on the cheekbone below her right eye, same long thick dark-brown wavy hair, same olive skin and brown eyes,`
-
-…and ends with:
-> `realistic unretouched skin with pores and light sweat, natural anatomy, correct hands with five fingers, candid smartphone photo, dark modern commercial gym with black equipment and linear white LED ceiling lights, single person only, no text, no logos, no tattoos.`
-
-| Slot | Middle of the prompt |
-|---|---|
-| 02 Side profile | `strict 90-degree side profile facing right, head to waist, standing beside a cable machine between sets, calm focused expression, hair falling down her back, huge rounded deltoid, thick triceps and biceps, forearm veins, lean waist, plain dusty-pink sports bra` |
-| 03 Full body | `full-body head-to-toe photo with both feet visible, standing relaxed facing the camera, phone on a tripod at waist height, advanced female bodybuilder: very large rounded shoulders and arms, big biceps and triceps, lean abs, tiny waist, powerful quads with separation, strong calves, plain dusty-pink sports bra and matching high-waist leggings, white training shoes, friendly closed-mouth smile` |
-| 04 Flex | `waist-up, front double-biceps pose, both arms raised, huge peaked biceps, forearm veins, capped deltoids, laughing playfully at the camera, plain dusty-pink sports bra, fists closed naturally` |
-| 05 Natural gym pose | `photographed from her side at chest height, standing at a cable machine holding a chrome straight-bar attachment at her thighs, glancing over her shoulder at the camera with a small confident smile, plain dusty-pink sports bra and leggings, a few out-of-focus people far in the background` |
-| 06 Casual portrait | `chest-up, laughing with a big natural open smile showing teeth, sitting on a gym bench after training, oversized plain black zip hoodie open over a black sports bra, no logos, warm light from a reception area` |
+The earlier v1 test images (Soul 2.0) are retired; see `07_QA_REVIEW.md`.

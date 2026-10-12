@@ -1,6 +1,12 @@
 # 2. Identity profile (locked once you approve the reference set)
 
-**Status:** draft v1, anchored on reference image 01 (approved candidate). Every detail below must stay the same in every image and video unless you change it.
+**Status: LOCKED v2 (12 Oct 2026).**
+- **Face:** the one you chose.
+- **Physique:** bodybuilder.
+- **From your 2nd reference:** only its *traits* (big bright smile, honey-blonde highlights, girl-next-door warmth). Never that person's face, because she appears to be a real person.
+- **Master identity:** the Higgsfield Element `selah-stone-master` = `bc238a33-7e53-4cdd-bfa6-ab6cf4689cfa` (from image job `b39ec647-0d97-41eb-a8ae-43ea9ebb3cd0`). Every image and video uses it.
+
+Every detail below stays the same everywhere unless you change it.
 
 ## Who she is
 | | |
@@ -28,13 +34,25 @@ AI virtual athlete 🤖 Faith. Strength. Discipline. ✝️ by @swolvation
 **YouTube Shorts channel description:** "Selah Stone is an AI-generated virtual fitness character created by SWOLVATION. Faith. Strength. Discipline. Salvation."
 
 ## Locked appearance (copy this block into every prompt)
-- **Face:** oval face, mature adult bone structure, high defined cheekbones, defined jaw, straight nose, full lips (natural nude), warm brown almond eyes, natural thick dark brows.
-- **Identity mark:** **small dark beauty mark on the cheekbone just below her right eye** (on the left side of the image when she faces the camera). Check this in every frame.
-- **Hair:** long, thick, dark brown, soft natural waves, centre-to-slightly-side part, falls well past the shoulders. Worn down by default.
-- **Skin:** olive, warm undertone, visible pores, light training sweat. Never airbrushed.
-- **Physique (target):** advanced female bodybuilder: very large rounded deltoids, thick biceps and triceps, forearm veins (believable, not cartoon), visible traps, lean abs, tiny waist, powerful quads. *Image 01 shows the shoulders well. The arms and legs still need to be established in the full-body and flex references.*
-- **Signature outfit:** plain dusty-pink (mauve-rose) sports bra and matching high-waist leggings, **no logos**. Second outfit: plain black or charcoal set. SWOLVATION clothing appears only from verified product references.
-- **Not allowed:** extra tattoos (the rejected takes invented a face tattoo), new moles, eye-colour drift, hair colour drift, babyface, exaggerated glamour cleavage framing, visible brand logos that aren't SWOLVATION's.
+- **Face:** mature adult bone structure, warm brown almond eyes, thick dark sculpted brows, straight nose, full glossy-nude lips, big bright smile with straight white teeth (her signature).
+- **Identity mark:** small beauty mark on the cheekbone **below her right eye** (on the left of the image when she faces the camera).
+- **Hair:** very long, thick, voluminous brown with soft waves and **honey-blonde balayage**, deep side part, worn down.
+- **Skin:** warm olive-tan, real pores, light training sweat. Never airbrushed.
+- **Physique:** women's-physique-level bodybuilder:
+  - massive round capped delts;
+  - big peaked biceps and triceps;
+  - vascular forearms and a V-taper;
+  - deeply etched six-pack and a tiny waist;
+  - quads with separation.
+- **Wardrobe:**
+  - **signature:** dusty-rose sports bra + matching leggings, no logos;
+  - **second:** matte black set;
+  - **casual:** plain charcoal sweatshirt;
+  - **brand:** the real washed-black "Be strong and courageous" tee only (verified chest print).
+- **Not allowed:**
+  - tattoos, new moles, eye- or hair-colour drift, a babyface;
+  - visible logos other than verified SWOLVATION artwork;
+  - the 2nd reference person's face.
 
 ## AI transparency (required, every post)
 1. **Bio** states AI-generated / not a real person (above).

@@ -1,10 +1,6 @@
 # 3. Video production sheets: 3 launch videos
 
-**Status: NOT RENDERED.** These are complete, ready-to-run plans. They wait on two things:
-1. your approval of the reference set (`01_CHARACTER_REFERENCES/`);
-2. credits: about **60 credits** for the three videos, **about 70** including the reference redos, **about 95** at most with retakes. See `00_START_HERE.md`.
-
-No video has been generated, and none will be claimed as finished until it exists and has passed QA (`07_QA_REVIEW.md`).
+**Status: ✅ ALL 3 RENDERED, FINISHED AND QA'D (12 Oct 2026).** Download links are in `00_START_HERE.md`; the QA log is in `07_QA_REVIEW.md`. The shot plans below are what was produced. They now use the master Element `bc238a33-…`, which replaced the v1 placeholder `853d0aaa-…`.
 
 ## How every video is made (one validated path)
 1. **Start frame (Nano Banana Pro, 2 credits):**

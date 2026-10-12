@@ -38,3 +38,16 @@ What's below was tested today, or quoted by Higgsfield's own cost tool. Prices a
 - **Pro plan:** at most **4 concurrent jobs**. A batch of 5 rejects the fifth, so submit in groups of 4.
 - **Higgsfield sandbox:** a provider-wide capacity error happened once ("maximum number of concurrent sandboxes"). It cleared on retry.
 - **Credits:** 0.11 left after today's tests. Top up before step 3.
+
+## Lessons from round 2 (apply every time)
+- **Element + Nano Banana Pro is the reliable identity path.** 14 stills kept the same face with no identity drift.
+- **Don't pass a flawed image as a reference to "fix" it.** The model copies the flaw: the high-pulley cable came back identical. Rewrite from text instead.
+- **Spell out gym mechanics like a coach:**
+  - where the pulley sits (floor-level for curls);
+  - grip (both hands, palms up);
+  - joint positions (elbows pinned to the ribs);
+  - which way the cable runs.
+- **Say "no tripod, no phone visible"** on full-body shots, or the model may draw the camera rig.
+- **Kling loops:** pass the same image as `start_image` and `end_image`. V1's seam measured 1.35/255.
+- **Kling preset popup:** Higgsfield may suggest a preset (e.g. "IN THE DARK"). Decline with `declined_preset_id` to render the literal prompt.
+- **Generate silent** (`sound: off`). It's cheaper and avoids unclear music rights. Add our original audio, or a platform-licensed sound in the app.
