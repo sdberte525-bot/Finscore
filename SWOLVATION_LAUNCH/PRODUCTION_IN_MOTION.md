@@ -5,7 +5,11 @@
 ## Deliverables (1080×1920, 30 fps, 13.2s)
 - **With sound:** [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/21d0fff3-ac3c-43be-9744-6232ff5269cc.mp4). Original synthesized sound design, −13.9 LUFS, nothing to license.
 - **Silent:** [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/b2daef30-6110-47bb-b07b-0df06f74fafb.mp4)
-- **4K (2160×3840):** see "4K" below.
+- **4K (2160×3840), Topaz upscale of the final edit:**
+  - **With sound:** [MP4](https://d2ol7oe51mr4n9.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/84b54bff-0e80-4386-ad1b-ae6ca32537fb.mp4). HEVC, 13.2s, the same sound mix as the 1080 version.
+  - **Silent:** [MP4](https://d8j0ntlcm91z4.cloudfront.net/user_3KW4bOaWnBSh6zRqm3msREW6Jea/hf_20261013_223328_94d182af-97a6-4fa5-abe4-68d9a1f68123.mp4) (Topaz job `94d182af`)
+  - Checked at 5.5s: the "Be strong and courageous" blackletter print is sharp and correct.
+  - Most apps convert uploads down to 1080 anyway. Post the 4K where the app accepts it, or keep it as the master copy.
 
 | Time | Shot | Reference beat it replaces |
 |---|---|---|
