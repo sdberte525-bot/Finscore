@@ -90,19 +90,15 @@ Every shot passed on take 1, so the 2-round stop rule never triggered and the re
 | Plate 2 sign-removal edit (the plan's 5th-plate line) | 2.75 |
 | 4 Kling pro clips × 5 s | 35.00 |
 | **Planned spend** | **48.75** |
-| 4 duplicate plate renders, not submitted by me (see below) | 11.00 |
+| 4 duplicate plates from the parent session (see below) | 11.00 |
 | **Charged** | **59.75** |
 
 **Balance:** 185.36 before → 125.61 after.
 
-**Over the 57.5 cap by 2.25.**
-- At 18:15:52–53 UTC, four extra GPT Image 2.5 jobs landed in the project folder. They used my exact four plate prompts with new seeds:
-  - `d8e4532e-025a-4438-8a7b-7fc35387b841`
-  - `589d5f41-78a6-45a4-b473-46cddb4dde5f`
-  - `9468f5be-074f-469a-9755-c7d34163786d`
-  - `81d0e3dc-1d31-4eb0-8634-801da7b3d14c`
-- Only one plate batch call was made, at 18:07:59. These match the window where the session worker restarted and sandbox calls were timing out, so they look like a transport-level resubmission.
-- They are good alternate plates, but they are not used in the ad. Worth raising with Higgsfield support for a refund.
-- Once the overage was spotted, no further paid steps were run. Everything after that (edit, audio, hosting) cost 0 credits.
+**Over the 57.5 cap by 2.25.** That overage was caused by the parent session, not Higgsfield.
+- The four extra GPT Image 2.5 jobs at 18:15:52–53 UTC (`d8e4532e…`, `589d5f41…`, `9468f5be…`, `81d0e3dc…`) were submitted by the parent session.
+- When Higgsfield reconnected there, it started producing the same plan without first checking whether this session had already started.
+- They were billed correctly, so there's nothing to claim from Higgsfield support.
+- They aren't used in the ad, but they are usable alternate plates in the project folder.
 
 **When you post:** turn on each platform's AI-content label. The scenes are AI-generated; the prints are your real artwork, composited.
