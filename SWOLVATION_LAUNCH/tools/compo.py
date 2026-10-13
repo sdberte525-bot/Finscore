@@ -60,6 +60,7 @@ def main():
     ap.add_argument("--opacity", type=float, default=0.94)
     ap.add_argument("--soft", type=float, default=0.7)
     ap.add_argument("--grain", type=float, default=5.0)
+    ap.add_argument("--refpct", type=float, default=99.0)
     ap.add_argument("--mask")
     a = ap.parse_args()
 
@@ -92,7 +93,14 @@ def main():
     # light: the ink receives the same light as the cotton under it
     illum = blurf(L, 3)
     region = A > 0.2
-    ref = np.percentile(illum[region], 97) if region.any() else illum.max()
+    # reference = fully lit cotton near the print (bbox grown 3x), so a print in
+    # shadow stays in shadow instead of being normalised up to full brightness
+    ys, xs = np.nonzero(region)
+    cy, cx = (ys.min() + ys.max()) / 2, (xs.min() + xs.max()) / 2
+    hh, hw = (ys.max() - ys.min()) * 1.5, (xs.max() - xs.min()) * 1.5
+    y0, y1 = int(max(0, cy - hh)), int(min(H, cy + hh))
+    x0, x1 = int(max(0, cx - hw)), int(min(W, cx + hw))
+    ref = np.percentile(illum[y0:y1, x0:x1], a.refpct)
     shade = np.clip(illum / max(ref, 1e-6), 0, 1.15) * a.level
     # light colour (tungsten tint) from the plate around the print
     Pb = np.stack([blurf(P[..., c], 25) for c in range(3)], -1)
