@@ -1,4 +1,5 @@
 import "server-only";
+import { addTags, admin, isShopifyAdminConfigured, type UserErrors } from "./shopifyAdmin";
 
 /*
  * Email-list sign-ups. The first configured destination wins:
@@ -17,7 +18,7 @@ export type SubscribeResult = { ok: true } | { ok: false; fallback: "netlify" } 
 export async function subscribe(email: string, source: string): Promise<SubscribeResult> {
   const tags = ["newsletter", `source:${source}`.slice(0, 40)];
   try {
-    if (process.env.SHOPIFY_STORE_DOMAIN && process.env.SHOPIFY_ADMIN_ACCESS_TOKEN) {
+    if (isShopifyAdminConfigured()) {
       await subscribeShopify(email, tags);
       return { ok: true };
     }
@@ -43,22 +44,6 @@ export async function subscribe(email: string, source: string): Promise<Subscrib
 
 /* ---------- Shopify Admin API ---------- */
 
-async function admin<T>(query: string, variables: Record<string, unknown>): Promise<T> {
-  const version = process.env.SHOPIFY_API_VERSION ?? "2025-01";
-  const res = await fetch(`https://${process.env.SHOPIFY_STORE_DOMAIN}/admin/api/${version}/graphql.json`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_ACCESS_TOKEN ?? "" },
-    body: JSON.stringify({ query, variables }),
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`Shopify Admin ${res.status}`);
-  const json = (await res.json()) as { data?: T; errors?: { message: string }[] };
-  if (json.errors?.length) throw new Error(json.errors.map((e) => e.message).join("; "));
-  return json.data as T;
-}
-
-type UserErrors = { userErrors: { field: string[] | null; message: string }[] };
-
 async function subscribeShopify(email: string, tags: string[]) {
   const consent = { marketingState: "SUBSCRIBED", marketingOptInLevel: "SINGLE_OPT_IN", consentUpdatedAt: new Date().toISOString() };
   const created = await admin<{ customerCreate: UserErrors & { customer: { id: string } | null } }>(
@@ -83,7 +68,7 @@ async function subscribeShopify(email: string, tags: string[]) {
   if (updated.customerEmailMarketingConsentUpdate.userErrors.length) {
     throw new Error(updated.customerEmailMarketingConsentUpdate.userErrors.map((e) => e.message).join("; "));
   }
-  await admin(`mutation($id: ID!, $tags: [String!]!) { tagsAdd(id: $id, tags: $tags) { userErrors { message } } }`, { id, tags });
+  await addTags(id, tags);
 }
 
 /* ---------- Klaviyo ---------- */

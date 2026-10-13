@@ -61,7 +61,7 @@ Netlify's free plan includes 100 form submissions a month. Once Shopify is conne
 ### B. Admin token (email list into Shopify)
 
 1. **Settings → Apps and sales channels → Develop apps → Create an app** (name it "Website").
-2. **Configure Admin API scopes**: tick `write_customers` and `read_customers`. Save, then **Install app**.
+2. **Configure Admin API scopes**: tick `write_customers`, `read_customers` and `read_orders` (`read_orders` is for the email sequence, see EMAIL_SEQUENCE.md). Save, then **Install app**.
 3. Copy the **Admin API access token**. It's shown once.
 
 ### C. Add the variables in Netlify

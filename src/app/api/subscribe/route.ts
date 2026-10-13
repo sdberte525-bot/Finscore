@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
+import { runSequence } from "@/lib/email/sequence";
 import { subscribe } from "@/lib/newsletter";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,7 +23,20 @@ export async function POST(request: Request) {
   }
 
   const result = await subscribe(email, source);
-  if (result.ok) return NextResponse.json({ ok: true });
+  if (result.ok) {
+    // Send the welcome email right away (the hourly run catches anything this misses,
+    // including sign-ups made on the Shopify storefront itself).
+    after(async () => {
+      try {
+        await new Promise((r) => setTimeout(r, 5000)); // Shopify's customer search lags new sign-ups by a few seconds
+        const report = await runSequence({ email });
+        if ("errors" in report && report.errors.length) console.error("Welcome email failed", report.errors);
+      } catch (err) {
+        console.error("Welcome email failed", err);
+      }
+    });
+    return NextResponse.json({ ok: true });
+  }
   if ("fallback" in result) return NextResponse.json({ ok: false, fallback: result.fallback });
   return NextResponse.json({ error: result.error }, { status: 502 });
 }
