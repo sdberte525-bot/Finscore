@@ -6,7 +6,7 @@ displaced by the fabric folds, lit by the plate's own light and given the
 fabric texture and film grain.
 
 usage: compo.py PLATE ART OUT --quad x0,y0,x1,y1,x2,y2,x3,y3   (TL,TR,BR,BL of the art box)
-       [--level 0.9] [--disp 2] [--fold 18] [--tex 0.35] [--opacity 0.94] [--soft 0.7] [--grain 5]
+       [--ratio 8] [--level 1] [--disp 2] [--fold 18] [--tex 0.35] [--opacity 0.94] [--soft 0.7] [--grain 5]
        [--mask OUT_MASK]
 """
 import argparse
@@ -53,14 +53,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("plate"); ap.add_argument("art"); ap.add_argument("out")
     ap.add_argument("--quad", required=True)
-    ap.add_argument("--level", type=float, default=0.9)
+    ap.add_argument("--level", type=float, default=1.0)
     ap.add_argument("--disp", type=float, default=2.0)
     ap.add_argument("--fold", type=float, default=18.0, help="blur radius that isolates folds from weave")
     ap.add_argument("--tex", type=float, default=0.35)
     ap.add_argument("--opacity", type=float, default=0.94)
     ap.add_argument("--soft", type=float, default=0.7)
     ap.add_argument("--grain", type=float, default=5.0)
-    ap.add_argument("--refpct", type=float, default=99.0)
+    ap.add_argument("--ratio", type=float, default=8.0)
     ap.add_argument("--mask")
     a = ap.parse_args()
 
@@ -93,15 +93,10 @@ def main():
     # light: the ink receives the same light as the cotton under it
     illum = blurf(L, 3)
     region = A > 0.2
-    # reference = fully lit cotton near the print (bbox grown 3x), so a print in
-    # shadow stays in shadow instead of being normalised up to full brightness
-    ys, xs = np.nonzero(region)
-    cy, cx = (ys.min() + ys.max()) / 2, (xs.min() + xs.max()) / 2
-    hh, hw = (ys.max() - ys.min()) * 1.5, (xs.max() - xs.min()) * 1.5
-    y0, y1 = int(max(0, cy - hh)), int(min(H, cy + hh))
-    x0, x1 = int(max(0, cx - hw)), int(min(W, cx + hw))
-    ref = np.percentile(illum[y0:y1, x0:x1], a.refpct)
-    shade = np.clip(illum / max(ref, 1e-6), 0, 1.15) * a.level
+    # physical model: ink and cotton receive the same light, so the ink's
+    # brightness is the cotton's brightness times the reflectance ratio
+    # (cream DTG ink vs faded-black cotton is roughly 7-9x). Shadows stay shadows.
+    shade = np.clip(illum * a.ratio, 0, 1.1) * a.level
     # light colour (tungsten tint) from the plate around the print
     Pb = np.stack([blurf(P[..., c], 25) for c in range(3)], -1)
     tint = Pb / np.maximum(Pb.mean(-1, keepdims=True), 1e-4)
