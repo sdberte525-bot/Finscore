@@ -6,7 +6,7 @@ displaced by the fabric folds, lit by the plate's own light and given the
 fabric texture and film grain.
 
 usage: compo.py PLATE ART OUT --quad x0,y0,x1,y1,x2,y2,x3,y3   (TL,TR,BR,BL of the art box)
-       [--level 0.9] [--disp 6] [--tex 0.35] [--opacity 0.94] [--soft 0.7] [--grain 5]
+       [--level 0.9] [--disp 2] [--fold 18] [--tex 0.35] [--opacity 0.94] [--soft 0.7] [--grain 5]
        [--mask OUT_MASK]
 """
 import argparse
@@ -54,7 +54,8 @@ def main():
     ap.add_argument("plate"); ap.add_argument("art"); ap.add_argument("out")
     ap.add_argument("--quad", required=True)
     ap.add_argument("--level", type=float, default=0.9)
-    ap.add_argument("--disp", type=float, default=6.0)
+    ap.add_argument("--disp", type=float, default=2.0)
+    ap.add_argument("--fold", type=float, default=18.0, help="blur radius that isolates folds from weave")
     ap.add_argument("--tex", type=float, default=0.35)
     ap.add_argument("--opacity", type=float, default=0.94)
     ap.add_argument("--soft", type=float, default=0.7)
@@ -76,7 +77,7 @@ def main():
     A = np.asarray(warped.split()[3], np.float32) / 255.0
 
     # fabric folds: displace the ink along the luminance gradient of the plate
-    Lb = blurf(L, 6)
+    Lb = blurf(L, a.fold)
     gy, gx = np.gradient(Lb)
     norm = np.percentile(np.hypot(gx, gy)[A > 0.1], 95) if (A > 0.1).any() else 1.0
     dx = gx / max(norm, 1e-6) * a.disp
