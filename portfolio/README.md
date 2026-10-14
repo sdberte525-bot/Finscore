@@ -24,7 +24,21 @@ npm start            # http://localhost:3000
 npm run typecheck
 ```
 
-## Deploy to Vercel
+## Live site: GitHub Pages
+
+The public site is served by GitHub Pages from the repository `sdberte525-bot/sdberte525-bot.github.io`, at https://sdberte525-bot.github.io. That repository holds only the built files. This folder is the source.
+
+To publish a change:
+
+```bash
+npm run export                 # static build into out/, with URLs for sdberte525-bot.github.io
+touch out/.nojekyll            # lets GitHub Pages serve the _next folder
+# then copy out/ into the sdberte525-bot.github.io repository and push its main branch
+```
+
+For a custom domain, run `SITE_URL=https://yourdomain.com npm run export`, add a `CNAME` file containing the domain to the published files, and set the domain under the Pages settings of that repository.
+
+## Deploy to Vercel (alternative)
 
 1. In Vercel, choose **Add New → Project** and import this GitHub repository.
 2. Set **Root Directory** to `portfolio`. Vercel detects Next.js; keep the default build settings.
