@@ -79,3 +79,14 @@ pdftotext public/salvatore-berte-resume.pdf - | grep -i gpa   # should print not
 - **Color:** deep navy `#14263D`, charcoal `#222831`, warm white `#FAFAF8`, slate `#64748B` and a muted steel blue `#4F6D8A`. All text pairings meet WCAG AA.
 - **Honesty conventions:** figures for student-managed and virtual portfolios carry a short note saying what they are, the way a research note carries disclosures. The CFA credential is labeled as candidacy.
 - **Motion:** one load sequence in the hero and light fades as sections enter. All of it is turned off when the visitor's system asks for reduced motion, and content stays visible if JavaScript fails.
+
+## Shareable page on claude.ai
+
+A self-contained copy of the site is published as a private claude.ai artifact (shareable from its Share menu). It is generated from the production build, so rebuild it after content changes:
+
+```bash
+npm run build
+python3 -I scripts/share-page/build_share.py . /tmp/share   # needs Pillow
+```
+
+This writes `index.html` (fonts from Google Fonts, headshot embedded) and the résumé PDF, ready to republish. The page offers the résumé through claude.ai's save dialog, and shows the email address as copyable text because email links may not open from inside claude.ai.
