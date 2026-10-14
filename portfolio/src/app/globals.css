@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #14263d;
+  --color-navy-deep: #0f1e31;
+  --color-charcoal: #222831;
+  --color-paper: #fafaf8;
+  --color-paper-dim: #f1f2f0;
+  --color-slate: #64748b; /* 4.55:1 on paper; not used on paper-dim */
+  --color-steel: #4f6d8a;
+  --color-steel-light: #a9bacb; /* secondary text on navy, 7.7:1 */
+  --color-rule: #dde1e6;
+  --color-rule-dark: #2b3d55;
+
+  --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale, close to a perfect fourth from a 17px body. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.7;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 1.35;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 2.75rem;
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 3.75rem;
+  --text-4xl--line-height: 1.02;
+  --text-5xl: 5rem;
+  --text-5xl--line-height: 0.98;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    font-feature-settings: "kern", "liga";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    color: var(--color-navy);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: #d6e0ea;
+    color: var(--color-navy);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-steel);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-steel-light);
+  }
+}
+
+@layer components {
+  /* Figures in dates and data line up. */
+  .figures {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Serif display with optical sizing tuned for large settings. */
+  .display {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+  }
+
+  /* Underline that draws from the left on hover and focus. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 350ms var(--ease-out-soft), color 200ms ease;
+    padding-bottom: 2px;
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible,
+  .link-draw[aria-current="true"] {
+    background-size: 100% 1px;
+  }
+
+  /* Persistent underline for links inside running text. */
+  .link-inline {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    transition: text-decoration-color 200ms ease;
+  }
+  .link-inline:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Content stays visible without JavaScript: the hidden state only applies once
+     the page has confirmed it can reveal it again. */
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 900ms var(--ease-out-soft),
+      transform 900ms var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .js [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Hero entrance: one orchestrated sequence on load. */
+  .hero-in {
+    animation: hero-rise 1100ms var(--ease-out-soft) both;
+    animation-delay: var(--hero-delay, 0ms);
+  }
+
+  /* The portrait is the largest element on small screens, so it is revealed by
+     clip only on wide screens where it does not hold back first paint. */
+  @media (min-width: 64rem) {
+    .portrait-in {
+      animation: portrait-reveal 1500ms var(--ease-out-soft) 150ms both;
+    }
+  }
+  .portrait-in img {
+    animation: portrait-settle 1800ms var(--ease-out-soft) 150ms both;
+  }
+
+  .panel-in {
+    animation: panel-grow 1300ms var(--ease-out-soft) 450ms both;
+  }
+
+  .scroll-cue-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-navy);
+    transform-origin: top;
+    animation: cue 2.4s var(--ease-out-soft) 1.6s infinite;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes portrait-reveal {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes portrait-settle {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes panel-grow {
+  from {
+    opacity: 0;
+    transform: translate(-12px, -12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}

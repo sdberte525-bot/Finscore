@@ -1,6 +1,8 @@
 @import "tailwindcss";
 /* The Shopify theme in /shopify has its own stylesheet build. */
 @source not "../../shopify";
+/* The portfolio site in /portfolio is a separate Next.js project. */
+@source not "../../portfolio";
 
 @theme {
   /* SWOLVATION palette: deep black and charcoal, warm off-white and vintage cream. */
